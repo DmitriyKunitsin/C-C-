@@ -19,9 +19,14 @@ typedef enum { // Конечный автома
 void printArrayFieldBound(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
 void printFieldBound();
 void printARRFieldBound(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
+void printArrayWithColors(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
 State Transition(State current, char input);
 
 int main() {
+    initscr();
+    start_color();
+    init_pair(1, COLOR_BLACK, COLOR_WHITE);
+    init_pair(1, COLOR_BLACK, COLOR_RED);
     State currentState = STATE_A;
     char inp[] = {'0', '1', '0', '1', '0'};
 
@@ -31,9 +36,15 @@ int main() {
     }
     int arr[Y_SIZE_ARRAY][X_SIZE_ARRAY];
     printARRFieldBound(arr);
+    printArrayWithColors(arr);
     // printFieldBound();
 
     printArrayFieldBound(arr);
+
+    refresh();
+    getch();
+    endwin();
+
     return 0;
 }
 
@@ -43,6 +54,23 @@ void printArrayFieldBound(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
             printf("%d",array[i][j]);
         }
         printf("\n");
+    }
+}
+
+void printArrayWithColors(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
+    for(int i = 0; i < Y_SIZE_ARRAY; i++) {
+        for(int j = 0; j < X_SIZE_ARRAY; j++) {
+            if(array[i][j] == 0) {
+                attron(COLOR_BLACK);// цвет вместо нуля
+                printw(" "); // вывод пробела вместо нуля
+                attroff(COLOR_BLACK);
+            } else {
+                attron(COLOR_BLACK);
+                printw("#");
+                attroff(COLOR_BLACK);
+            }
+        }
+        printw("\n");
     }
 }
 
