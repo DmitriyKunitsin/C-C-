@@ -35,7 +35,7 @@ format:
 	clang-format -n -style=file $(SRC)
 	clang-format -i -style=file $(SRC)
 
-rebuild: clean all
+rebuild: clean all go
 
 go: $(TARGET) format
 	./$(TARGET)

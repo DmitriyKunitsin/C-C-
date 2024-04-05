@@ -4,9 +4,8 @@
 #include <stdlib.h>
 
 #include "./figures/figuresForGames.h"
-#include "menu/menu_for_game.h"
 #include "macro/macro_definitions.h"
-
+#include "menu/menu_for_game.h"
 
 typedef enum {  // Конечный автома
     STATE_A,  // Enum для того, что к енаму можно обращаться только к одному
@@ -44,7 +43,6 @@ int main() {
     inputKey();
     printArrayFieldBound(arr);
 
-    
     refresh();
     getch();
     endwin();
@@ -83,7 +81,6 @@ void inputKey() {
         printMenu(selectedItem);
     }
 }
-
 
 void printArrayWithColors(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
     for (int i = 0; i < Y_SIZE_ARRAY; i++) {
