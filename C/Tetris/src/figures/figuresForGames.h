@@ -1,6 +1,8 @@
 #ifndef FIGURES_FOR_GAMES_H
 #define FIGURES_FOR_GAMES_H
 
+#include "../includes/common.h"
+
 extern int figure_line[4][4];
 
 extern int figure_G_left[3][3];

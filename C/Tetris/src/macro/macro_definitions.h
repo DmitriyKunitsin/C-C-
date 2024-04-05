@@ -11,9 +11,9 @@ typedef enum {  // Конечный автома
 #define X_GAME_BOARD 11
 #define Y_GAME_BOARD 21
 #define START_RIGHT_MENU_WIDTH 11
-#define END_RIGHT_MENU_WIDTH 21
+#define END_RIGHT_MENU_WIDTH 31
 #define Y_SIZE_ARRAY 21
-#define X_SIZE_ARRAY 21
+#define X_SIZE_ARRAY 31
 #define SIDE_LINE '*'
 #define TOP_LINE '*'
 
