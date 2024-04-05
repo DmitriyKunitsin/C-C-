@@ -47,6 +47,9 @@ format:
 	clang-format -n -style=file $(SRC)
 	clang-format -i -style=file $(SRC)
 
+format-all:
+	find . -iname '*.h' -o -iname '*.c' | xargs clang-format -n -style=file
+	find . -iname '*.h' -o -iname '*.c' | xargs clang-format -i -style=file
 rebuild: clean all go
 
 go: $(TARGET) format

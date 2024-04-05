@@ -17,4 +17,4 @@ typedef enum {  // Конечный автома
 #define SIDE_LINE '*'
 #define TOP_LINE '*'
 
-#endif //MACRO_DEFINITIONS_H
+#endif  // MACRO_DEFINITIONS_H

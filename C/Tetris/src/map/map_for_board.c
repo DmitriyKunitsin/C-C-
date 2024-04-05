@@ -1,12 +1,11 @@
 
 #include "map_for_board.h"
+
 #include "../menu/menu_for_game.h"
 
 int arr[Y_SIZE_ARRAY][X_SIZE_ARRAY];
 
-void initMap(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
-    FillinArrayMap(array);
-}
+void initMap(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]) { FillinArrayMap(array); }
 
 void printArrayWithColors(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
     for (int i = 0; i < Y_SIZE_ARRAY; i++) {
