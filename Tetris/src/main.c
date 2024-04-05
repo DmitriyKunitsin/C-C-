@@ -1,5 +1,7 @@
+#include <math.h>
 #include <ncurses.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #define X_GAME_BOARD 11
 #define Y_GAME_BOARD 21
@@ -16,17 +18,22 @@ typedef enum {  // Конечный автома
     STATE_B,
     STATE_C
 } State;
+
+void inputKey();
 void printArrayFieldBound(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
 void printFieldBound();
 void FillinArrayMap(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
 void printArrayWithColors(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
+
+void executeMenuItem(int item);
+void printMenu(int selectedItem);
 State Transition(State current, char input);
 
 int main() {
     initscr();
     start_color();
     init_pair(1, COLOR_BLACK, COLOR_WHITE);
-    init_pair(1, COLOR_BLACK, COLOR_RED);
+    init_pair(2, COLOR_BLACK, COLOR_RED);
     State currentState = STATE_A;
     char inp[] = {'0', '1', '0', '1', '0'};
 
@@ -38,7 +45,7 @@ int main() {
     FillinArrayMap(arr);
     printArrayWithColors(arr);
     // printFieldBound();
-
+    inputKey();
     printArrayFieldBound(arr);
 
     refresh();
@@ -57,6 +64,59 @@ void printArrayFieldBound(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
     }
 }
 
+void inputKey() {
+    keypad(stdscr, TRUE);
+    int key;
+    int selectedItem = 0;
+    while ((key = getch()) != KEY_BACKSPACE) {
+        switch (key) {
+            case KEY_UP:
+                selectedItem = (selectedItem - 1 > 0) ? selectedItem - 1 : 0;
+                break;
+            case KEY_DOWN:
+                selectedItem =
+                    (selectedItem + 1 < 2) ? selectedItem + 1 : 2 - 1;
+                break;
+            case '\n':
+                executeMenuItem(selectedItem);
+                break;
+            default:
+                break;
+        }
+        printMenu(selectedItem);
+    }
+}
+
+void printMenu(int selectedItem) {
+    int startY = 1;
+    int startX = START_RIGHT_MENU_WIDTH + 1;
+
+    mvprintw(startY, startX, "Menu");
+    for (int i = 0; i < 2; i++) {
+        if (selectedItem == i) {
+            attron(A_REVERSE);
+        }
+        mvprintw(startY + 1 + i, startX, "%d. %s", i + 1,
+                 (i == 0) ? "Start Game" : "Exit");
+        if (i == selectedItem) {
+            attroff(A_REVERSE);
+        }
+    }
+}
+
+void executeMenuItem(int item) {
+    switch (item) {
+        case 0:
+            /* code */
+            break;
+        case 1:
+            endwin();
+            exit(0);
+            break;
+        default:
+            break;
+    }
+}
 void printArrayWithColors(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
     for (int i = 0; i < Y_SIZE_ARRAY; i++) {
         for (int j = 0; j < X_SIZE_ARRAY; j++) {
