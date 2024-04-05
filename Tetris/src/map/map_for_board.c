@@ -1,6 +1,7 @@
 
 #include "map_for_board.h"
 
+int arr[Y_SIZE_ARRAY][X_SIZE_ARRAY];
 
 void printArrayWithColors(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
     for (int i = 0; i < Y_SIZE_ARRAY; i++) {

@@ -4,16 +4,10 @@
 #include <stdlib.h>
 
 #include "./figures/figuresForGames.h"
+#include "controller/reader_with_console.h"
 #include "macro/macro_definitions.h"
 #include "map/map_for_board.h"
 #include "menu/menu_for_game.h"
-
-typedef enum {  // Конечный автома
-    STATE_A,  // Enum для того, что к енаму можно обращаться только к одному
-              // объекту
-    STATE_B,
-    STATE_C
-} State;
 
 void inputKey();
 void FillinArrayMap(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
@@ -26,14 +20,6 @@ int main() {
     start_color();
     init_pair(1, COLOR_BLACK, COLOR_WHITE);
     init_pair(2, COLOR_BLACK, COLOR_RED);
-    State currentState = STATE_A;
-    char inp[] = {'0', '1', '0', '1', '0'};
-
-    for (size_t i = 0; i < sizeof(inp) / sizeof(inp[0]); i++) {
-        currentState = Transition(currentState, inp[i]);
-        printf("Input: %c, State: %d\n", inp[i], currentState);
-    }
-    int arr[Y_SIZE_ARRAY][X_SIZE_ARRAY];
     FillinArrayMap(arr);
 
     inputKey();
@@ -46,57 +32,41 @@ int main() {
     return 0;
 }
 
-void inputKey() {
-    keypad(stdscr, TRUE);
-    int key;
-    int selectedItem = 0;
-    while ((key = getch()) != KEY_BACKSPACE) {
-        switch (key) {
-            case KEY_UP:
-                selectedItem = (selectedItem - 1 > 0) ? selectedItem - 1 : 0;
-                break;
-            case KEY_DOWN:
-                selectedItem =
-                    (selectedItem + 1 < 2) ? selectedItem + 1 : 2 - 1;
-                break;
-            case '\n':
-                executeMenuItem(selectedItem);
-                break;
-            default:
-                break;
-        }
-        printMenu(selectedItem);
-    }
-}
-
-State Transition(State current, char input) {
-    switch (current) {
-        case STATE_A:
-            if (input == '0') {
-                return STATE_B;
-            } else {
-                return STATE_A;
-            }
-            break;
-        case STATE_B:
-            if (input == '1') {
-                return STATE_C;
-            } else {
-                return STATE_A;
-            }
-            break;
-        case STATE_C:
-            if (input == '0') {
-                return STATE_B;
-            } else {
-                return STATE_C;
-            }
-            break;
-    }
-    return current;
-}
-
 /******************************************TRASH*********************************************************/
+// State currentState = STATE_A;
+// char inp[] = {'0', '1', '0', '1', '0'};
+
+// for (size_t i = 0; i < sizeof(inp) / sizeof(inp[0]); i++) {
+//     currentState = Transition(currentState, inp[i]);
+//     printf("Input: %c, State: %d\n", inp[i], currentState);
+// }
+
+// State Transition(State current, char input) {
+//     switch (current) {
+//         case STATE_A:
+//             if (input == '0') {
+//                 return STATE_B;
+//             } else {
+//                 return STATE_A;
+//             }
+//             break;
+//         case STATE_B:
+//             if (input == '1') {
+//                 return STATE_C;
+//             } else {
+//                 return STATE_A;
+//             }
+//             break;
+//         case STATE_C:
+//             if (input == '0') {
+//                 return STATE_B;
+//             } else {
+//                 return STATE_C;
+//             }
+//             break;
+//     }
+//     return current;
+// }
 
 // void printFieldBound() {
 //     for (int i = 0; i < Y_GAME_BOARD; i++) {
