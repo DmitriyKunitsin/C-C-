@@ -2,16 +2,11 @@
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "figuresForGames.h"
 
-#define X_GAME_BOARD 11
-#define Y_GAME_BOARD 21
-#define START_RIGHT_MENU_WIDTH 11
-#define END_RIGHT_MENU_WIDTH 21
-#define Y_SIZE_ARRAY 21
-#define X_SIZE_ARRAY 21
-#define SIDE_LINE '*'
-#define TOP_LINE '*'
+#include "./figures/figuresForGames.h"
+#include "menu/menu_for_game.h"
+#include "macro/macro_definitions.h"
+
 
 typedef enum {  // Конечный автома
     STATE_A,  // Enum для того, что к енаму можно обращаться только к одному
@@ -89,36 +84,7 @@ void inputKey() {
     }
 }
 
-void printMenu(int selectedItem) {
-    int startY = 1;
-    int startX = START_RIGHT_MENU_WIDTH + 1;
 
-    mvprintw(startY, startX, "Menu");
-    for (int i = 0; i < 2; i++) {
-        if (selectedItem == i) {
-            attron(A_REVERSE);
-        }
-        mvprintw(startY + 1 + i, startX, "%d. %s", i + 1,
-                 (i == 0) ? "Start Game" : "Exit");
-        if (i == selectedItem) {
-            attroff(A_REVERSE);
-        }
-    }
-}
-
-void executeMenuItem(int item) {
-    switch (item) {
-        case 0:
-            /* code */
-            break;
-        case 1:
-            endwin();
-            exit(0);
-            break;
-        default:
-            break;
-    }
-}
 void printArrayWithColors(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
     for (int i = 0; i < Y_SIZE_ARRAY; i++) {
         for (int j = 0; j < X_SIZE_ARRAY; j++) {

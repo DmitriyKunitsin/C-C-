@@ -2,26 +2,43 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 CURSES = -lncurses
 
+BUILD_DIR = build
 
-TARGET = app
+TARGET = $(BUILD_DIR)/app
 SRC = main.c
+FIGURE = figures/figuresForGames.c
+MENU = menu/menu_for_game.c
+COMMON = includes/common.h
 
-.PHONY: format
+OBJECTS = $(BUILD_DIR)/$(notdir $(FIGURE:.c=.o)) $(BUILD_DIR)/$(notdir $(MENU:.c=.o))
+
+.PHONY: format clean all
 
 all: $(TARGET)
 
-$(TARGET): $(SRC)
-	$(CC) $(CFLAGS) -o $(TARGET) $(SRC) $(CURSES)
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+$(TARGET): $(SRC) $(OBJECTS) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SRC) $(OBJECTS) $(CURSES)
+
+$(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/$(notdir $(FIGURE:.c=.o)): $(FIGURE) $(COMMON) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/$(notdir $(MENU:.c=.o)): $(MENU) $(COMMON) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 format:
 	clang-format -n -style=file $(SRC)
 	clang-format -i -style=file $(SRC)
 
-rebuild: clean go
-
+rebuild: clean all
 
 go: $(TARGET) format
-	./app
+	./$(TARGET)
 
 clean:
-	rm -rf $(TARGET)
+	rm -rf $(BUILD_DIR)

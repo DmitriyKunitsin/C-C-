@@ -1,0 +1,13 @@
+#ifndef MACRO_DEFINITIONS_H
+#define MACRO_DEFINITIONS_H
+
+#define X_GAME_BOARD 11
+#define Y_GAME_BOARD 21
+#define START_RIGHT_MENU_WIDTH 11
+#define END_RIGHT_MENU_WIDTH 21
+#define Y_SIZE_ARRAY 21
+#define X_SIZE_ARRAY 21
+#define SIDE_LINE '*'
+#define TOP_LINE '*'
+
+#endif //MACRO_DEFINITIONS_H
