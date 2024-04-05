@@ -8,7 +8,7 @@
 
 #define A_REVERSE	NCURSES_BITS(1U,10)
 
-void executeMenuItem(int item);
+void executeMenuItem(int item, int map[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
 void printMenu(int selectedItem);
 
 

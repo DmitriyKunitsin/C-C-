@@ -1,6 +1,6 @@
 #include "reader_with_console.h"
 
-void inputKey() {
+void inputKey(int map[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
     keypad(stdscr, TRUE);
     int key;
     int selectedItem = 0;
@@ -14,7 +14,7 @@ void inputKey() {
                     (selectedItem + 1 < 2) ? selectedItem + 1 : 2 - 1;
                 break;
             case '\n':
-                executeMenuItem(selectedItem);
+                executeMenuItem(selectedItem, map);
                 break;
             default:
                 break;

@@ -20,7 +20,7 @@ int main() {
     init_pair(2, COLOR_BLACK, COLOR_RED);
     initMap(arr);
 
-    inputKey();
+    inputKey(arr);
 
     refresh();
     getch();
