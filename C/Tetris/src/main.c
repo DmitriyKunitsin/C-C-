@@ -21,7 +21,6 @@ int main() {
     initMap(arr);
 
     inputKey(arr);
-
     refresh();
     getch();
     endwin();

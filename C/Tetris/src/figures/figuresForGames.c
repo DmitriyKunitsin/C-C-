@@ -1,16 +1,13 @@
 #include "figuresForGames.h"
-
-typedef enum {
-    LINE,
-    G_LEFT,
-    G_RIGHT,
-    CUBE,
-    Z_RIGHT_UP,
-    CROSS,
-    Z_LEFT_UP,
-    FIGURE_COUNT
-} FigureType;
-
+/*
+0 - line
+1 - G_left
+2 - G_right
+3 - Cube
+4 - Z_right
+5 - cross
+6 - Z_left
+*/
 int* getFigure(FigureType type) {
     static int figure_line[4][4] = {
         {0, 1, 0, 0}, {0, 1, 0, 0}, {0, 1, 0, 0}, {0, 1, 0, 0}};
