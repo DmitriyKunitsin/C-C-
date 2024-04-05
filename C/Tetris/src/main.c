@@ -13,17 +13,14 @@ void inputKey();
 void FillinArrayMap(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
 void printArrayWithColors(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
 
-State Transition(State current, char input);
-
 int main() {
     initscr();
     start_color();
     init_pair(1, COLOR_BLACK, COLOR_WHITE);
     init_pair(2, COLOR_BLACK, COLOR_RED);
-    FillinArrayMap(arr);
+    initMap(arr);
 
     inputKey();
-    // printArrayFieldBound(arr);
 
     refresh();
     getch();
@@ -33,6 +30,7 @@ int main() {
 }
 
 /******************************************TRASH*********************************************************/
+// State Transition(State current, char input);
 // State currentState = STATE_A;
 // char inp[] = {'0', '1', '0', '1', '0'};
 

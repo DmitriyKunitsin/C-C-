@@ -3,6 +3,10 @@
 
 int arr[Y_SIZE_ARRAY][X_SIZE_ARRAY];
 
+void initMap(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
+    FillinArrayMap(array);
+}
+
 void printArrayWithColors(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
     for (int i = 0; i < Y_SIZE_ARRAY; i++) {
         for (int j = 0; j < X_SIZE_ARRAY; j++) {
