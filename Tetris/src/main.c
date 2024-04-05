@@ -2,6 +2,7 @@
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "figuresForGames.h"
 
 #define X_GAME_BOARD 11
 #define Y_GAME_BOARD 21
@@ -48,6 +49,7 @@ int main() {
     inputKey();
     printArrayFieldBound(arr);
 
+    
     refresh();
     getch();
     endwin();
