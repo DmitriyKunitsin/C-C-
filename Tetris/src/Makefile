@@ -17,5 +17,11 @@ format:
 	clang-format -n -style=file $(SRC)
 	clang-format -i -style=file $(SRC)
 
+rebuild: clean go
+
+
+go: $(TARGET) format
+	./app
+
 clean:
 	rm -rf $(TARGET)
