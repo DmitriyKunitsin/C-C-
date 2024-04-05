@@ -1,8 +1,8 @@
 #include <ncurses.h>
 #include <stdio.h>
 
-#define MAX_WIDTH_DISPLAY 11
-#define MAX_HEIGHT_DISPLAY 21
+#define X_GAME_BOARD 11
+#define Y_GAME_BOARD 21
 #define START_RIGHT_MENU_WIDTH 11
 #define END_RIGHT_MENU_WIDTH 21
 #define Y_SIZE_ARRAY 21
@@ -75,21 +75,20 @@ void printArrayWithColors(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
 }
 
 void printFieldBound() {
-    for (int i = 0; i < MAX_HEIGHT_DISPLAY; i++) {
-        for (int j = 0; j < MAX_WIDTH_DISPLAY; j++) {
+    for (int i = 0; i < Y_GAME_BOARD; i++) {
+        for (int j = 0; j < X_GAME_BOARD; j++) {
             printf("%c",
-                   (i == 0 || i == MAX_HEIGHT_DISPLAY - 1)
-                       ? (j != 0 && j != MAX_WIDTH_DISPLAY - 1 ? TOP_LINE : ' ')
+                   (i == 0 || i == Y_GAME_BOARD - 1)
+                       ? (j != 0 && j != X_GAME_BOARD - 1 ? TOP_LINE : ' ')
                        : ' ');
-            printf("%c",
-                   (j == 0 || j == MAX_WIDTH_DISPLAY - 1)
-                       ? (i != 0 && i != MAX_HEIGHT_DISPLAY - 1
-                              ? SIDE_LINE
-                              : (j == MAX_WIDTH_DISPLAY - 1 &&
-                                         (i == 0 || i == MAX_HEIGHT_DISPLAY - 1)
-                                     ? SIDE_LINE
-                                     : ' '))
-                       : ' ');
+            printf("%c", (j == 0 || j == X_GAME_BOARD - 1)
+                             ? (i != 0 && i != Y_GAME_BOARD - 1
+                                    ? SIDE_LINE
+                                    : (j == X_GAME_BOARD - 1 &&
+                                               (i == 0 || i == Y_GAME_BOARD - 1)
+                                           ? SIDE_LINE
+                                           : ' '))
+                             : ' ');
         }
         printf("\n");
     }
@@ -97,9 +96,9 @@ void printFieldBound() {
 void printARRFieldBound(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
     for (int i = 0; i < Y_SIZE_ARRAY; i++) {
         for (int j = 0; j < X_SIZE_ARRAY; j++) {
-            if ((i == 0 || i == MAX_HEIGHT_DISPLAY - 1)) {
+            if ((i == 0 || i == Y_GAME_BOARD - 1) && (j < X_GAME_BOARD)) {
                 array[i][j] = 1;
-            } else if (j == 0 || j == MAX_WIDTH_DISPLAY - 1) {
+            } else if (j == 0 || j == X_GAME_BOARD - 1) {
                 array[i][j] = 1;
             } else {
                 array[i][j] = 0;
@@ -133,10 +132,10 @@ State Transition(State current, char input) {
     }
     return current;
 }
-// for(int i = 0; i < MAX_WIDTH_DISPLAY; i++) {
-//     for(int j = 0; j < MAX_HEIGHT_DISPLAY; j++) {
-//         if (i == 0 || i == MAX_WIDTH_DISPLAY - 1) {
-//             if(j != 0 && j != MAX_HEIGHT_DISPLAY - 1) {
+// for(int i = 0; i < X_GAME_BOARD; i++) {
+//     for(int j = 0; j < Y_GAME_BOARD; j++) {
+//         if (i == 0 || i == X_GAME_BOARD - 1) {
+//             if(j != 0 && j != Y_GAME_BOARD - 1) {
 //             printf("%c", TOP_LINE);
 //             } else {
 //                 printf("%s", " ");
@@ -144,11 +143,11 @@ State Transition(State current, char input) {
 //         } else {
 //             printf("%s"," ");
 //         }
-//         if(j == 0 || j == MAX_HEIGHT_DISPLAY - 2) {
-//             if(i != 0 && i != MAX_WIDTH_DISPLAY - 1) {
+//         if(j == 0 || j == Y_GAME_BOARD - 2) {
+//             if(i != 0 && i != X_GAME_BOARD - 1) {
 //                 printf("%c", SIDE_LINE);
-//             } else if(j == MAX_HEIGHT_DISPLAY - 2 && (i == 0 || i ==
-//             MAX_WIDTH_DISPLAY - 1)) {
+//             } else if(j == Y_GAME_BOARD - 2 && (i == 0 || i ==
+//             X_GAME_BOARD - 1)) {
 //                 printf(" %c", SIDE_LINE);
 //             }
 //         } else {
