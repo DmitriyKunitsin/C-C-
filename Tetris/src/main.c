@@ -18,7 +18,7 @@ typedef enum {  // Конечный автома
 } State;
 void printArrayFieldBound(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
 void printFieldBound();
-void printARRFieldBound(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
+void FillinArrayMap(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
 void printArrayWithColors(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
 State Transition(State current, char input);
 
@@ -35,7 +35,7 @@ int main() {
         printf("Input: %c, State: %d\n", inp[i], currentState);
     }
     int arr[Y_SIZE_ARRAY][X_SIZE_ARRAY];
-    printARRFieldBound(arr);
+    FillinArrayMap(arr);
     printArrayWithColors(arr);
     // printFieldBound();
 
@@ -93,7 +93,7 @@ void printFieldBound() {
         printf("\n");
     }
 }
-void printARRFieldBound(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
+void FillinArrayMap(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
     for (int i = 0; i < Y_SIZE_ARRAY; i++) {
         for (int j = 0; j < X_SIZE_ARRAY; j++) {
             if ((i == 0 || i == Y_GAME_BOARD - 1) && (j < X_GAME_BOARD)) {
