@@ -17,7 +17,6 @@ void executeMenuItem(int item) {
 void printMenu(int selectedItem) {
     int startY = 1;
     int startX = START_RIGHT_MENU_WIDTH + 1;
-
     mvprintw(startY, startX, "Menu");
     for (int i = 0; i < 2; i++) {
         if (selectedItem == i) {

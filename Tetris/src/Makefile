@@ -8,9 +8,10 @@ TARGET = $(BUILD_DIR)/app
 SRC = main.c
 FIGURE = figures/figuresForGames.c
 MENU = menu/menu_for_game.c
+MAP = map/map_for_board.c
 COMMON = includes/common.h
 
-OBJECTS = $(BUILD_DIR)/$(notdir $(FIGURE:.c=.o)) $(BUILD_DIR)/$(notdir $(MENU:.c=.o))
+OBJECTS = $(BUILD_DIR)/$(notdir $(FIGURE:.c=.o)) $(BUILD_DIR)/$(notdir $(MENU:.c=.o)) $(BUILD_DIR)/$(notdir $(MAP:.c=.o))
 
 .PHONY: format clean all
 
@@ -29,6 +30,9 @@ $(BUILD_DIR)/$(notdir $(FIGURE:.c=.o)): $(FIGURE) $(COMMON) | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(BUILD_DIR)/$(notdir $(MENU:.c=.o)): $(MENU) $(COMMON) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/$(notdir $(MAP:.c=.o)): $(MAP) $(COMMON) | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 format:

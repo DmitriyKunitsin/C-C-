@@ -5,6 +5,7 @@
 
 #include "./figures/figuresForGames.h"
 #include "macro/macro_definitions.h"
+#include "map/map_for_board.h"
 #include "menu/menu_for_game.h"
 
 typedef enum {  // Конечный автома
@@ -15,13 +16,9 @@ typedef enum {  // Конечный автома
 } State;
 
 void inputKey();
-void printArrayFieldBound(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
-void printFieldBound();
 void FillinArrayMap(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
 void printArrayWithColors(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
 
-void executeMenuItem(int item);
-void printMenu(int selectedItem);
 State Transition(State current, char input);
 
 int main() {
@@ -38,25 +35,15 @@ int main() {
     }
     int arr[Y_SIZE_ARRAY][X_SIZE_ARRAY];
     FillinArrayMap(arr);
-    printArrayWithColors(arr);
-    // printFieldBound();
+
     inputKey();
-    printArrayFieldBound(arr);
+    // printArrayFieldBound(arr);
 
     refresh();
     getch();
     endwin();
 
     return 0;
-}
-
-void printArrayFieldBound(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
-    for (int i = 0; i < Y_SIZE_ARRAY; i++) {
-        for (int j = 0; j < X_SIZE_ARRAY; j++) {
-            printf("%d", array[i][j]);
-        }
-        printf("\n");
-    }
 }
 
 void inputKey() {
@@ -82,55 +69,6 @@ void inputKey() {
     }
 }
 
-void printArrayWithColors(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
-    for (int i = 0; i < Y_SIZE_ARRAY; i++) {
-        for (int j = 0; j < X_SIZE_ARRAY; j++) {
-            if (array[i][j] == 0) {
-                attron(COLOR_BLACK);  // цвет вместо нуля
-                printw(" ");  // вывод пробела вместо нуля
-                attroff(COLOR_BLACK);
-            } else {
-                attron(COLOR_BLACK);
-                printw("#");
-                attroff(COLOR_BLACK);
-            }
-        }
-        printw("\n");
-    }
-}
-
-void printFieldBound() {
-    for (int i = 0; i < Y_GAME_BOARD; i++) {
-        for (int j = 0; j < X_GAME_BOARD; j++) {
-            printf("%c",
-                   (i == 0 || i == Y_GAME_BOARD - 1)
-                       ? (j != 0 && j != X_GAME_BOARD - 1 ? TOP_LINE : ' ')
-                       : ' ');
-            printf("%c", (j == 0 || j == X_GAME_BOARD - 1)
-                             ? (i != 0 && i != Y_GAME_BOARD - 1
-                                    ? SIDE_LINE
-                                    : (j == X_GAME_BOARD - 1 &&
-                                               (i == 0 || i == Y_GAME_BOARD - 1)
-                                           ? SIDE_LINE
-                                           : ' '))
-                             : ' ');
-        }
-        printf("\n");
-    }
-}
-void FillinArrayMap(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
-    for (int i = 0; i < Y_SIZE_ARRAY; i++) {
-        for (int j = 0; j < X_SIZE_ARRAY; j++) {
-            if ((i == 0 || i == Y_GAME_BOARD - 1) && (j < X_GAME_BOARD)) {
-                array[i][j] = 1;
-            } else if (j == 0 || j == X_GAME_BOARD - 1) {
-                array[i][j] = 1;
-            } else {
-                array[i][j] = 0;
-            }
-        }
-    }
-}
 State Transition(State current, char input) {
     switch (current) {
         case STATE_A:
@@ -157,6 +95,30 @@ State Transition(State current, char input) {
     }
     return current;
 }
+
+/******************************************TRASH*********************************************************/
+
+// void printFieldBound() {
+//     for (int i = 0; i < Y_GAME_BOARD; i++) {
+//         for (int j = 0; j < X_GAME_BOARD; j++) {
+//             printf("%c",
+//                    (i == 0 || i == Y_GAME_BOARD - 1)
+//                        ? (j != 0 && j != X_GAME_BOARD - 1 ? TOP_LINE : ' ')
+//                        : ' ');
+//             printf("%c", (j == 0 || j == X_GAME_BOARD - 1)
+//                              ? (i != 0 && i != Y_GAME_BOARD - 1
+//                                     ? SIDE_LINE
+//                                     : (j == X_GAME_BOARD - 1 &&
+//                                                (i == 0 || i == Y_GAME_BOARD -
+//                                                1)
+//                                            ? SIDE_LINE
+//                                            : ' '))
+//                              : ' ');
+//         }
+//         printf("\n");
+//     }
+// }
+
 // for(int i = 0; i < X_GAME_BOARD; i++) {
 //     for(int j = 0; j < Y_GAME_BOARD; j++) {
 //         if (i == 0 || i == X_GAME_BOARD - 1) {
