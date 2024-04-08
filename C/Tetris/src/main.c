@@ -5,6 +5,7 @@
 
 #include "./figures/figuresForGames.h"
 #include "controller/reader_with_console.h"
+#include "gamelogic/start_game.h"
 #include "macro/macro_definitions.h"
 #include "map/map_for_board.h"
 #include "menu/menu_for_game.h"
@@ -22,26 +23,41 @@ void cleanupWindows(WINDOW *gameWindow, WINDOW *menuWindow);
 int main() {
     GameInfo_t game;
     initGame(&game);
-    WINDOW *gameWindow = newwin(Y_GAME_BOARD, X_GAME_BOARD, 0, 0);
-    WINDOW *menuWindow = newwin(Y_MENU, X_MENU, 0, 0);
+    WINDOW *gameWindow;
+    WINDOW *menuWindow;
 
     initializeWindows(&gameWindow, &menuWindow);
     // initscr();
     srand(time(NULL));
+    keypad(menuWindow, TRUE);
     start_color();
     init_pair(1, COLOR_BLACK, COLOR_BLUE);
     init_pair(2, COLOR_WHITE, COLOR_GREEN);
+    /*___________________________________________________*/
 
+    // int key;
+    // int current_screen = 1;  // 1 - menu 2 - game
+    // while ((key = getch()) != KEY_BACKSPACE) {
+    //     if (current_screen == 1) {
+    //         printMenu(menuWindow, 0);
+    //         int selectedMenu = ReaderSelectedMenu(menuWindow);
+    //         current_screen = selectedMenu;
+    //     } else if (current_screen == 2) {
+    //         startGame(game.field, gameWindow);
+    //     }
+    // }
+
+    /*_____________________________________________________*/
     initMap(game.field);
 
-    inputKey(game.field, menuWindow, gameWindow);
-    refresh();
+    ReaderForMenuSelectedItem(game.field, menuWindow, gameWindow);
 
     my_free(game.field);
     my_free(game.menu);
     my_free(game.next);
 
     cleanupWindows(gameWindow, menuWindow);
+    endwin();
     return 0;
 }
 
@@ -49,7 +65,7 @@ void initializeWindows(WINDOW **gameWindow, WINDOW **menuWindow) {
     initscr();  // Инициализация ncurses
     init_pair(3, COLOR_BLACK, COLOR_WHITE);
     *gameWindow = newwin(Y_GAME_BOARD, X_GAME_BOARD, 0, 0);
-    *menuWindow = newwin(Y_MENU, X_MENU, 0, 12);
+    *menuWindow = newwin(Y_MENU, X_MENU, 0, X_GAME_BOARD + 1);
 }
 
 void cleanupWindows(WINDOW *gameWindow, WINDOW *menuWindow) {

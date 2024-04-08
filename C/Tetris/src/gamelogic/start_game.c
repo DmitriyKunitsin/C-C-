@@ -3,10 +3,22 @@
 #include "../figures/figuresForGames.h"
 #include "../includes/common.h"
 
-void startGame(int **map, WINDOW *gameWindow) {
+void startGame(int **map, WINDOW *gameWindow, WINDOW *menuWin) {
+    // int key;
+    // while ((key = getch()) != KEY_BACKSPACE) {
+
+    // }
     
+    nextFigureGeneretion(map, menuWin);
     nextFigureGeneretion(map, gameWindow);
 }
+
+// void InformationMenu(WINDOW *menuWin) {
+//     for(int i = 0; i < Y_MENU; i++) {
+//         for(int j = 0; j < X_MENU; j++) {
+//         }
+//     }
+// }
 
 void nextFigureGeneretion(int **map, WINDOW *gameWindow) {
     int figureNumber = getRandNumberFigures();

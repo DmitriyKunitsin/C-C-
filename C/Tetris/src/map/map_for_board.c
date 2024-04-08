@@ -52,14 +52,14 @@ void InitGameBoard(int **map) {
         }
     }
     printArrayWithColors(map);
-    // printMenu(0);
+    // printMenu(1);
 }
 
 void printNextMap(int **array, WINDOW *gameWindow) {
     for (int i = 0; i < Y_GAME_BOARD; i++) {
         for (int j = 0; j < X_GAME_BOARD; j++) {
             if (array[i][j] == 0) {
-                wattron(gameWindow,COLOR_PAIR(1));  // цвет вместо нуля
+                wattron(gameWindow, COLOR_PAIR(1));  // цвет вместо нуля
                 mvwprintw(gameWindow, i, j, " ");  // вывод пробела вместо нуля
                 wattroff(gameWindow, COLOR_BLACK);
             } else {
