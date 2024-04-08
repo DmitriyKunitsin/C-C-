@@ -1,9 +1,10 @@
 #include "reader_with_console.h"
 
-void inputKey(int map[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
+void inputKey(int **map, WINDOW *menuuWind, WINDOW *gameWind) {
     keypad(stdscr, TRUE);
     int key;
     int selectedItem = 0;
+
     while ((key = getch()) != KEY_BACKSPACE) {
         switch (key) {
             case KEY_UP:
@@ -14,11 +15,13 @@ void inputKey(int map[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
                     (selectedItem + 1 < 2) ? selectedItem + 1 : 2 - 1;
                 break;
             case '\n':
-                executeMenuItem(selectedItem, map);
+                executeMenuItem(selectedItem, map, gameWind);
                 break;
             default:
+            selectedItem = 0;
                 break;
         }
-        printMenu(selectedItem);
+        refresh();
+        printMenu(menuuWind, selectedItem);
     }
 }

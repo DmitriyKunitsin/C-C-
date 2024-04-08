@@ -1,62 +1,59 @@
-CC=gcc
-CFLAGS=-std=c11 -Wall -Werror -Wextra
+CC = gcc
+CFLAGS = -Wall -Werror -Wextra
+CURSES = -lncurses
 
-TEST_DIR=tests
-TEST_EXE=s21_test_decimal.exe
-BUILD_DIR=build
-REPORT_DIR=report
+BUILD_DIR = build
 
-ifeq ($(wildcard $(BUILD_DIR)), )
-  $(shell mkdir $(BUILD_DIR))
-endif
-ifeq ($(wildcard $(REPORT_DIR)), )
-  $(shell mkdir $(REPORT_DIR))
-endif
+TARGET = $(BUILD_DIR)/app
+SRC = main.c
+FIGURE = figures/figuresForGames.c
+MENU = menu/menu_for_game.c
+MAP = map/map_for_board.c
+COMMON = includes/common.h
+CONTROLLER = controller/reader_with_console.c
+GAMELOGIC = gamelogic/start_game.c
 
-SRC=$(wildcard *.c)
-OBJ=$(addprefix $(BUILD_DIR)/,$(SRC:%.c=%.o))
-TARGET=s21_decimal.a
+OBJECTS = $(BUILD_DIR)/$(notdir $(FIGURE:.c=.o)) $(BUILD_DIR)/$(notdir $(MENU:.c=.o)) $(BUILD_DIR)/$(notdir $(MAP:.c=.o)) $(BUILD_DIR)/$(notdir $(CONTROLLER:.c=.o)) $(BUILD_DIR)/$(notdir $(GAMELOGIC:.c=.o))
+
+.PHONY: format clean all
 
 all: $(TARGET)
 
-$(TARGET): $(OBJ)
-	ar rcs $@ $(OBJ)
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
 
-$(BUILD_DIR)/%.o: %.c   
-	$(CC) $(CFLAGS) -c $< -o $@ 
+$(TARGET): $(SRC) $(OBJECTS) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SRC) $(OBJECTS) $(CURSES)
 
-test: clean $(TARGET)
-	cd $(TEST_DIR) && make test
-#	cd $(TEST_DIR) && valgrind --tool=memcheck --leak-check=yes $(BUILD_DIR)/$(TEST_EXE)
+$(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-gcov_report: clean gcov_flags $(TARGET)	
-	cd $(TEST_DIR) && make gcov
-	./$(TEST_DIR)/$(BUILD_DIR)/$(TEST_EXE)
-	lcov -t "coverage_report" -o s21_decimal.info -c -d $(BUILD_DIR) -d $(TEST_DIR)/$(BUILD_DIR)
-	genhtml s21_decimal.info -o report --ignore-errors unmapped
-	xdg-open $(REPORT_DIR)/index.html
+$(BUILD_DIR)/$(notdir $(FIGURE:.c=.o)): $(FIGURE) $(COMMON) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-gcov_flags: 
-	$(eval CFLAGS += -g3 --coverage)
+$(BUILD_DIR)/$(notdir $(MENU:.c=.o)): $(MENU) $(COMMON) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-clean_obj:
-	cd $(BUILD_DIR) && rm -rf *.o *.a *.exe *.so
-	rm -rf *.a 
+$(BUILD_DIR)/$(notdir $(MAP:.c=.o)): $(MAP) $(COMMON) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-clean_gcov:
-	cd $(BUILD_DIR) && rm -rf *.gcno *.gcda
-	rm -rf $(REPORT_DIR)/*
-	rm -rf s21_decimal.info
+$(BUILD_DIR)/$(notdir $(CONTROLLER:.c=.o)): $(CONTROLLER) $(COMMON) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-clean: clean_obj clean_gcov
-	cd $(TEST_DIR) && make clean
+$(BUILD_DIR)/$(notdir $(GAMELOGIC:.c=.o)): $(GAMELOGIC) $(COMMON) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-clang_check:
-	clang-format -style=Google -n *.c *.h
-	cd $(TEST_DIR) && make clang_check
+format:
+	clang-format -n -style=file $(SRC)
+	clang-format -i -style=file $(SRC)
 
-clang_format:
-	clang-format -style=Google -i *.c *.h
-	cd $(TEST_DIR) && make clang_format
+format-all:
+	find . -iname '*.h' -o -iname '*.c' | xargs clang-format -n -style=file
+	find . -iname '*.h' -o -iname '*.c' | xargs clang-format -i -style=file
+rebuild: clean all go
 
-rebuild: clean all
+go: $(TARGET) format
+	./$(TARGET)
+
+clean:
+	rm -rf $(BUILD_DIR)

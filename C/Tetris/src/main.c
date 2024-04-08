@@ -9,26 +9,78 @@
 #include "map/map_for_board.h"
 #include "menu/menu_for_game.h"
 
-void inputKey();
-void FillinArrayMap(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
-void printArrayWithColors(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
+// void inputKey();
+// void FillinArrayMap(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
+// void printArrayWithColors(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
+void initArray(int ***array);
+void my_free(int **array);
+void initGame(GameInfo_t *game);
+
+void initializeWindows(WINDOW **gameWindow, WINDOW **menuWindow);
+void cleanupWindows(WINDOW *gameWindow, WINDOW *menuWindow);
 
 int main() {
-    initscr();
+    GameInfo_t game;
+    initGame(&game);
+    WINDOW *gameWindow = newwin(Y_GAME_BOARD, X_GAME_BOARD, 0, 0);
+    WINDOW *menuWindow = newwin(Y_MENU, X_MENU, 0, 0);
+
+    initializeWindows(&gameWindow, &menuWindow);
+    // initscr();
     srand(time(NULL));
     start_color();
     init_pair(1, COLOR_BLACK, COLOR_BLUE);
-    init_pair(2, COLOR_BLACK, COLOR_GREEN);
-    initMap(arr);
+    init_pair(2, COLOR_WHITE, COLOR_GREEN);
 
-    inputKey(arr);
+    initMap(game.field);
+
+    inputKey(game.field, menuWindow, gameWindow);
     refresh();
-    getch();
-    endwin();
 
+    my_free(game.field);
+    my_free(game.menu);
+    my_free(game.next);
+
+    cleanupWindows(gameWindow, menuWindow);
     return 0;
 }
 
+void initializeWindows(WINDOW **gameWindow, WINDOW **menuWindow) {
+    initscr();  // Инициализация ncurses
+    init_pair(3, COLOR_BLACK, COLOR_WHITE);
+    *gameWindow = newwin(Y_GAME_BOARD, X_GAME_BOARD, 0, 0);
+    *menuWindow = newwin(Y_MENU, X_MENU, 0, 12);
+}
+
+void cleanupWindows(WINDOW *gameWindow, WINDOW *menuWindow) {
+    delwin(gameWindow);
+    delwin(menuWindow);
+    endwin();  // Завершение работы с ncurses
+}
+void initArray(int ***array) {
+    *array = (int **)malloc(Y_SIZE_ARRAY * sizeof(int *));
+    for (int i = 0; i < Y_SIZE_ARRAY; i++) {
+        (*array)[i] = (int *)malloc(X_SIZE_ARRAY * sizeof(int));
+    }
+}
+
+void my_free(int **array) {
+    for (int i = 0; i < Y_SIZE_ARRAY; i++) {
+        free(array[i]);
+    }
+    free(array);
+}
+
+void initGame(GameInfo_t *game) {
+    initArray(&(game->field));
+    initArray(&(game->menu));
+    // initArray(&(game->next));
+    // int score = 0;
+    // int high_score = 0;
+    // int level = 1;
+    // int speed = 1;
+    // int pause = 0;
+}
 /******************************************TRASH*********************************************************/
 // State Transition(State current, char input);
 // State currentState = STATE_A;

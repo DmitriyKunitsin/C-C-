@@ -4,6 +4,6 @@
 #include "../includes/common.h"
 #include "../menu/menu_for_game.h"
 
-void inputKey(int map[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
+void inputKey(int **map, WINDOW *menuuWind, WINDOW *gameWind);
 
 #endif

@@ -2,10 +2,10 @@
 
 #include "../gamelogic/start_game.h"
 
-void executeMenuItem(int item, int map[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
+void executeMenuItem(int item, int **map, WINDOW *gameWindow) {
     switch (item) {
         case 0:
-            startGame(map);
+            startGame(map, gameWindow);
             break;
         case 1:
             endwin();
@@ -16,18 +16,20 @@ void executeMenuItem(int item, int map[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
     }
 }
 
-void printMenu(int selectedItem) {
+void printMenu(WINDOW *menuWindow, int selectedItem) {
     int startY = 1;
-    int startX = START_RIGHT_MENU_WIDTH + 1;
-    mvprintw(startY, startX, "Menu");
+    int startX =  1;
+    
+    mvwprintw(menuWindow, startY, startX, "Menu");
     for (int i = 0; i < 2; i++) {
         if (selectedItem == i) {
-            attron(A_REVERSE);
+            wattron(menuWindow, A_REVERSE);
         }
-        mvprintw(startY + 1 + i, startX, "%d. %s", i + 1,
-                 (i == 0) ? "Start Game" : "Exit");
-        if (i == selectedItem) {
-            attroff(A_REVERSE);
+        mvwprintw(menuWindow, startY + 1 + i, startX, "%d. %s", i + 1,
+                 (i == 0) ? "Start" : "Exit");
+        if (selectedItem == i) {
+            wattroff(menuWindow, A_REVERSE);
         }
     }
+    wrefresh(menuWindow);
 }

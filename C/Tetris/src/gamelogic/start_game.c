@@ -1,37 +1,36 @@
 #include "start_game.h"
+
 #include "../figures/figuresForGames.h"
 #include "../includes/common.h"
 
-void startGame(int map[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
-    int mm = map[1][1];
+void startGame(int **map, WINDOW *gameWindow) {
     
-    mvprintw(12, 12, "RAND num : %d", getRandNumberFigures());
-    
-    mvprintw(18, 18,"CHECK : %d" ,mm);
-
+    nextFigureGeneretion(map, gameWindow);
 }
 
-void nextMapGeneretion(int map[Y_SIZE_ARRAY][X_SIZE_ARRAY]) {
+void nextFigureGeneretion(int **map, WINDOW *gameWindow) {
     int figureNumber = getRandNumberFigures();
+
+    FigureType type = (FigureType)figureNumber;
+
+    int *figurePointer = getFigure(type);
+
     int dimesion = (figureNumber == 0) ? 4 : 3;
 
-    int **nextFigure = (int**)malloc(dimesion * sizeof(int *));
-    for (int i = 0; i < dimesion; ++i) {
-        nextFigure[i] = (int *)malloc(dimesion * sizeof(int));
-    }
+    for (int i = 0; i < dimesion; i++) {
+        for (int j = 0; j < dimesion; j++) {
+            int value = *(figurePointer + i * dimesion + j);
 
-    // TODO  заполнение карты, новой фигурой
-
-    for(int i = 0; i < dimesion; ++i) {
-        free(nextFigure[i]);
+            map[i + 1][(X_GAME_BOARD / 2) + j] = value;
+        }
     }
-    free(nextFigure);
+    printNextMap(map, gameWindow);
 }
 
 int getRandNumberFigures() {
     int min = 0;
     int max = 6;
-    int random_value = rand() % (max - min + 1) + min ;
+    int random_value = rand() % (max - min + 1) + min;
     random_value %= 10;
     return random_value;
 }

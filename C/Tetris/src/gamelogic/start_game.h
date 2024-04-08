@@ -4,9 +4,8 @@
 #include "../includes/common.h"
 #include "../map/map_for_board.h"
 
-void startGame(int map[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
-
+void startGame(int **map, WINDOW *gameWindow);
+void nextFigureGeneretion(int **map, WINDOW *gameWindow);
 int getRandNumberFigures();
-
 
 #endif
