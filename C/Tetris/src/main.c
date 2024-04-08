@@ -50,7 +50,7 @@ int main() {
     /*_____________________________________________________*/
     initMap(game.field);
 
-    ReaderForMenuSelectedItem(game.field, menuWindow, gameWindow);
+    ReaderForMenuSelectedItem(&game, menuWindow, gameWindow);
 
     my_free(game.field);
     my_free(game.menu);

@@ -2,10 +2,10 @@
 
 #include "../gamelogic/start_game.h"
 
-void executeMenuItem(int item, int **map, WINDOW *gameWindow, WINDOW *menuWin) {
+void executeMenuItem(int item, GameInfo_t *game, WINDOW *gameWindow, WINDOW *menuWin) {
     switch (item) {
         case 0:
-            startGame(map, gameWindow, menuWin);
+            startGame(game, gameWindow, menuWin);
             break;
         case 1:
             endwin();

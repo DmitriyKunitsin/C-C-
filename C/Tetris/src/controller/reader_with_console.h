@@ -4,7 +4,7 @@
 #include "../includes/common.h"
 #include "../menu/menu_for_game.h"
 
-void ReaderForMenuSelectedItem(int **map, WINDOW *menuuWind,
+void ReaderForMenuSelectedItem(GameInfo_t *game, WINDOW *menuuWind,
                                WINDOW *gameWind);
 
 int ReaderSelectedMenu(WINDOW *menuWindow);

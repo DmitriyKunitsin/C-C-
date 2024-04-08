@@ -3,14 +3,14 @@
 #include "../figures/figuresForGames.h"
 #include "../includes/common.h"
 
-void startGame(int **map, WINDOW *gameWindow, WINDOW *menuWin) {
+void startGame(GameInfo_t *game, WINDOW *gameWindow, WINDOW *menuWin) {
     // int key;
     // while ((key = getch()) != KEY_BACKSPACE) {
 
     // }
     
-    nextFigureGeneretion(map, menuWin);
-    nextFigureGeneretion(map, gameWindow);
+    nextFigureGeneretion(game, menuWin);
+    nextFigureGeneretion(game, gameWindow);
 }
 
 // void InformationMenu(WINDOW *menuWin) {
@@ -20,7 +20,7 @@ void startGame(int **map, WINDOW *gameWindow, WINDOW *menuWin) {
 //     }
 // }
 
-void nextFigureGeneretion(int **map, WINDOW *gameWindow) {
+void nextFigureGeneretion(GameInfo_t *game, WINDOW *gameWindow) {
     int figureNumber = getRandNumberFigures();
 
     FigureType type = (FigureType)figureNumber;
@@ -33,10 +33,10 @@ void nextFigureGeneretion(int **map, WINDOW *gameWindow) {
         for (int j = 0; j < dimesion; j++) {
             int value = *(figurePointer + i * dimesion + j);
 
-            map[i + 1][(X_GAME_BOARD / 2) + j] = value;
+            game->field[i + 1][(X_GAME_BOARD / 2) + j] = value;
         }
     }
-    printNextMap(map, gameWindow);
+    printNextMap(game->field, gameWindow);
 }
 
 int getRandNumberFigures() {
