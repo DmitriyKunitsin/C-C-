@@ -9,4 +9,6 @@ void executeMenuItem(int item, GameInfo_t *game, WINDOW *gameWindow,
 void printMenu(WINDOW *menuWindow, int selectedItem);
 void executeMenu(int item);
 
+void InformationMenu(GameInfo_t *game_inf, WINDOW *menuWin);
+
 #endif  // MENU_FOR_GAME_H

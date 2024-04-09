@@ -36,7 +36,7 @@ void executeMenuItem(int item, GameInfo_t *game, WINDOW *gameWindow,
 void printMenu(WINDOW *menuWindow, int selectedItem) {
     int startY = 0;
     int startX = 1;
-
+    wclear(menuWindow);
     mvwprintw(menuWindow, startY, startX, "Menu");
     for (int i = 0; i < 2; i++) {
         if (selectedItem == i) {
@@ -49,4 +49,23 @@ void printMenu(WINDOW *menuWindow, int selectedItem) {
         }
     }
     wrefresh(menuWindow);
+}
+
+void InformationMenu(GameInfo_t *game_inf, WINDOW *menuWin) {
+    wclear(menuWin);
+        for (int i = 0; i < X_MENU; i+=2) {
+            if(i == 2) {
+                mvwprintw(menuWin, i, 1, "Back for ext");
+            } else if (i == 4) {
+                mvwprintw(menuWin, i, 1, "Level :%d", game_inf->level);
+            } else if (i == 6) {
+                mvwprintw(menuWin, i, 1, "Score :%d", game_inf->score);
+            } else if (i == 8) {
+                mvwprintw(menuWin, i, 1, "Speed :%d", game_inf->speed);
+            } else if (i == 10) {
+                mvwprintw(menuWin, i, 1, "Record :%d", game_inf->high_score);
+            }
+        }
+    
+    wrefresh(menuWin);
 }

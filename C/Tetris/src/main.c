@@ -65,7 +65,9 @@ void initializeWindows(WINDOW **gameWindow, WINDOW **menuWindow) {
     initscr();  // Инициализация ncurses
     init_pair(3, COLOR_BLACK, COLOR_WHITE);
     *gameWindow = newwin(Y_GAME_BOARD, X_GAME_BOARD, 0, 0);
-    *menuWindow = newwin(Y_MENU, X_MENU, 0, X_GAME_BOARD + 1);
+    *menuWindow = newwin(Y_MENU, 21, 0, X_GAME_BOARD + 1);
+    box(*menuWindow, 0, 0);
+    box(*gameWindow, 0, 0);
 }
 
 void cleanupWindows(WINDOW *gameWindow, WINDOW *menuWindow) {

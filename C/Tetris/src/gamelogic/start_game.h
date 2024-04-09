@@ -10,6 +10,6 @@ int getRandNumberFigures();
 
 void clearBoard(GameInfo_t *game);
 
-void InformationMenu(GameInfo_t *game_inf, WINDOW *menuWin);
+// void InformationMenu(GameInfo_t *game_inf, WINDOW *menuWin);
 
 #endif
