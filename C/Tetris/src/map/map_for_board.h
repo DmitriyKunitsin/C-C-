@@ -11,5 +11,6 @@ void FillinArrayMap(int **array);
 void printArrayWithColors(int **array);
 void printNextMap(int **array, WINDOW *gameWindow);
 void InitGameBoard(int **map);
+void saveOldMap(GameInfo_t *game);
 
 #endif

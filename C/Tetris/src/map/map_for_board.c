@@ -23,21 +23,18 @@ void printArrayWithColors(int **array) {
         printw("\n");
     }
 }
-// void FillinArrayMap(int **array) {
-//     for (int i = 0; i < Y_SIZE_ARRAY; i++) {
-//         for (int j = 0; j < X_SIZE_ARRAY; j++) {
-//             if ((i == 0 || i == Y_GAME_BOARD - 1) && (j < X_GAME_BOARD)) {
-//                 array[i][j] = 1;
-//             } else if (j == 0 || j == X_GAME_BOARD - 1) {
-//                 array[i][j] = 1;
-//             } else {
-//                 array[i][j] = 0;
-//             }
-//         }
-//     }
-//     printArrayWithColors(array);
-//     printMenu(0);
+
+// void updateScreenGame(GameInfo_t *game) {
+
 // }
+
+void saveOldMap(GameInfo_t *game) {
+    for (int i = 0; i < Y_GAME_BOARD; i++) {
+        for (int j = 0; j < X_GAME_BOARD; j++) {
+            game->next[i][j] = game->field[i][j];
+        }
+    }
+}
 
 void InitGameBoard(int **map) {
     for (int i = 0; i < Y_GAME_BOARD; i++) {

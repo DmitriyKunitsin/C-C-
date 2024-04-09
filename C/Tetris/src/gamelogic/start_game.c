@@ -1,38 +1,74 @@
 #include "start_game.h"
 
+#include "../controller/reader_with_console.h"
 #include "../figures/figuresForGames.h"
-#include "../menu/menu_for_game.h"
 #include "../includes/common.h"
+#include "../menu/menu_for_game.h"
 
-void startGame(GameInfo_t *game, WINDOW *gameWindow, WINDOW *menuWin) {
-    int key;
-    while ((key = getch()) != KEY_BACKSPACE) {
-        InformationMenu(game, menuWin);
+#define Q_KEY 113
+
+void startGame(GameInfo_t *game, WINDOW *gameWindow) {
+    cbreak();  // Включаю режим "cbreak" для обработки клавиш без ожидания Enter
+    noecho();  // Отключаю отображение вводимых символов
+    nodelay(stdscr, TRUE);  // Включаю режим немедленного ввода
+    
+    UserAction_t action = Start;
+    // bool hold = false;
+    bool keyHeld = false;
+    int ch = getch();
+    while ((ch = getch()) != Q_KEY) {
+        // while (action != Terminate) {
+        if (ch != ERR) {  // Если клавиша нажата
+            switch (ch) {
+                case KEY_LEFT:
+
+                    break;
+                case KEY_RIGHT:
+
+                    break;
+                case KEY_UP:
+
+                    break;
+                case KEY_DOWN:
+
+                    break;
+                case Q_KEY:
+                    action = Terminate;
+                    break;
+                default:
+                    break;
+            }
+        } else {  // Если ничего не было нажато
+
+            if (keyHeld) {
+                // Обработка действия при удержании клавиши
+            }
+        }
+
+        if (action == Terminate) {
+            break;  // выход из цикла, если action равно Terminate
+        }
+
+        InformationMenu(game, gameWindow);
         nextFigureGeneretion(game, gameWindow);
+
+        napms(500);
     }
+
+    // endwin();
+    // refresh();
+    endwin();
+    // // if (action == Terminate) {
+    clearBoard(game);
+    // printNextMap(game->field, gameWindow);
+    // printMenu(menuWin, 0);
+    //     return;  // выход из функции startGame(), если action равно Terminate
+    // }
 }
-
-// void InformationMenu(GameInfo_t *game_inf, WINDOW *menuWin) {
-//     wclear(menuWin);
-//     for (int i = 0; i < Y_MENU; i++) {
-//         for (int j = 0; j < X_MENU; j++) {
-//             if (i == 2) {
-//                 mvwprintw(menuWin, i, j, "Level :%d", game_inf->level);
-//             } else if (i == 4) {
-//                 mvwprintw(menuWin, i, j, "Score :%d", game_inf->score);
-//             } else if (i == 6) {
-//                 mvwprintw(menuWin, i, j, "Speed :%d", game_inf->speed);
-//             } else if (i == 8) {
-//                 mvwprintw(menuWin, i, j, "Record :%d", game_inf->high_score);
-//             }
-//         }
-//         wprintw(menuWin, "\n");
-//     }
-//     wrefresh(menuWin);
-// }
-
 void nextFigureGeneretion(GameInfo_t *game, WINDOW *gameWindow) {
     int figureNumber = getRandNumberFigures();
+
+    saveOldMap(game);
 
     clearBoard(game);
 

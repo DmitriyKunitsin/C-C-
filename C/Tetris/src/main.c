@@ -10,9 +10,6 @@
 #include "map/map_for_board.h"
 #include "menu/menu_for_game.h"
 
-// void inputKey();
-// void FillinArrayMap(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
-// void printArrayWithColors(int array[Y_SIZE_ARRAY][X_SIZE_ARRAY]);
 void initArray(int ***array);
 void my_free(int **array);
 void initGame(GameInfo_t *game);
@@ -22,6 +19,7 @@ void cleanupWindows(WINDOW *gameWindow, WINDOW *menuWindow);
 
 int main() {
     GameInfo_t game;
+
     initGame(&game);
     WINDOW *gameWindow;
     WINDOW *menuWindow;
@@ -33,23 +31,9 @@ int main() {
     start_color();
     init_pair(1, COLOR_BLACK, COLOR_BLUE);
     init_pair(2, COLOR_WHITE, COLOR_GREEN);
-    /*___________________________________________________*/
 
-    // int key;
-    // int current_screen = 1;  // 1 - menu 2 - game
-    // while ((key = getch()) != KEY_BACKSPACE) {
-    //     if (current_screen == 1) {
-    //         printMenu(menuWindow, 0);
-    //         int selectedMenu = ReaderSelectedMenu(menuWindow);
-    //         current_screen = selectedMenu;
-    //     } else if (current_screen == 2) {
-    //         startGame(game.field, gameWindow);
-    //     }
-    // }
-
-    /*_____________________________________________________*/
-    initMap(game.field);
-
+    // initMap(game.field);
+    // printMenu(menuWindow, 1);
     ReaderForMenuSelectedItem(&game, menuWindow, gameWindow);
 
     my_free(game.field);
@@ -65,7 +49,7 @@ void initializeWindows(WINDOW **gameWindow, WINDOW **menuWindow) {
     initscr();  // Инициализация ncurses
     init_pair(3, COLOR_BLACK, COLOR_WHITE);
     *gameWindow = newwin(Y_GAME_BOARD, X_GAME_BOARD, 0, 0);
-    *menuWindow = newwin(Y_MENU, 21, 0, X_GAME_BOARD + 1);
+    *menuWindow = newwin(Y_MENU, 21, 0, 0);
     box(*menuWindow, 0, 0);
     box(*gameWindow, 0, 0);
 }
@@ -92,13 +76,14 @@ void my_free(int **array) {
 void initGame(GameInfo_t *game) {
     initArray(&(game->field));
     initArray(&(game->menu));
-    // initArray(&(game->next));
+    initArray(&(game->next));
     game->score = 0;
     game->high_score = 0;
     game->level = 1;
     game->speed = 1;
-    // int pause = 0;
+    game->pause = 0;
 }
+
 /******************************************TRASH*********************************************************/
 // State Transition(State current, char input);
 // State currentState = STATE_A;
