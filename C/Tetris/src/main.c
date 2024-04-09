@@ -91,10 +91,10 @@ void initGame(GameInfo_t *game) {
     initArray(&(game->field));
     initArray(&(game->menu));
     // initArray(&(game->next));
-    // int score = 0;
-    // int high_score = 0;
-    // int level = 1;
-    // int speed = 1;
+    game->score = 0;
+    game->high_score = 0;
+    game->level = 1;
+    game->speed = 1;
     // int pause = 0;
 }
 /******************************************TRASH*********************************************************/

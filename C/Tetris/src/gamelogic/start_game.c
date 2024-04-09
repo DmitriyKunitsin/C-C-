@@ -8,20 +8,35 @@ void startGame(GameInfo_t *game, WINDOW *gameWindow, WINDOW *menuWin) {
     // while ((key = getch()) != KEY_BACKSPACE) {
 
     // }
-    
-    nextFigureGeneretion(game, menuWin);
+
+    // nextFigureGeneretion(game, menuWin);
+    InformationMenu(game, menuWin);
     nextFigureGeneretion(game, gameWindow);
 }
 
-// void InformationMenu(WINDOW *menuWin) {
-//     for(int i = 0; i < Y_MENU; i++) {
-//         for(int j = 0; j < X_MENU; j++) {
-//         }
-//     }
-// }
+void InformationMenu(GameInfo_t *game_inf, WINDOW *menuWin) {
+    wclear(menuWin);
+    for (int i = 0; i < Y_MENU; i++) {
+        for (int j = 0; j < X_MENU; j++) {
+            if (i == 2) {
+                mvwprintw(menuWin, i, j, "Level :%d", game_inf->level);
+            } else if (i == 4) {
+                mvwprintw(menuWin, i, j, "Score :%d", game_inf->score);
+            } else if (i == 6) {
+                mvwprintw(menuWin, i, j, "Speed :%d", game_inf->speed);
+            } else if (i == 8) {
+                mvwprintw(menuWin, i, j, "Record :%d", game_inf->high_score);
+            }
+        }
+        wprintw(menuWin, "\n");
+    }
+    wrefresh(menuWin);
+}
 
 void nextFigureGeneretion(GameInfo_t *game, WINDOW *gameWindow) {
     int figureNumber = getRandNumberFigures();
+
+    clearBoard(game);
 
     FigureType type = (FigureType)figureNumber;
 
@@ -37,6 +52,20 @@ void nextFigureGeneretion(GameInfo_t *game, WINDOW *gameWindow) {
         }
     }
     printNextMap(game->field, gameWindow);
+}
+
+void clearBoard(GameInfo_t *game) {
+    for (int i = 0; i < Y_GAME_BOARD; i++) {
+        for (int j = 0; j < X_GAME_BOARD; j++) {
+            if (i == 0 || i == Y_GAME_BOARD - 1) {
+                game->field[i][j] = 1;
+            } else if (j == 0 || j == X_GAME_BOARD - 1) {
+                game->field[i][j] = 1;
+            } else {
+                game->field[i][j] = 0;
+            }
+        }
+    }
 }
 
 int getRandNumberFigures() {

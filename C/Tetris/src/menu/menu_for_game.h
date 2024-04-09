@@ -4,7 +4,8 @@
 #include "../includes/common.h"
 #include "../macro/macro_definitions.h"
 
-void executeMenuItem(int item,GameInfo_t *game, WINDOW *gameWindow, WINDOW *menuWin);
+void executeMenuItem(int item, GameInfo_t *game, WINDOW *gameWindow,
+                     WINDOW *menuWin);
 void printMenu(WINDOW *menuWindow, int selectedItem);
 void executeMenu(int item);
 
