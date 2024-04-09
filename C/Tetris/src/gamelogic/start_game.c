@@ -11,7 +11,7 @@ void startGame(GameInfo_t *game, WINDOW *gameWindow) {
     cbreak();  // Включаю режим "cbreak" для обработки клавиш без ожидания Enter
     noecho();  // Отключаю отображение вводимых символов
     nodelay(stdscr, TRUE);  // Включаю режим немедленного ввода
-    
+
     UserAction_t action = Start;
     // bool hold = false;
     bool keyHeld = false;

@@ -20,7 +20,7 @@ void printMenu(WINDOW *menuWindow, int selectedItem) {
     int startY = 5;
     int startX = 5;
     wclear(menuWindow);
-    box(menuWindow, 0 , 0);
+    box(menuWindow, 0, 0);
     mvwprintw(menuWindow, 2, 8, "Menu");
     for (int i = 0; i < 2; i++) {
         if (selectedItem == i) {
