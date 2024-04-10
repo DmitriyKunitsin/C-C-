@@ -27,7 +27,7 @@ int main() {
     initializeWindows(&gameWindow, &menuWindow);
     // initscr();
     srand(time(NULL));
-    keypad(menuWindow, TRUE);
+    // keypad(menuWindow, TRUE);
     start_color();
     init_pair(1, COLOR_BLACK, COLOR_BLUE);
     init_pair(2, COLOR_WHITE, COLOR_GREEN);
@@ -50,8 +50,6 @@ void initializeWindows(WINDOW **gameWindow, WINDOW **menuWindow) {
     init_pair(3, COLOR_BLACK, COLOR_WHITE);
     *gameWindow = newwin(Y_GAME_BOARD, X_GAME_BOARD, 0, 0);
     *menuWindow = newwin(Y_MENU, 21, 0, 0);
-    box(*menuWindow, 0, 0);
-    box(*gameWindow, 0, 0);
 }
 
 void cleanupWindows(WINDOW *gameWindow, WINDOW *menuWindow) {

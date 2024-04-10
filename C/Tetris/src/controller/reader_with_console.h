@@ -10,5 +10,7 @@ void ReaderForMenuSelectedItem(GameInfo_t *game, WINDOW *menuuWind,
 int ReaderSelectedMenu(WINDOW *menuWindow);
 
 void userInput(UserAction_t action, bool hold);
+void selectMenuItem(int selectitem, GameInfo_t *game, WINDOW *menuWindow,
+                    WINDOW *gameWindow);
 
 #endif

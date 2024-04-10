@@ -16,11 +16,8 @@ void ReaderForMenuSelectedItem(GameInfo_t *game, WINDOW *menuWindow,
                     (selectedItem + 1 < 2) ? selectedItem + 1 : 2 - 1;
                 break;
             case '\n':
-                werase(menuWindow);
-                wrefresh(menuWindow);
-                executeMenuItem(selectedItem, game, gameWind);
-                printMenu(menuWindow, 0);
-                selectedItem = 0;
+                selectMenuItem(selectedItem, game, menuWindow, gameWind);
+                keypad(menuWindow, TRUE);
                 break;
             default:
                 selectedItem = 0;
@@ -28,6 +25,16 @@ void ReaderForMenuSelectedItem(GameInfo_t *game, WINDOW *menuWindow,
         }
         printMenu(menuWindow, selectedItem);
     }
+}
+
+void selectMenuItem(int selectitem, GameInfo_t *game, WINDOW *menuWindow,
+                    WINDOW *gameWindow) {
+    werase(menuWindow);
+    wrefresh(menuWindow);
+    executeMenuItem(selectitem, game, gameWindow);
+    werase(gameWindow);
+    wrefresh(gameWindow);
+    // printMenu(menuWindow, 0);
 }
 // int ReaderSelectedMenu(WINDOW *menuWindow) {
 //     keypad(stdscr, TRUE);
