@@ -49,7 +49,6 @@ void InitGameBoard(int **map) {
         }
     }
     printArrayWithColors(map);
-    // printMenu(1);
 }
 
 void printNextMap(int **array, WINDOW *gameWindow) {

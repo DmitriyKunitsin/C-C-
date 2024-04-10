@@ -10,6 +10,8 @@ void executeMenuItem(int item, GameInfo_t *game, WINDOW *gameWindow, WINDOW *men
             werase(menuWindow);
             wrefresh(menuWindow);
             startGame(game, gameWindow);
+            werase(gameWindow);
+            wrefresh(gameWindow);
             // switch_to_menu(menuWindow);
             break;
         case 1:

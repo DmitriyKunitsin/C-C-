@@ -4,10 +4,11 @@ void ReaderForMenuSelectedItem(GameInfo_t *game, WINDOW *menuWindow,
                                WINDOW *gameWind) {
     int key;
     int selectedItem = 0;
+    printMenu(menuWindow, 0);
     while ((key = getch()) != KEY_BACKSPACE) {
         switch (key) {
             case KEY_UP:
-                selectedItem = (selectedItem - 1 > 0) ? selectedItem - 1 : 0;
+                selectedItem = (selectedItem - 1 >= 0) ? selectedItem - 1 : 0;
                 break;
             case KEY_DOWN:
                 selectedItem =

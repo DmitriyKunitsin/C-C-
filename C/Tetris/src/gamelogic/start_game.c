@@ -13,55 +13,54 @@ void startGame(GameInfo_t *game, WINDOW *gameWindow) {
     nodelay(stdscr, TRUE);  // Включаю режим немедленного ввода
     InitGameBoard(game->field);
     printNextMap(game->field, gameWindow);
-    // UserAction_t action = Start;
+    UserAction_t action = Start;
     // bool hold = false;
-    // bool keyHeld = false;
+    bool keyHeld = false;
     int ch = getch();
     while ((ch = getch()) != Q_KEY) {
         // while (action != Terminate) {
-        // if (ch != ERR) {  // Если клавиша нажата
-        //     switch (ch) {
-        //         case KEY_LEFT:
+        if (ch != ERR) {  // Если клавиша нажата
+            switch (ch) {
+                case KEY_LEFT:
 
-        //             break;
-        //         case KEY_RIGHT:
+                    break;
+                case KEY_RIGHT:
 
-        //             break;
-        //         case KEY_UP:
+                    break;
+                case KEY_UP:
 
-        //             break;
-        //         case KEY_DOWN:
+                    break;
+                case KEY_DOWN:
 
-        //             break;
-        //         case Q_KEY:
-        //             // action = Terminate;
-        //             break;
-        //         default:
-        //             break;
-        //     }
-        // } else {  // Если ничего не было нажато
+                    break;
+                case Q_KEY:
+                    // action = Terminate;
+                    break;
+                default:
+                    break;
+            }
+        } else {  // Если ничего не было нажато
 
-        //     if (keyHeld) {
-        //         // Обработка действия при удержании клавиши
-        //     }
-        // }
+            if (keyHeld) {
+                // Обработка действия при удержании клавиши
+            }
+        }
 
-        // if (action == Terminate) {
-        //     break;  // выход из цикла, если action равно Terminate
-        // }
+        if (action == Terminate) {
+            break;  // выход из цикла, если action равно Terminate
+        }
 
-        InformationMenu(game, gameWindow);
+        InformationMenu(game, stdscr);
         nextFigureGeneretion(game, gameWindow);
 
         napms(500);
     }
 
-    // endwin();
-    // refresh();
-    // endwin();
-    // // if (action == Terminate) {
+    // TODO по какой-то причине я работаю в основном окне stdscr, а не в игровом
     clearBoard(game);
     nodelay(stdscr, FALSE);  // Включаю режим немедленного ввода
+    werase(stdscr);
+    wrefresh(stdscr);
     // printNextMap(game->field, gameWindow);
     // printMenu(menuWin, 0);
     //     return;  // выход из функции startGame(), если action равно Terminate

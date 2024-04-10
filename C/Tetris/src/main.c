@@ -26,14 +26,11 @@ int main() {
 
     initializeWindows(&gameWindow, &menuWindow);
     // initscr();
-    srand(time(NULL));
+    // srand(time(NULL));
     // keypad(menuWindow, TRUE);
-    start_color();
-    init_pair(1, COLOR_BLACK, COLOR_BLUE);
-    init_pair(2, COLOR_WHITE, COLOR_GREEN);
 
     // initMap(game.field);
-    // printMenu(menuWindow, 1);
+    printMenu(stdscr, 0);
     ReaderForMenuSelectedItem(&game, menuWindow, gameWindow);
 
     my_free(game.field);
@@ -51,13 +48,12 @@ void initializeWindows(WINDOW **gameWindow, WINDOW **menuWindow) {
     noecho();  // Отключаю отображение вводимых символов
     keypad(stdscr, TRUE);
 
+    start_color();
+    init_pair(1, COLOR_BLACK, COLOR_BLUE);
+    init_pair(2, COLOR_WHITE, COLOR_GREEN);
+
     *gameWindow = newwin(Y_GAME_BOARD, X_GAME_BOARD, 0, 0);
     *menuWindow = newwin(Y_MENU, 21, 0, 0);
-
-    box(*gameWindow, 0, 0);
-    box(*menuWindow, 0, 0);
-
-    printMenu(*menuWindow, 0);
 
     wrefresh(*menuWindow);
 }
