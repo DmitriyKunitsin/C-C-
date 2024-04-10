@@ -3,7 +3,8 @@
 #include "../gamelogic/start_game.h"
 #include "../map/map_for_board.h"
 
-void executeMenuItem(int item, GameInfo_t *game, WINDOW *gameWindow, WINDOW *menuWindow) {
+void executeMenuItem(int item, GameInfo_t *game, WINDOW *gameWindow,
+                     WINDOW *menuWindow) {
     switch (item) {
         case 0:
             // switch_to_game(gameWindow);
@@ -34,8 +35,6 @@ void executeMenuItem(int item, GameInfo_t *game, WINDOW *gameWindow, WINDOW *men
 //     show_panel(panel_above(gameWindow));
 // }
 
-
-
 void printMenu(WINDOW *menuWindow, int selectedItem) {
     int startY = 5;
     int startX = 5;
@@ -57,9 +56,11 @@ void printMenu(WINDOW *menuWindow, int selectedItem) {
 
 void InformationMenu(GameInfo_t *game_inf, WINDOW *menuWin) {
     wclear(menuWin);
+    wattron(menuWin, COLOR_PAIR(3));
     for (int i = 0; i < X_MENU; i += 2) {
         if (i == 2) {
-            mvwprintw(menuWin, i, 14, "Back for ext");
+            mvwprintw(menuWin, i, 14, "Q for ext");
+
         } else if (i == 4) {
             mvwprintw(menuWin, i, 14, "Level :%d", game_inf->level);
         } else if (i == 6) {
@@ -70,6 +71,6 @@ void InformationMenu(GameInfo_t *game_inf, WINDOW *menuWin) {
             mvwprintw(menuWin, i, 14, "Record :%d", game_inf->high_score);
         }
     }
-
+    wattroff(menuWin, COLOR_BLACK);
     wrefresh(menuWin);
 }

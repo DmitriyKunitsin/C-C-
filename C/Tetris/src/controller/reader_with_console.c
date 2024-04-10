@@ -15,7 +15,7 @@ void ReaderForMenuSelectedItem(GameInfo_t *game, WINDOW *menuWindow,
                     (selectedItem + 1 < 2) ? selectedItem + 1 : 2 - 1;
                 break;
             case '\n':
-            executeMenuItem(selectedItem, game, gameWind, menuWindow);
+                executeMenuItem(selectedItem, game, gameWind, menuWindow);
                 break;
             default:
                 selectedItem = 0;

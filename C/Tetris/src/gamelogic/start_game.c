@@ -8,8 +8,8 @@
 #define Q_KEY 113
 
 void startGame(GameInfo_t *game, WINDOW *gameWindow) {
-    // cbreak();  // Включаю режим "cbreak" для обработки клавиш без ожидания Enter
-    // noecho();  // Отключаю отображение вводимых символов
+    // cbreak();  // Включаю режим "cbreak" для обработки клавиш без ожидания
+    // Enter noecho();  // Отключаю отображение вводимых символов
     nodelay(stdscr, TRUE);  // Включаю режим немедленного ввода
     InitGameBoard(game->field);
     printNextMap(game->field, gameWindow);
@@ -53,7 +53,7 @@ void startGame(GameInfo_t *game, WINDOW *gameWindow) {
         InformationMenu(game, stdscr);
         nextFigureGeneretion(game, gameWindow);
 
-        napms(500);
+        napms(200);
     }
 
     // TODO по какой-то причине я работаю в основном окне stdscr, а не в игровом
