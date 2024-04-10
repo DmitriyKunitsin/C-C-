@@ -8,46 +8,47 @@
 #define Q_KEY 113
 
 void startGame(GameInfo_t *game, WINDOW *gameWindow) {
-    cbreak();  // Включаю режим "cbreak" для обработки клавиш без ожидания Enter
-    noecho();  // Отключаю отображение вводимых символов
-    nodelay(gameWindow, TRUE);  // Включаю режим немедленного ввода
-
-    UserAction_t action = Start;
+    // cbreak();  // Включаю режим "cbreak" для обработки клавиш без ожидания Enter
+    // noecho();  // Отключаю отображение вводимых символов
+    nodelay(stdscr, TRUE);  // Включаю режим немедленного ввода
+    InitGameBoard(game->field);
+    printNextMap(game->field, gameWindow);
+    // UserAction_t action = Start;
     // bool hold = false;
-    bool keyHeld = false;
+    // bool keyHeld = false;
     int ch = getch();
     while ((ch = getch()) != Q_KEY) {
         // while (action != Terminate) {
-        if (ch != ERR) {  // Если клавиша нажата
-            switch (ch) {
-                case KEY_LEFT:
+        // if (ch != ERR) {  // Если клавиша нажата
+        //     switch (ch) {
+        //         case KEY_LEFT:
 
-                    break;
-                case KEY_RIGHT:
+        //             break;
+        //         case KEY_RIGHT:
 
-                    break;
-                case KEY_UP:
+        //             break;
+        //         case KEY_UP:
 
-                    break;
-                case KEY_DOWN:
+        //             break;
+        //         case KEY_DOWN:
 
-                    break;
-                case Q_KEY:
-                    action = Terminate;
-                    break;
-                default:
-                    break;
-            }
-        } else {  // Если ничего не было нажато
+        //             break;
+        //         case Q_KEY:
+        //             // action = Terminate;
+        //             break;
+        //         default:
+        //             break;
+        //     }
+        // } else {  // Если ничего не было нажато
 
-            if (keyHeld) {
-                // Обработка действия при удержании клавиши
-            }
-        }
+        //     if (keyHeld) {
+        //         // Обработка действия при удержании клавиши
+        //     }
+        // }
 
-        if (action == Terminate) {
-            break;  // выход из цикла, если action равно Terminate
-        }
+        // if (action == Terminate) {
+        //     break;  // выход из цикла, если action равно Terminate
+        // }
 
         InformationMenu(game, gameWindow);
         nextFigureGeneretion(game, gameWindow);
@@ -57,9 +58,10 @@ void startGame(GameInfo_t *game, WINDOW *gameWindow) {
 
     // endwin();
     // refresh();
-    endwin();
+    // endwin();
     // // if (action == Terminate) {
     clearBoard(game);
+    nodelay(stdscr, FALSE);  // Включаю режим немедленного ввода
     // printNextMap(game->field, gameWindow);
     // printMenu(menuWin, 0);
     //     return;  // выход из функции startGame(), если action равно Terminate

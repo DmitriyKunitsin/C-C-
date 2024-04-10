@@ -47,9 +47,19 @@ int main() {
 
 void initializeWindows(WINDOW **gameWindow, WINDOW **menuWindow) {
     initscr();  // Инициализация ncurses
-    init_pair(3, COLOR_BLACK, COLOR_WHITE);
+    cbreak();  // Включаю режим "cbreak" для обработки клавиш без ожидания Enter
+    noecho();  // Отключаю отображение вводимых символов
+    keypad(stdscr, TRUE);
+
     *gameWindow = newwin(Y_GAME_BOARD, X_GAME_BOARD, 0, 0);
     *menuWindow = newwin(Y_MENU, 21, 0, 0);
+
+    box(*gameWindow, 0, 0);
+    box(*menuWindow, 0, 0);
+
+    printMenu(*menuWindow, 0);
+
+    wrefresh(*menuWindow);
 }
 
 void cleanupWindows(WINDOW *gameWindow, WINDOW *menuWindow) {

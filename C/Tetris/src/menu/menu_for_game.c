@@ -3,10 +3,14 @@
 #include "../gamelogic/start_game.h"
 #include "../map/map_for_board.h"
 
-void executeMenuItem(int item, GameInfo_t *game, WINDOW *gameWindow) {
+void executeMenuItem(int item, GameInfo_t *game, WINDOW *gameWindow, WINDOW *menuWindow) {
     switch (item) {
         case 0:
+            // switch_to_game(gameWindow);
+            werase(menuWindow);
+            wrefresh(menuWindow);
             startGame(game, gameWindow);
+            // switch_to_menu(menuWindow);
             break;
         case 1:
             endwin();
@@ -16,6 +20,20 @@ void executeMenuItem(int item, GameInfo_t *game, WINDOW *gameWindow) {
             break;
     }
 }
+// void switch_to_menu(WINDOW *menuWindow) {
+//      PANEL *currentPanel = panel_above(top_panel(panel_window(stdscr)));
+//     hide_panel(panel_window(panel_above(top_panel(currentPanel))));
+//     show_panel(panel_above(menuWindow));
+// }
+
+// void switch_to_game(WINDOW *gameWindow) {
+//      PANEL *currentPanel = panel_above(top_panel(panel_window(stdscr)));
+//     hide_panel(panel_window(panel_above(top_panel(currentPanel))));
+//     show_panel(panel_above(gameWindow));
+// }
+
+
+
 void printMenu(WINDOW *menuWindow, int selectedItem) {
     int startY = 5;
     int startX = 5;
