@@ -8,17 +8,16 @@
 #define Q_KEY 113
 
 void startGame(GameInfo_t *game, WINDOW *gameWindow) {
-    // cbreak();  // Включаю режим "cbreak" для обработки клавиш без ожидания
-    // Enter noecho();  // Отключаю отображение вводимых символов
     nodelay(stdscr, TRUE);  // Включаю режим немедленного ввода
     InitGameBoard(game->field);
     printNextMap(game->field, gameWindow);
     UserAction_t action = Start;
-    // bool hold = false;
+    bool hold = false;
     bool keyHeld = false;
-    int ch = getch();
-    while ((ch = getch()) != Q_KEY) {
-        // while (action != Terminate) {
+    int heldInptKey = -1;
+    // while ((ch = getch()) != Q_KEY) {
+    while (action != Terminate) {
+        int ch = getch();
         if (ch != ERR) {  // Если клавиша нажата
             switch (ch) {
                 case KEY_LEFT:
@@ -31,10 +30,12 @@ void startGame(GameInfo_t *game, WINDOW *gameWindow) {
 
                     break;
                 case KEY_DOWN:
-
+                    action = Down;
+                    keyHeld = true;
+                    heldInptKey = ch;
                     break;
                 case Q_KEY:
-                    // action = Terminate;
+                    action = Terminate;
                     break;
                 default:
                     break;
@@ -42,18 +43,30 @@ void startGame(GameInfo_t *game, WINDOW *gameWindow) {
         } else {  // Если ничего не было нажато
 
             if (keyHeld) {
+                // Обработка удержании клавиши
+                switch (heldInptKey) {
+                    case KEY_DOWN:
+                        // TODO действия при удержании нижней стрелки
+                        break;
+
+                    default:
+                        break;
+                }
                 // Обработка действия при удержании клавиши
             }
+            // клавиша отпущена
+            keyHeld = false;
+            heldInptKey = -1;
         }
-
         if (action == Terminate) {
             break;  // выход из цикла, если action равно Terminate
         }
 
+        userInput(action, hold);
         InformationMenu(game, stdscr);
         nextFigureGeneretion(game, gameWindow);
 
-        napms(200);
+        napms(1000);
     }
 
     // TODO по какой-то причине я работаю в основном окне stdscr, а не в игровом
@@ -61,10 +74,6 @@ void startGame(GameInfo_t *game, WINDOW *gameWindow) {
     nodelay(stdscr, FALSE);  // Включаю режим немедленного ввода
     werase(stdscr);
     wrefresh(stdscr);
-    // printNextMap(game->field, gameWindow);
-    // printMenu(menuWin, 0);
-    //     return;  // выход из функции startGame(), если action равно Terminate
-    // }
 }
 void nextFigureGeneretion(GameInfo_t *game, WINDOW *gameWindow) {
     int figureNumber = getRandNumberFigures();
