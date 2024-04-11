@@ -85,7 +85,7 @@ void startGame(WINDOW *gameWindow) {
         }
         game->level += 1;
         // halfdelay(game->delay);
-        buf_ch = myDelay(1000);
+        buf_ch = myDelay(game->delay);
         userInput(action, hold);
         InformationMenu(game, stdscr);
         nextFigureGeneretion(game, gameWindow);
@@ -138,7 +138,7 @@ int myDelay(int milliseconds) {
     struct timeval tv;
     fd_set fds;
 
-    tv.tv_sec = milliseconds / 1000;
+    tv.tv_sec = milliseconds / 10;
     tv.tv_usec = (milliseconds % 1000) * 1000;
 
     FD_ZERO(&fds);
