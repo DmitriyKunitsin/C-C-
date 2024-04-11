@@ -18,7 +18,7 @@ void startGame(WINDOW *gameWindow) {
     UserAction_t action = Start;
     bool hold = false;
     bool keyHeld = false;
-    int heldInptKey = -1;
+    int heldInptKey = -1;// TODO может добавлю расширение для разных клавиш зажатие
 
     while (action != Terminate) {
         int ch = getch();
@@ -52,42 +52,31 @@ void startGame(WINDOW *gameWindow) {
                 switch (heldInptKey) {
                         // Обработка действия при удержании клавиши
                     case KEY_DOWN:
-                        game->delay = 200;
-                        // game.speed = 5;
+                        hold = true;
                         *game = updateCurrentState();
-                        // TODO действия при удержании нижней стрелки
                         break;
 
                     default:
-                        game->delay = 1000;
-                        game->speed = 1;
                         break;
                 }
             } else {
-                game->delay = 1000;
-                game->speed = 1;
-                keyHeld = false;
-                game->speed = 1;
+              
             }
         } else {  // Если ничего не было нажато
 
             // клавиша отпущена
             keyHeld = false;
+            hold = false;
             heldInptKey = -1;
             game->delay = 1000;
             game->speed = 1;
-        }
-        if (action == Terminate) {
-            break;  // выход из цикла, еслvoid userInput(UserAction_t action,
-                    // bool hold);и action равно Terminate
         }
 
         userInput(action, hold);
         InformationMenu(game, stdscr);
         nextFigureGeneretion(game, gameWindow);
 
-        napms(game->delay);
-        void userInput(UserAction_t action, bool hold);
+        myDelay(game->delay);
     }
 
     // TODO по какой-то причине я работаю в основном окне stdscr, а не в игровом
@@ -113,7 +102,23 @@ GameInfo_t updateCurrentState() {
     return *game;
 }
 
+void myDelay(int milliseconds) {
+    struct timespec req;
+
+    req.tv_sec = milliseconds / 1000;
+    req.tv_nsec = (milliseconds % 1000) * 1000000;
+
+    struct timespec rem;
+    while (nanosleep(&req, &rem) == -1)
+    {
+        req = rem;
+    }
+}
+
 void userInput(UserAction_t action, bool hold) {
+
+    GameInfo_t *game = getInstance_GameInfo();
+
     switch (action) {
         case Start:
             // Обработка действия "Start"
@@ -137,6 +142,7 @@ void userInput(UserAction_t action, bool hold) {
         case Down:
             // Обработка действия "Down"
             if (hold) {
+                game->delay = 200;
                 // Обработка случая, когда удерживается клавиша
             }
             break;

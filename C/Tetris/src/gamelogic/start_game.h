@@ -19,4 +19,10 @@ GameInfo_t *getInstance_GameInfo();
 GameInfo_t updateCurrentState();
 void userInput(UserAction_t action, bool hold);
 
+/*функция delay() принимает значение времени в микросекундах, 
+а затем разбивает его на секунды и наносекунды для использования функции nanosleep(). 
+Функция nanosleep() приостанавливает выполнение программы на указанное время. 
+Если задержка была прервана (например, из-за сигнала), она продолжит оставшуюся часть задержки.*/
+void myDelay(int milliseconds);
+
 #endif
