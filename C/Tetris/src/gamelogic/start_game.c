@@ -149,31 +149,13 @@ int myDelay(int milliseconds) {
         if (result > 0 && FD_ISSET(fileno(stdin), &fds)) {
             ch = getch();
         } else {
-            return ERR; // Тайм-аут
+            ch = -1;; // Тайм-аут
+            break;
         }
     }
 
     return ch;
 }
-
-// int myDelay(int milliseconds) {
-//     nodelay(stdscr, FALSE);
-//     struct timespec req;
-//     int ch = -1;
-
-//     req.tv_sec = milliseconds / 1000;
-//     req.tv_nsec = (milliseconds % 1000) * 1000000;
-
-//     struct timespec rem;
-//     while (nanosleep(&req, &rem) == -1) {
-//         req = rem;
-//         if((ch = getch()) != -1) {
-//             break;
-//         }
-//     }
-//     nodelay(stdscr, TRUE);
-//     return ch;
-// }
 
 void userInput(UserAction_t action, bool hold) {
     GameInfo_t *game = getInstance_GameInfo();
