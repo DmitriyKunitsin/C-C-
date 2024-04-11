@@ -14,6 +14,8 @@ void initArray(int ***array);
 void my_free(int **array);
 void initGame(GameInfo_t *game);
 
+void clearCurrentScreen(WINDOW *currentScreen);
+
 void initializeWindows(WINDOW **gameWindow, WINDOW **menuWindow);
 void cleanupWindows(WINDOW *gameWindow, WINDOW *menuWindow);
 
@@ -30,7 +32,7 @@ int main() {
     // keypad(menuWindow, TRUE);
 
     // initMap(game.field);
-    printMenu(stdscr, 0);
+    clearCurrentScreen(stdscr);
     ReaderForMenuSelectedItem(&game, menuWindow, gameWindow);
 
     my_free(game.field);

@@ -11,4 +11,6 @@ int ReaderSelectedMenu(WINDOW *menuWindow);
 
 void userInput(UserAction_t action, bool hold);
 
+void clearCurrentScreen(WINDOW *currentScreen);
+
 #endif
