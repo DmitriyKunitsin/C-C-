@@ -1,14 +1,16 @@
 #include "start_game.h"
 
+#include <sys/select.h>
+
 #include "../controller/reader_with_console.h"
 #include "../figures/figuresForGames.h"
 #include "../includes/common.h"
 #include "../menu/menu_for_game.h"
-#include <sys/select.h>
 
 #define Q_KEY 113
 #define NUM_KEYS 6
-int validKeys[NUM_KEYS] = {KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, '\n', KEY_BACKSPACE};
+int validKeys[NUM_KEYS] = {KEY_LEFT, KEY_RIGHT, KEY_UP,
+                           KEY_DOWN, '\n',      KEY_BACKSPACE};
 void startGame(WINDOW *gameWindow) {
     GameInfo_t *game = getInstance_GameInfo();
     UserAction_t action = Start;
@@ -17,6 +19,8 @@ void startGame(WINDOW *gameWindow) {
     nodelay(stdscr, TRUE);  // Включаю режим немедленного ввода
     InitGameBoard(game->field);
     printNextMap(game->field, gameWindow);
+    InformationMenu(game, stdscr);
+    nextFigureGeneretion(game, gameWindow);
 
     bool hold = false;
     bool keyHeld = false;
@@ -26,8 +30,8 @@ void startGame(WINDOW *gameWindow) {
 
     while (action != Terminate) {
         int ch = getch();
-        if(buf_ch != -1) {
-         ch = buf_ch;   
+        if (buf_ch != -1) {
+            ch = buf_ch;
         }
         if (ch != ERR) {  // Если клавиша нажата
             switch (ch) {
@@ -52,7 +56,7 @@ void startGame(WINDOW *gameWindow) {
                     action = Terminate;
                     break;
                 default:
-                buf_ch = -1;
+                    buf_ch = -1;
                     break;
             }
         }
@@ -65,7 +69,7 @@ void startGame(WINDOW *gameWindow) {
                     *game = updateCurrentState();
                     keyHeld = false;
                     break;
-
+                // TODO стрелку вверх надо будет настроить на переворот фигуры
                 default:
                     continue;
             }
@@ -79,7 +83,7 @@ void startGame(WINDOW *gameWindow) {
         if (action == Terminate) {
             break;
         }
-        game->level+=1;
+        game->level += 1;
         // halfdelay(game->delay);
         buf_ch = myDelay(1000);
         userInput(action, hold);
@@ -133,27 +137,33 @@ bool isValidKey(int ch) {
 int myDelay(int milliseconds) {
     struct timeval tv;
     fd_set fds;
-    
+
     tv.tv_sec = milliseconds / 1000;
     tv.tv_usec = (milliseconds % 1000) * 1000;
-    
+
     FD_ZERO(&fds);
     FD_SET(fileno(stdin), &fds);
-    
-     int result = 0;
+
+    int result = 0;
     int ch = ERR;
-    
+
     while (result <= 0 || !isValidKey(ch)) {
         result = select(fileno(stdin) + 1, &fds, NULL, NULL, &tv);
 
         if (result > 0 && FD_ISSET(fileno(stdin), &fds)) {
             ch = getch();
         } else {
-            ch = -1;; // Тайм-аут
+            ch = -1;
+            ;  // Тайм-аут
+            // если фигура должна падать только по истечению времени, то
+            // добавлять сюда эту логику
             break;
         }
     }
-
+    // TODO скорее всего надо будет здесь добавить перед выходом программы
+    // расчет по поводу того, что фигура должна падать
+    // по условиям либо при нажатии и происходит действие
+    // либо по истечению таймера
     return ch;
 }
 
