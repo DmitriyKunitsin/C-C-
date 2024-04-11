@@ -9,84 +9,81 @@
 
 void startGame(WINDOW *gameWindow) {
     GameInfo_t *game = getInstance_GameInfo();
+    UserAction_t action = Start;
     initGame(game);
 
     nodelay(stdscr, TRUE);  // Включаю режим немедленного ввода
     InitGameBoard(game->field);
     printNextMap(game->field, gameWindow);
 
-    UserAction_t action = Start;
     bool hold = false;
     bool keyHeld = false;
-    int heldInptKey = -1;// TODO может добавлю расширение для разных клавиш зажатие
+    int heldInptKey =
+        -1;  // TODO может добавлю расширение для разных клавиш зажатие
 
     while (action != Terminate) {
         int ch = getch();
-        if (ch != ERR) {  // Если клавиша нажата
-            switch (ch) {
-                case KEY_LEFT:
-                    action = Left;
-                    break;
-                case KEY_RIGHT:
-                    action = Right;
-                    break;
-                case KEY_UP:
-                    action = Up;
-                    break;
+        // if (ch != ERR) {  // Если клавиша нажата
+        switch (ch) {
+            case KEY_LEFT:
+                action = Left;
+                break;
+            case KEY_RIGHT:
+                action = Right;
+                break;
+            case KEY_UP:
+                action = Up;
+                break;
+            case KEY_DOWN:
+                action = Down;
+                keyHeld = true;
+                heldInptKey = ch;
+                break;
+            case '\n':
+                action = Pause;
+                break;
+            case KEY_BACKSPACE:
+                action = Terminate;
+                break;
+            default:
+                break;
+        }
+        if (keyHeld) {
+            // Обработка удержании клавиши
+            switch (heldInptKey) {
+                    // Обработка действия при удержании клавиши
                 case KEY_DOWN:
-                    action = Down;
-                    keyHeld = true;
-                    heldInptKey = ch;
+                    hold = true;
+                    *game = updateCurrentState();
+                    keyHeld = false;
                     break;
-                case '\n':
-                    action = Pause;
-                    break;
-                case KEY_BACKSPACE:
-                    action = Terminate;
-                    break;
+
                 default:
                     break;
             }
-            if (keyHeld) {
-                // Обработка удержании клавиши
-                switch (heldInptKey) {
-                        // Обработка действия при удержании клавиши
-                    case KEY_DOWN:
-                        hold = true;
-                        *game = updateCurrentState();
-                        break;
-
-                    default:
-                        break;
-                }
-            } else {
-              
-            }
-        } else {  // Если ничего не было нажато
-
-            // клавиша отпущена
+        } else {
             keyHeld = false;
             hold = false;
             heldInptKey = -1;
-            game->delay = 1000;
+            game->delay = 10;
             game->speed = 1;
         }
-
+        if(action == Terminate) {
+            break;
+        }
+        halfdelay(10);
         userInput(action, hold);
         InformationMenu(game, stdscr);
         nextFigureGeneretion(game, gameWindow);
 
-        myDelay(game->delay);
+        action = Start;
+        // myDelay(game->delay);
     }
-
-    // TODO по какой-то причине я работаю в основном окне stdscr, а не в игровом
     clearBoard(game);
     nodelay(stdscr, FALSE);  // Включаю режим немедленного ввода
     werase(stdscr);
     wrefresh(stdscr);
-    my_free(game->field);
-    my_free(game->menu);
-    my_free(game->next);
+    cleanupGameInfo(game);
 }
 
 GameInfo_t *getInstance_GameInfo() {
@@ -94,12 +91,25 @@ GameInfo_t *getInstance_GameInfo() {
     return &game_info;
 }
 
+UserAction_t *getUserAction() {
+    static UserAction_t user_info;
+    return &user_info;
+}
+
 GameInfo_t updateCurrentState() {
     GameInfo_t *game = getInstance_GameInfo();
     // TODO в зависимости от статуса, реализовывать логику
     game->speed = 5;
+    game->delay = 2;
     // game->field += 1;
     return *game;
+}
+
+void cleanupGameInfo(GameInfo_t *game) {
+    // Освобождение ресурсов, связанных с game_info
+    my_free(game->field);
+    my_free(game->menu);
+    my_free(game->next);
 }
 
 void myDelay(int milliseconds) {
@@ -109,26 +119,24 @@ void myDelay(int milliseconds) {
     req.tv_nsec = (milliseconds % 1000) * 1000000;
 
     struct timespec rem;
-    while (nanosleep(&req, &rem) == -1)
-    {
+    while (nanosleep(&req, &rem) == -1) {
         req = rem;
     }
 }
 
 void userInput(UserAction_t action, bool hold) {
-
     GameInfo_t *game = getInstance_GameInfo();
-
     switch (action) {
         case Start:
             // Обработка действия "Start"
             break;
         case Pause:
             // Обработка действия "Pause"
-            break;
-
-        case Terminate:
-            // Обработка действия "Terminate"
+            int ch = -1;
+            strcpy(game->status, "Pause");
+            InformationMenu(game, stdscr);
+            while ((ch = getch()) != '\n') {}
+            strcpy(game->status, "Game");
             break;
         case Left:
             // Обработка действия "Left"
@@ -201,7 +209,8 @@ void initGame(GameInfo_t *game) {
     game->level = 1;
     game->speed = 1;
     game->pause = 0;
-    game->delay = 1000;
+    game->delay = 10;
+    strcpy(game->status, "Game");
 }
 void my_free(int **array) {
     for (int i = 0; i < Y_SIZE_ARRAY; i++) {

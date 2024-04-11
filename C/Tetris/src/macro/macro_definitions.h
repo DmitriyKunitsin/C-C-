@@ -29,6 +29,7 @@ typedef struct {
     int speed;
     int pause;
     int delay;
+    char status[10];
 } GameInfo_t;
 
 #define X_GAME_BOARD 11
