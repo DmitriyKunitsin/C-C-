@@ -4,12 +4,9 @@
 #include "../includes/common.h"
 #include "../menu/menu_for_game.h"
 
-void ReaderForMenuSelectedItem(GameInfo_t *game, WINDOW *menuuWind,
-                               WINDOW *gameWind);
+void ReaderForMenuSelectedItem(WINDOW *menuuWind, WINDOW *gameWind);
 
 int ReaderSelectedMenu(WINDOW *menuWindow);
-
-void userInput(UserAction_t action, bool hold);
 
 void clearCurrentScreen(WINDOW *currentScreen);
 

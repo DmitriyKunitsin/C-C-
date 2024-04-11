@@ -20,24 +20,12 @@ void initializeWindows(WINDOW **gameWindow, WINDOW **menuWindow);
 void cleanupWindows(WINDOW *gameWindow, WINDOW *menuWindow);
 
 int main() {
-    GameInfo_t game;
-
-    initGame(&game);
     WINDOW *gameWindow;
     WINDOW *menuWindow;
 
     initializeWindows(&gameWindow, &menuWindow);
-    // initscr();
-    // srand(time(NULL));
-    // keypad(menuWindow, TRUE);
-
-    // initMap(game.field);
     clearCurrentScreen(stdscr);
-    ReaderForMenuSelectedItem(&game, menuWindow, gameWindow);
-
-    my_free(game.field);
-    my_free(game.menu);
-    my_free(game.next);
+    ReaderForMenuSelectedItem(menuWindow, gameWindow);
 
     cleanupWindows(gameWindow, menuWindow);
     endwin();
@@ -65,30 +53,6 @@ void cleanupWindows(WINDOW *gameWindow, WINDOW *menuWindow) {
     delwin(gameWindow);
     delwin(menuWindow);
     endwin();  // Завершение работы с ncurses
-}
-void initArray(int ***array) {
-    *array = (int **)malloc(Y_SIZE_ARRAY * sizeof(int *));
-    for (int i = 0; i < Y_SIZE_ARRAY; i++) {
-        (*array)[i] = (int *)malloc(X_SIZE_ARRAY * sizeof(int));
-    }
-}
-
-void my_free(int **array) {
-    for (int i = 0; i < Y_SIZE_ARRAY; i++) {
-        free(array[i]);
-    }
-    free(array);
-}
-
-void initGame(GameInfo_t *game) {
-    initArray(&(game->field));
-    initArray(&(game->menu));
-    initArray(&(game->next));
-    game->score = 0;
-    game->high_score = 0;
-    game->level = 1;
-    game->speed = 1;
-    game->pause = 0;
 }
 
 /******************************************TRASH*********************************************************/
