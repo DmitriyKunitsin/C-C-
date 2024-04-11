@@ -112,7 +112,7 @@ UserAction_t *getUserAction() {
 GameInfo_t updateCurrentState() {
     GameInfo_t *game = getInstance_GameInfo();
     game->speed = 5;
-    game->delay = 2;
+    game->delay = 5;
     // game->level += 1;
     return *game;
 }
@@ -154,7 +154,7 @@ int myDelay(int milliseconds) {
             ch = getch();
         } else {
             ch = -1;
-            ;  // Тайм-аут
+            // Тайм-аут
             // если фигура должна падать только по истечению времени, то
             // добавлять сюда эту логику
             break;
@@ -177,9 +177,7 @@ void userInput(UserAction_t action, bool hold) {
             // Обработка действия "Pause"
             int ch = -1;
             strcpy(game->status, "Pause");
-            InformationMenu(game, stdscr);
-            // printNextMap(game->field, stdscr);
-            // printPauseGame(game, stdscr);
+            printPauseGame(game, stdscr);
             while ((ch = getch()) != '\n') {
             }
             strcpy(game->status, "Game");
