@@ -32,6 +32,17 @@ typedef struct {
     char status[10];
 } GameInfo_t;
 
+typedef enum
+{
+    START,
+    SPAWN,
+    MOVE,
+    SDVIG,
+    CONNECT,
+    GAME_OVER
+} StatusGame_t;
+
+
 #define X_GAME_BOARD 11
 #define Y_GAME_BOARD 21
 #define START_RIGHT_MENU_WIDTH 11

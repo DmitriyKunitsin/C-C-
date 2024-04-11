@@ -26,6 +26,8 @@ void userInput(UserAction_t action, bool hold);
 nanosleep(). Функция nanosleep() приостанавливает выполнение программы на
 указанное время. Если задержка была прервана (например, из-за сигнала), она
 продолжит оставшуюся часть задержки.*/
-void myDelay(int milliseconds);
+int myDelay(int milliseconds);
+/*Проверка на валидность клавиши, чтобы игра не отрабатывала на не нужные клавиши*/
+bool isValidKey(int ch);
 
 #endif

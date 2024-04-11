@@ -4,9 +4,11 @@
 #include "../figures/figuresForGames.h"
 #include "../includes/common.h"
 #include "../menu/menu_for_game.h"
+#include <sys/select.h>
 
 #define Q_KEY 113
-
+#define NUM_KEYS 6
+int validKeys[NUM_KEYS] = {KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, '\n', KEY_BACKSPACE};
 void startGame(WINDOW *gameWindow) {
     GameInfo_t *game = getInstance_GameInfo();
     UserAction_t action = Start;
@@ -18,11 +20,15 @@ void startGame(WINDOW *gameWindow) {
 
     bool hold = false;
     bool keyHeld = false;
+    int buf_ch = -1;
     int heldInptKey =
         -1;  // TODO может добавлю расширение для разных клавиш зажатие
 
     while (action != Terminate) {
         int ch = getch();
+        if(buf_ch != -1) {
+         ch = buf_ch;   
+        }
         if (ch != ERR) {  // Если клавиша нажата
             switch (ch) {
                 case KEY_LEFT:
@@ -46,6 +52,7 @@ void startGame(WINDOW *gameWindow) {
                     action = Terminate;
                     break;
                 default:
+                buf_ch = -1;
                     break;
             }
         }
@@ -72,13 +79,14 @@ void startGame(WINDOW *gameWindow) {
         if (action == Terminate) {
             break;
         }
-        halfdelay(game->delay);
+        game->level+=1;
+        // halfdelay(game->delay);
+        buf_ch = myDelay(1000);
         userInput(action, hold);
         InformationMenu(game, stdscr);
         nextFigureGeneretion(game, gameWindow);
 
         action = Start;
-        // myDelay(game->delay);
     }
     clearBoard(game);
     nodelay(stdscr, FALSE);  // Включаю режим немедленного ввода
@@ -99,10 +107,9 @@ UserAction_t *getUserAction() {
 
 GameInfo_t updateCurrentState() {
     GameInfo_t *game = getInstance_GameInfo();
-    // TODO в зависимости от статуса, реализовывать логику
     game->speed = 5;
     game->delay = 2;
-    // game->field += 1;
+    // game->level += 1;
     return *game;
 }
 
@@ -113,17 +120,60 @@ void cleanupGameInfo(GameInfo_t *game) {
     my_free(game->next);
 }
 
-void myDelay(int milliseconds) {
-    struct timespec req;
-
-    req.tv_sec = milliseconds / 1000;
-    req.tv_nsec = (milliseconds % 1000) * 1000000;
-
-    struct timespec rem;
-    while (nanosleep(&req, &rem) == -1) {
-        req = rem;
+bool isValidKey(int ch) {
+    bool bl = false;
+    for (int i = 0; i < NUM_KEYS; ++i) {
+        if (ch == validKeys[i]) {
+            bl = true;
+        }
     }
+    return bl;
 }
+
+int myDelay(int milliseconds) {
+    struct timeval tv;
+    fd_set fds;
+    
+    tv.tv_sec = milliseconds / 1000;
+    tv.tv_usec = (milliseconds % 1000) * 1000;
+    
+    FD_ZERO(&fds);
+    FD_SET(fileno(stdin), &fds);
+    
+     int result = 0;
+    int ch = ERR;
+    
+    while (result <= 0 || !isValidKey(ch)) {
+        result = select(fileno(stdin) + 1, &fds, NULL, NULL, &tv);
+
+        if (result > 0 && FD_ISSET(fileno(stdin), &fds)) {
+            ch = getch();
+        } else {
+            return ERR; // Тайм-аут
+        }
+    }
+
+    return ch;
+}
+
+// int myDelay(int milliseconds) {
+//     nodelay(stdscr, FALSE);
+//     struct timespec req;
+//     int ch = -1;
+
+//     req.tv_sec = milliseconds / 1000;
+//     req.tv_nsec = (milliseconds % 1000) * 1000000;
+
+//     struct timespec rem;
+//     while (nanosleep(&req, &rem) == -1) {
+//         req = rem;
+//         if((ch = getch()) != -1) {
+//             break;
+//         }
+//     }
+//     nodelay(stdscr, TRUE);
+//     return ch;
+// }
 
 void userInput(UserAction_t action, bool hold) {
     GameInfo_t *game = getInstance_GameInfo();
