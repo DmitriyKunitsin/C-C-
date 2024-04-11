@@ -23,30 +23,31 @@ void startGame(WINDOW *gameWindow) {
 
     while (action != Terminate) {
         int ch = getch();
-        // if (ch != ERR) {  // Если клавиша нажата
-        switch (ch) {
-            case KEY_LEFT:
-                action = Left;
-                break;
-            case KEY_RIGHT:
-                action = Right;
-                break;
-            case KEY_UP:
-                action = Up;
-                break;
-            case KEY_DOWN:
-                action = Down;
-                keyHeld = true;
-                heldInptKey = ch;
-                break;
-            case '\n':
-                action = Pause;
-                break;
-            case KEY_BACKSPACE:
-                action = Terminate;
-                break;
-            default:
-                break;
+        if (ch != ERR) {  // Если клавиша нажата
+            switch (ch) {
+                case KEY_LEFT:
+                    action = Left;
+                    break;
+                case KEY_RIGHT:
+                    action = Right;
+                    break;
+                case KEY_UP:
+                    action = Up;
+                    break;
+                case KEY_DOWN:
+                    action = Down;
+                    keyHeld = true;
+                    heldInptKey = ch;
+                    break;
+                case '\n':
+                    action = Pause;
+                    break;
+                case KEY_BACKSPACE:
+                    action = Terminate;
+                    break;
+                default:
+                    break;
+            }
         }
         if (keyHeld) {
             // Обработка удержании клавиши
@@ -59,7 +60,7 @@ void startGame(WINDOW *gameWindow) {
                     break;
 
                 default:
-                    break;
+                    continue;
             }
         } else {
             keyHeld = false;
@@ -68,10 +69,10 @@ void startGame(WINDOW *gameWindow) {
             game->delay = 10;
             game->speed = 1;
         }
-        if(action == Terminate) {
+        if (action == Terminate) {
             break;
         }
-        halfdelay(10);
+        halfdelay(game->delay);
         userInput(action, hold);
         InformationMenu(game, stdscr);
         nextFigureGeneretion(game, gameWindow);
@@ -135,7 +136,10 @@ void userInput(UserAction_t action, bool hold) {
             int ch = -1;
             strcpy(game->status, "Pause");
             InformationMenu(game, stdscr);
-            while ((ch = getch()) != '\n') {}
+            // printNextMap(game->field, stdscr);
+            // printPauseGame(game, stdscr);
+            while ((ch = getch()) != '\n') {
+            }
             strcpy(game->status, "Game");
             break;
         case Left:

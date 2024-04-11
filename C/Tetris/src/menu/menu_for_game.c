@@ -62,3 +62,28 @@ void InformationMenu(GameInfo_t *game_inf, WINDOW *menuWin) {
     wattroff(menuWin, COLOR_BLACK);
     wrefresh(menuWin);
 }
+
+void printPauseGame(GameInfo_t *game_inf, WINDOW *menuWin) {
+    wclear(menuWin);
+    wattron(menuWin, COLOR_PAIR(3));
+    for (int i = 0; i < Y_MENU; i += 2) {
+        if (i == 2) {
+            mvwprintw(menuWin, i, 14, "Backspace for exit");
+        } else if (i == 4) {
+            mvwprintw(menuWin, i, 14, "Enter for pause");
+        } else if (i == 6) {
+            mvwprintw(menuWin, i, 14, "Level :%d", game_inf->level);
+        } else if (i == 8) {
+            mvwprintw(menuWin, i, 14, "Score :%d", game_inf->score);
+        } else if (i == 10) {
+            mvwprintw(menuWin, i, 14, "Speed :%d", game_inf->speed);
+        } else if (i == 12) {
+            mvwprintw(menuWin, i, 14, "Record :%d", game_inf->high_score);
+        } else if (i == 14) {
+            mvwprintw(menuWin, i, 14, "Status game: %s", game_inf->status);
+        }
+    }
+    wattroff(menuWin, COLOR_BLACK);
+    printNextMap(game_inf->field, menuWin);
+    wrefresh(menuWin);
+}
