@@ -6,6 +6,7 @@
 #include "../figures/figuresForGames.h"
 #include "../includes/common.h"
 #include "../menu/menu_for_game.h"
+#include "logic.h"
 
 #define Q_KEY 113
 #define NUM_KEYS 6
@@ -21,8 +22,9 @@ void startGame() {
     nodelay(stdscr, TRUE);  // Включаю режим немедленного ввода
     InitGameBoard(game->field);
     // printNextMap(game->field, gameWindow);
-
     // InformationMenu(game, stdscr);
+    nextFigureGeneretion(game, stdscr);
+    UpdateGameScreen(game, stdscr);
 
     bool hold = false;
     bool keyHeld = false;
@@ -181,7 +183,7 @@ void userInput(UserAction_t action, bool hold) {
     switch (action) {
         case Start:
             // Обработка действия "Start"
-            nextFigureGeneretion(game, stdscr);
+            // nextFigureGeneretion(game, stdscr);
             UpdateGameScreen(game, stdscr);
             break;
         case Pause:
@@ -202,15 +204,17 @@ void userInput(UserAction_t action, bool hold) {
             if (hold) {
                 // game->delay = 200;
                 game->speed = 5;
-                nextFigureGeneretion(game, stdscr);
+                swapFigureDown(game);
+
+                // nextFigureGeneretion(game, stdscr);
                 UpdateGameScreen(game, stdscr);
                 // Обработка случая, когда удерживается клавиша
             }
             break;
         case Action:
             // Обработка действия "Action"
-            nextFigureGeneretion(game, stdscr);
             UpdateGameScreen(game, stdscr);
+            // nextFigureGeneretion(game, stdscr);
             break;
         default:
             // Обработка неверного действия
@@ -229,7 +233,6 @@ void PauseGame(GameInfo_t *game) {
 
 void UpdateGameScreen(GameInfo_t *game_inf, WINDOW *gameWindow) {
     wclear(gameWindow);
-
     // Отрисовка игрового поля
     for (int i = 0; i < Y_GAME_BOARD; i++) {
         for (int j = 0; j < X_GAME_BOARD; j++) {
@@ -264,6 +267,7 @@ void UpdateGameScreen(GameInfo_t *game_inf, WINDOW *gameWindow) {
 
 void nextFigureGeneretion(GameInfo_t *game, WINDOW *gameWindow) {
     int figureNumber = getRandNumberFigures();
+    Coordinat_Current_Figure *coordFigure = getCoordinate_GameFigure();
 
     saveOldMap(game);
 
@@ -275,6 +279,19 @@ void nextFigureGeneretion(GameInfo_t *game, WINDOW *gameWindow) {
 
     int dimesion = (figureNumber == 0) ? 4 : 3;
 
+    // Определяем начальные координаты старта новой фигуры
+    coordFigure->X = (X_GAME_BOARD / 2) -
+                     (dimesion / 2);  // Начальная позиция по горизонтали
+
+    coordFigure->Y = 1;  // Начальная позиция по вертикали
+
+    coordFigure->dimension = dimesion;
+    for(int i = 0; i < dimesion; ++i) {
+        for (int j = 0; j < dimesion; ++j) {
+            int value = *(figurePointer + i * dimesion + j);
+            coordFigure->figure[i][j] = value;
+        }
+    }
     for (int i = 0; i < dimesion; ++i) {
         for (int j = 0; j < dimesion; j++) {
             int value = *(figurePointer + i * dimesion + j);

@@ -12,8 +12,8 @@ MAP = map/map_for_board.c
 COMMON = includes/common.h
 CONTROLLER = controller/reader_with_console.c
 GAMELOGIC = gamelogic/start_game.c
-
-OBJECTS = $(BUILD_DIR)/$(notdir $(FIGURE:.c=.o)) $(BUILD_DIR)/$(notdir $(MENU:.c=.o)) $(BUILD_DIR)/$(notdir $(MAP:.c=.o)) $(BUILD_DIR)/$(notdir $(CONTROLLER:.c=.o)) $(BUILD_DIR)/$(notdir $(GAMELOGIC:.c=.o))
+LOGIC = gamelogic/logic.c
+OBJECTS = $(BUILD_DIR)/$(notdir $(FIGURE:.c=.o)) $(BUILD_DIR)/$(notdir $(MENU:.c=.o)) $(BUILD_DIR)/$(notdir $(MAP:.c=.o)) $(BUILD_DIR)/$(notdir $(CONTROLLER:.c=.o)) $(BUILD_DIR)/$(notdir $(GAMELOGIC:.c=.o)) $(BUILD_DIR)/$(notdir $(LOGIC:.c=.o))
 
 .PHONY: format clean all
 
@@ -41,6 +41,9 @@ $(BUILD_DIR)/$(notdir $(CONTROLLER:.c=.o)): $(CONTROLLER) $(COMMON) | $(BUILD_DI
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(BUILD_DIR)/$(notdir $(GAMELOGIC:.c=.o)): $(GAMELOGIC) $(COMMON) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/$(notdir $(LOGIC:.c=.o)): $(LOGIC) $(COMMON) | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 format:
