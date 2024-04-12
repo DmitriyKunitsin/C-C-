@@ -25,7 +25,7 @@ int main() {
 
     initializeWindows(&gameWindow, &menuWindow);
     clearCurrentScreen(stdscr);
-    ReaderForMenuSelectedItem(menuWindow, gameWindow);
+    ReaderForMenuSelectedItem(menuWindow);
 
     cleanupWindows(gameWindow, menuWindow);
     endwin();

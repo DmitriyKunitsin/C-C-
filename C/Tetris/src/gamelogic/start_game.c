@@ -11,16 +11,18 @@
 #define NUM_KEYS 6
 int validKeys[NUM_KEYS] = {KEY_LEFT, KEY_RIGHT, KEY_UP,
                            KEY_DOWN, '\n',      KEY_BACKSPACE};
-void startGame(WINDOW *gameWindow) {
+void startGame() {
     GameInfo_t *game = getInstance_GameInfo();
     UserAction_t action = Start;
+    StatusGame_t *statusGame = getStatus_Game();
+    *statusGame = (StatusGame_t)Start;
     initGame(game);
 
     nodelay(stdscr, TRUE);  // Включаю режим немедленного ввода
     InitGameBoard(game->field);
-    printNextMap(game->field, gameWindow);
-    InformationMenu(game, stdscr);
-    nextFigureGeneretion(game, gameWindow);
+    // printNextMap(game->field, gameWindow);
+
+    // InformationMenu(game, stdscr);
 
     bool hold = false;
     bool keyHeld = false;
@@ -29,6 +31,8 @@ void startGame(WINDOW *gameWindow) {
         -1;  // TODO может добавлю расширение для разных клавиш зажатие
 
     while (action != Terminate) {
+        buf_ch = myDelay(game->delay);
+        action = (buf_ch == -1) ? Action : action;
         int ch = getch();
         if (buf_ch != -1) {
             ch = buf_ch;
@@ -66,7 +70,7 @@ void startGame(WINDOW *gameWindow) {
                     // Обработка действия при удержании клавиши
                 case KEY_DOWN:
                     hold = true;
-                    *game = updateCurrentState();
+                    // *game = updateCurrentState();
                     keyHeld = false;
                     break;
                 // TODO стрелку вверх надо будет настроить на переворот фигуры
@@ -83,13 +87,11 @@ void startGame(WINDOW *gameWindow) {
         if (action == Terminate) {
             break;
         }
-        game->level += 1;
         // halfdelay(game->delay);
-        buf_ch = myDelay(game->delay);
         userInput(action, hold);
-        InformationMenu(game, stdscr);
-        nextFigureGeneretion(game, gameWindow);
-
+        game->level += 1;
+        // InformationMenu(game, stdscr);
+        // nextFigureGeneretion(game, gameWindow);
         action = Start;
     }
     clearBoard(game);
@@ -104,6 +106,11 @@ GameInfo_t *getInstance_GameInfo() {
     return &game_info;
 }
 
+StatusGame_t *getStatus_Game() {
+    static StatusGame_t status_game;
+    return &status_game;
+}
+
 UserAction_t *getUserAction() {
     static UserAction_t user_info;
     return &user_info;
@@ -111,9 +118,9 @@ UserAction_t *getUserAction() {
 
 GameInfo_t updateCurrentState() {
     GameInfo_t *game = getInstance_GameInfo();
-    game->speed = 5;
-    game->delay = 5;
-    // game->level += 1;
+    // game->speed = 5;
+    // game->delay = 5;
+
     return *game;
 }
 
@@ -169,9 +176,13 @@ int myDelay(int milliseconds) {
 
 void userInput(UserAction_t action, bool hold) {
     GameInfo_t *game = getInstance_GameInfo();
+    // StatusGame_t *statusGame = getStatus_Game();
+
     switch (action) {
         case Start:
             // Обработка действия "Start"
+            nextFigureGeneretion(game, stdscr);
+            UpdateGameScreen(game, stdscr);
             break;
         case Pause:
             // Обработка действия "Pause"
@@ -189,12 +200,17 @@ void userInput(UserAction_t action, bool hold) {
         case Down:
             // Обработка действия "Down"
             if (hold) {
-                game->delay = 200;
+                // game->delay = 200;
+                game->speed = 5;
+                nextFigureGeneretion(game, stdscr);
+                UpdateGameScreen(game, stdscr);
                 // Обработка случая, когда удерживается клавиша
             }
             break;
         case Action:
             // Обработка действия "Action"
+            nextFigureGeneretion(game, stdscr);
+            UpdateGameScreen(game, stdscr);
             break;
         default:
             // Обработка неверного действия
@@ -209,6 +225,41 @@ void PauseGame(GameInfo_t *game) {
     while ((ch = getch()) != '\n') {
     }
     strcpy(game->status, "Game");
+}
+
+void UpdateGameScreen(GameInfo_t *game_inf, WINDOW *gameWindow) {
+    wclear(gameWindow);
+
+    // Отрисовка игрового поля
+    for (int i = 0; i < Y_GAME_BOARD; i++) {
+        for (int j = 0; j < X_GAME_BOARD; j++) {
+            if (game_inf->field[i][j] == 0) {
+                wattron(gameWindow, COLOR_PAIR(1));
+                mvwprintw(gameWindow, i, j, " ");
+                wattroff(gameWindow, COLOR_BLACK);
+            } else {
+                wattron(gameWindow, COLOR_PAIR(2));
+                mvwprintw(gameWindow, i, j, "#");
+                wattroff(gameWindow, COLOR_BLACK);
+            }
+        }
+    }
+
+    // Отрисовка информационного меню
+    wattron(gameWindow, COLOR_PAIR(3));
+    mvwprintw(gameWindow, 2, X_GAME_BOARD + 5, "Backspace for exit");
+    mvwprintw(gameWindow, 4, X_GAME_BOARD + 5, "Enter for pause");
+    mvwprintw(gameWindow, 6, X_GAME_BOARD + 5, "Level :%d", game_inf->level);
+    mvwprintw(gameWindow, 8, X_GAME_BOARD + 5, "Score :%d", game_inf->score);
+    mvwprintw(gameWindow, 10, X_GAME_BOARD + 5, "Speed :%d", game_inf->speed);
+    mvwprintw(gameWindow, 12, X_GAME_BOARD + 5, "Record :%d",
+              game_inf->high_score);
+    mvwprintw(gameWindow, 14, X_GAME_BOARD + 5, "Status game: %s",
+              game_inf->status);
+    wattroff(gameWindow, COLOR_BLACK);
+
+    // Обновление экрана
+    wrefresh(gameWindow);
 }
 
 void nextFigureGeneretion(GameInfo_t *game, WINDOW *gameWindow) {
@@ -273,6 +324,10 @@ void initArray(int ***array) {
         (*array)[i] = (int *)malloc(X_SIZE_ARRAY * sizeof(int));
     }
 }
+
+// void updateScreen() {
+
+// }
 
 int getRandNumberFigures() {
     int min = 0;

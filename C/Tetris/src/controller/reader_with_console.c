@@ -1,6 +1,6 @@
 #include "reader_with_console.h"
 
-void ReaderForMenuSelectedItem(WINDOW *menuWindow, WINDOW *gameWind) {
+void ReaderForMenuSelectedItem(WINDOW *menuWindow) {
     int key;
     int selectedItem = 0;
     printMenu(menuWindow, 0);
@@ -14,7 +14,7 @@ void ReaderForMenuSelectedItem(WINDOW *menuWindow, WINDOW *gameWind) {
                     (selectedItem + 1 < 2) ? selectedItem + 1 : 2 - 1;
                 break;
             case '\n':
-                executeMenuItem(selectedItem, gameWind, menuWindow);
+                executeMenuItem(selectedItem);
                 break;
             default:
                 selectedItem = 0;

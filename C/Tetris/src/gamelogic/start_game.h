@@ -4,7 +4,7 @@
 #include "../includes/common.h"
 #include "../map/map_for_board.h"
 
-void startGame(WINDOW *gameWindow);
+void startGame();
 void nextFigureGeneretion(GameInfo_t *game, WINDOW *gameWindow);
 int getRandNumberFigures();
 
@@ -17,18 +17,19 @@ void initArray(int ***array);
 
 GameInfo_t *getInstance_GameInfo();
 UserAction_t *getUserAction();
+StatusGame_t *getStatus_Game();
 
 GameInfo_t updateCurrentState();
 void userInput(UserAction_t action, bool hold);
 
 void PauseGame(GameInfo_t *game);
 
-/*функция delay() принимает значение времени в микросекундах,
-а затем разбивает его на секунды и наносекунды для использования функции
-nanosleep(). Функция nanosleep() приостанавливает выполнение программы на
-указанное время. Если задержка была прервана (например, из-за сигнала), она
-продолжит оставшуюся часть задержки.*/
+void UpdateGameScreen(GameInfo_t *game_inf, WINDOW *gameWindow);
+
+/*Если во время задержки ничего не нажато, то возвращает -1
+иначе возвращает ASCII-код клавиши нажатой.*/
 int myDelay(int milliseconds);
+
 /*Проверка на валидность клавиши, чтобы игра не отрабатывала на не нужные
  * клавиши*/
 bool isValidKey(int ch);

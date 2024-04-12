@@ -3,12 +3,10 @@
 #include "../gamelogic/start_game.h"
 #include "../map/map_for_board.h"
 
-void executeMenuItem(int item, WINDOW *gameWindow, WINDOW *menuWindow) {
+void executeMenuItem(int item) {
     switch (item) {
         case 0:
-            werase(menuWindow);
-            wrefresh(menuWindow);
-            startGame(gameWindow);
+            startGame();
             werase(stdscr);
             wrefresh(stdscr);
             break;

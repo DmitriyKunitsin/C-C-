@@ -24,10 +24,6 @@ void printArrayWithColors(int **array) {
     }
 }
 
-// void updateScreenGame(GameInfo_t *game) {
-
-// }
-
 void saveOldMap(GameInfo_t *game) {
     for (int i = 0; i < Y_GAME_BOARD; i++) {
         for (int j = 0; j < X_GAME_BOARD; j++) {
@@ -48,7 +44,7 @@ void InitGameBoard(int **map) {
             }
         }
     }
-    printArrayWithColors(map);
+    // printArrayWithColors(map);
 }
 
 void printNextMap(int **array, WINDOW *gameWindow) {

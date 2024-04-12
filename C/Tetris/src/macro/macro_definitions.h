@@ -31,7 +31,11 @@ typedef struct {
     int delay;
     char status[10];
 } GameInfo_t;
-
+/*SPAWN - появление новой фигуры
+MOVE - пришла команда на движение
+SDVIG - прошел таймер, но клавиша не была нажата
+GAME_OVER  -конец игры
+CONNECT -  произошел контакт с полем или статичными фигурами*/
 typedef enum { START, SPAWN, MOVE, SDVIG, CONNECT, GAME_OVER } StatusGame_t;
 
 #define X_GAME_BOARD 11
