@@ -175,12 +175,7 @@ void userInput(UserAction_t action, bool hold) {
             break;
         case Pause:
             // Обработка действия "Pause"
-            int ch = -1;
-            strcpy(game->status, "Pause");
-            printPauseGame(game, stdscr);
-            while ((ch = getch()) != '\n') {
-            }
-            strcpy(game->status, "Game");
+            PauseGame(game);
             break;
         case Left:
             // Обработка действия "Left"
@@ -205,6 +200,15 @@ void userInput(UserAction_t action, bool hold) {
             // Обработка неверного действия
             break;
     }
+}
+
+void PauseGame(GameInfo_t *game) {
+    int ch = -1;
+    strcpy(game->status, "Pause");
+    printPauseGame(game, stdscr);
+    while ((ch = getch()) != '\n') {
+    }
+    strcpy(game->status, "Game");
 }
 
 void nextFigureGeneretion(GameInfo_t *game, WINDOW *gameWindow) {
