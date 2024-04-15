@@ -22,18 +22,17 @@ void swapFigureLeght(GameInfo_t *game) {
     int startY = ((current_X_Y->Y + current_X_Y->dimension) > Y_GAME_BOARD)
                      ? 21
                      : current_X_Y->Y;
-    int startX = ((current_X_Y->X + current_X_Y->dimension) > X_GAME_BOARD)
-                     ? 11
-                     : current_X_Y->X;
-    startX = (startX < 3) ? 3 : startX;
+    int startX =
+        ((current_X_Y->X - current_X_Y->dimension) < 0) ? 1 : (current_X_Y->X >= 11) ? 10: current_X_Y->X;
 
     for (int i = 0; i < current_X_Y->dimension; ++i) {
         for (int j = 0; j < current_X_Y->dimension; ++j) {
-            game->field[startY + i][startX - j] = current_X_Y->figure[i][j];
+            game->field[startY + i][startX + j] = current_X_Y->figure[i][j];
         }
     }
 
     getCoordinatsFigure(current_X_Y->Y, current_X_Y->X - 1);
+    swapFigureDown(game);
 }
 
 void swapFigureRight(GameInfo_t *game) {
@@ -43,9 +42,8 @@ void swapFigureRight(GameInfo_t *game) {
                      ? 21
                      : current_X_Y->Y;
     int startX = ((current_X_Y->X + current_X_Y->dimension) > X_GAME_BOARD)
-                     ? 11
-                     : current_X_Y->X;
-    startX = (startX > 7) ? 7 : startX;
+                     ? ((current_X_Y->dimension == 3 )? 7: 8)
+                     : (current_X_Y->X <= 1) ? 1: current_X_Y->X;
 
     for (int i = 0; i < current_X_Y->dimension; ++i) {
         for (int j = 0; j < current_X_Y->dimension; ++j) {
@@ -54,18 +52,19 @@ void swapFigureRight(GameInfo_t *game) {
     }
 
     getCoordinatsFigure(current_X_Y->Y, current_X_Y->X + 1);
+    swapFigureDown(game);
 }
 
 void swapFigureDown(GameInfo_t *game) {
     Coordinat_Current_Figure *current_X_Y = getCoordinate_GameFigure();
     clearBoard(game);
     int startY = ((current_X_Y->Y + current_X_Y->dimension) > Y_GAME_BOARD)
-                     ? 21
+                     ? 17
                      : current_X_Y->Y;
     int startX = ((current_X_Y->X + current_X_Y->dimension) > X_GAME_BOARD)
                      ? 11
                      : current_X_Y->X;
-    startY = (startY > 18) ? 18 : startY;
+    startX = (startX < 1) ? 1 : startX;
     for (int i = 0; i < current_X_Y->dimension; ++i) {
         for (int j = 0; j < current_X_Y->dimension; ++j) {
             game->field[startY + i][startX + j] = current_X_Y->figure[i][j];
