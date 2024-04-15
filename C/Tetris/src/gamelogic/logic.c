@@ -16,16 +16,28 @@ int checkCollision(GameInfo_t *game) {
     return flag;
 }
 
+void swapFigureRight(GameInfo_t *game) {
+    Coordinat_Current_Figure *current_X_Y = getCoordinate_GameFigure();
+    clearBoard(game);
+    // int startY =
+    //     ((current_X_Y->Y + current_X_Y->dimension) > Y_GAME_BOARD) ? 21 : current_X_Y->Y;
+    // int startX =
+    //     ((current_X_Y->X + current_X_Y->dimension) > X_GAME_BOARD) ? 11 : current_X_Y->X;
+
+
+    getCoordinatsFigure(current_X_Y->Y, current_X_Y->X + 1);
+}
+
 void swapFigureDown(GameInfo_t *game) {
     Coordinat_Current_Figure *current_X_Y = getCoordinate_GameFigure();
     clearBoard(game);
-    int dimision = current_X_Y->dimension;
     int startY =
-        ((current_X_Y->Y + dimision) > Y_GAME_BOARD) ? 21 : current_X_Y->Y;
+        ((current_X_Y->Y + current_X_Y->dimension) > Y_GAME_BOARD) ? 21 : current_X_Y->Y;
     int startX =
-        ((current_X_Y->X + dimision) > X_GAME_BOARD) ? 11 : current_X_Y->X;
-    for (int i = 0; i < dimision; ++i) {
-        for (int j = 0; j < dimision; ++j) {
+        ((current_X_Y->X + current_X_Y->dimension) > X_GAME_BOARD) ? 11 : current_X_Y->X;
+    startY = (startY > 18) ? 18 : startY;
+    for (int i = 0; i < current_X_Y->dimension; ++i) {
+        for (int j = 0; j < current_X_Y->dimension; ++j) {
             game->field[startY + i][startX + j] = current_X_Y->figure[i][j];
         }
     }
