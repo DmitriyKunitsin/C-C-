@@ -18,11 +18,11 @@ int* getFigure(FigureType type) {
 
     static int figure_Cube[3][3] = {{0, 0, 0}, {1, 1, 0}, {1, 1, 0}};
 
-    static int figure_Z_right_up[3][3] = { {0, 0, 0},{0, 1, 1}, {1, 1, 0}};
+    static int figure_Z_right_up[3][3] = {{0, 0, 0}, {0, 1, 1}, {1, 1, 0}};
 
-    static int figure_cross[3][3] = { {0, 0, 0}, {0, 1, 0}, {1, 1, 1}};
+    static int figure_cross[3][3] = {{0, 0, 0}, {0, 1, 0}, {1, 1, 1}};
 
-    static int figure_Z_left_up[3][3] = { {0, 0, 0}, {1, 1, 0}, {0, 1, 1}};
+    static int figure_Z_left_up[3][3] = {{0, 0, 0}, {1, 1, 0}, {0, 1, 1}};
 
     switch (type) {
         case LINE:

@@ -15,7 +15,7 @@ int validKeys[NUM_KEYS] = {KEY_LEFT, KEY_RIGHT, KEY_UP,
 void startGame() {
     GameInfo_t *game = getInstance_GameInfo();
     UserAction_t action = Start;
-    StatusGame_t* statusGame = getStatus_Game();
+    StatusGame_t *statusGame = getStatus_Game();
     initGame(game);
 
     nodelay(stdscr, TRUE);  // Включаю режим немедленного ввода
@@ -38,7 +38,7 @@ void startGame() {
         if (buf_ch != -1) {
             ch = buf_ch;
         }
-        if(*statusGame == SPAWN) {
+        if (*statusGame == SPAWN) {
             nextFigureGeneretion(game, stdscr);
             UpdateGameScreen(game, stdscr);
             *statusGame = START;
@@ -267,7 +267,7 @@ void UpdateGameScreen(GameInfo_t *game_inf, WINDOW *gameWindow) {
 void nextFigureGeneretion(GameInfo_t *game, WINDOW *gameWindow) {
     // int figureNumber = getRandNumberFigures();
     Coordinat_Current_Figure *coordFigure = getCoordinate_GameFigure();
-int figureNumber = 0 ;
+    int figureNumber = 0;
     saveOldMap(game);
 
     clearBoard(game);
@@ -293,7 +293,7 @@ int figureNumber = 0 ;
     for (int i = 0; i < dimesion; ++i) {
         for (int j = 0; j < dimesion; ++j) {
             int value = *(figurePointer + i * dimesion + j);
-            game->field[i+1][coordFigure->X + j] = value;
+            game->field[i + 1][coordFigure->X + j] = value;
         }
     }
     printNextMap(game->field, gameWindow);
