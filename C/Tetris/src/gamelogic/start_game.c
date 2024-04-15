@@ -194,6 +194,8 @@ void userInput(UserAction_t action, bool hold) {
             // Обработка действия "Left"
             break;
         case Right:
+            swapFigureRight(game);
+            UpdateGameScreen(game, stdscr);
             // Обработка действия "Right"
             break;
         case Up:

@@ -17,6 +17,7 @@ typedef struct {
 void getCoordinatsFigure(int y, int x);
 int checkCollision(GameInfo_t *game);
 void swapFigureDown(GameInfo_t *game);
+void swapFigureRight(GameInfo_t *game);
 Coordinat_Current_Figure *getCoordinate_GameFigure();
 
 #endif
