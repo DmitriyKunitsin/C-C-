@@ -191,6 +191,8 @@ void userInput(UserAction_t action, bool hold) {
             PauseGame(game);
             break;
         case Left:
+            swapFigureLeght(game);
+            UpdateGameScreen(game, stdscr);
             // Обработка действия "Left"
             break;
         case Right:
@@ -204,16 +206,14 @@ void userInput(UserAction_t action, bool hold) {
         case Down:
             // Обработка действия "Down"
             if (hold) {
-                // game->delay = 200;
                 game->speed = 5;
                 swapFigureDown(game);
-
-                // nextFigureGeneretion(game, stdscr);
                 UpdateGameScreen(game, stdscr);
                 // Обработка случая, когда удерживается клавиша
             }
             break;
         case Action:
+            swapFigureDown(game);
             // Обработка действия "Action"
             UpdateGameScreen(game, stdscr);
             // nextFigureGeneretion(game, stdscr);
