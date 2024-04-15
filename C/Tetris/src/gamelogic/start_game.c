@@ -15,8 +15,7 @@ int validKeys[NUM_KEYS] = {KEY_LEFT, KEY_RIGHT, KEY_UP,
 void startGame() {
     GameInfo_t *game = getInstance_GameInfo();
     UserAction_t action = Start;
-    StatusGame_t *statusGame = getStatus_Game();
-    *statusGame = (StatusGame_t)Start;
+    StatusGame_t* statusGame = getStatus_Game();
     initGame(game);
 
     nodelay(stdscr, TRUE);  // Включаю режим немедленного ввода
@@ -38,6 +37,11 @@ void startGame() {
         int ch = getch();
         if (buf_ch != -1) {
             ch = buf_ch;
+        }
+        if(*statusGame == SPAWN) {
+            nextFigureGeneretion(game, stdscr);
+            UpdateGameScreen(game, stdscr);
+            *statusGame = START;
         }
         if (ch != ERR) {  // Если клавиша нажата
             switch (ch) {
@@ -97,7 +101,7 @@ void startGame() {
         action = Start;
     }
     clearBoard(game);
-    nodelay(stdscr, FALSE);  // Включаю режим немедленного ввода
+    nodelay(stdscr, FALSE);  // Выключаю режим немедленного ввода
     werase(stdscr);
     wrefresh(stdscr);
     cleanupGameInfo(game);
@@ -163,16 +167,9 @@ int myDelay(int milliseconds) {
             ch = getch();
         } else {
             ch = -1;
-            // Тайм-аут
-            // если фигура должна падать только по истечению времени, то
-            // добавлять сюда эту логику
             break;
         }
     }
-    // TODO скорее всего надо будет здесь добавить перед выходом программы
-    // расчет по поводу того, что фигура должна падать
-    // по условиям либо при нажатии и происходит действие
-    // либо по истечению таймера
     return ch;
 }
 
@@ -268,9 +265,9 @@ void UpdateGameScreen(GameInfo_t *game_inf, WINDOW *gameWindow) {
 }
 
 void nextFigureGeneretion(GameInfo_t *game, WINDOW *gameWindow) {
-    int figureNumber = getRandNumberFigures();
+    // int figureNumber = getRandNumberFigures();
     Coordinat_Current_Figure *coordFigure = getCoordinate_GameFigure();
-
+int figureNumber = 0 ;
     saveOldMap(game);
 
     clearBoard(game);
@@ -282,8 +279,7 @@ void nextFigureGeneretion(GameInfo_t *game, WINDOW *gameWindow) {
     int dimesion = (figureNumber == 0) ? 4 : 3;
 
     // Определяем начальные координаты старта новой фигуры
-    coordFigure->X = (X_GAME_BOARD / 2) -
-                     (dimesion / 2);  // Начальная позиция по горизонтали
+    coordFigure->X = (X_GAME_BOARD / 2);  // Начальная позиция по горизонтали
 
     coordFigure->Y = 1;  // Начальная позиция по вертикали
 
@@ -295,10 +291,9 @@ void nextFigureGeneretion(GameInfo_t *game, WINDOW *gameWindow) {
         }
     }
     for (int i = 0; i < dimesion; ++i) {
-        for (int j = 0; j < dimesion; j++) {
+        for (int j = 0; j < dimesion; ++j) {
             int value = *(figurePointer + i * dimesion + j);
-
-            game->field[i + 1][(X_GAME_BOARD / 2) - (dimesion / 2) + j] = value;
+            game->field[i+1][coordFigure->X + j] = value;
         }
     }
     printNextMap(game->field, gameWindow);

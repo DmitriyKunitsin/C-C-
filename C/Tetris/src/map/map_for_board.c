@@ -25,9 +25,14 @@ void printArrayWithColors(int **array) {
 }
 
 void saveOldMap(GameInfo_t *game) {
-    for (int i = 0; i < Y_GAME_BOARD; i++) {
-        for (int j = 0; j < X_GAME_BOARD; j++) {
+    for (int i = 1; i < Y_GAME_BOARD; ++i) {
+        for (int j = 1; j < X_GAME_BOARD; ++j) {
             game->next[i][j] = game->field[i][j];
+        }
+    }
+    for(int i = 1; i < Y_GAME_BOARD; ++i) {
+        for(int j = 1; j < X_GAME_BOARD; ++j) {
+            game->field[i][j] = game->next[i][j];
         }
     }
 }
