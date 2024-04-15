@@ -286,8 +286,8 @@ void nextFigureGeneretion(GameInfo_t *game, WINDOW *gameWindow) {
     coordFigure->Y = 1;  // Начальная позиция по вертикали
 
     coordFigure->dimension = dimesion;
-    for(int i = 0; i < dimesion; ++i) {
-        for (int j = 0; j < dimesion; ++j) {
+    for (int i = 0; i < coordFigure->dimension; ++i) {
+        for (int j = 0; j < coordFigure->dimension; ++j) {
             int value = *(figurePointer + i * dimesion + j);
             coordFigure->figure[i][j] = value;
         }
@@ -296,7 +296,7 @@ void nextFigureGeneretion(GameInfo_t *game, WINDOW *gameWindow) {
         for (int j = 0; j < dimesion; j++) {
             int value = *(figurePointer + i * dimesion + j);
 
-            game->field[i + 1][(X_GAME_BOARD / 2) + j] = value;
+            game->field[i + 1][(X_GAME_BOARD / 2) - (dimesion / 2) + j] = value;
         }
     }
     printNextMap(game->field, gameWindow);

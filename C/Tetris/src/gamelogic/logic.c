@@ -20,14 +20,16 @@ void swapFigureDown(GameInfo_t *game) {
     Coordinat_Current_Figure *current_X_Y = getCoordinate_GameFigure();
     clearBoard(game);
     int dimision = current_X_Y->dimension;
-    int startY = ((current_X_Y->Y + dimision) > Y_GAME_BOARD) ? 21 : current_X_Y->Y;
-    int startX = ((current_X_Y->X + dimision) > X_GAME_BOARD) ? 11 : current_X_Y->X;
-    for (int i = startY; i < dimision; ++i) {
-        for (int j = startX; j < dimision; ++j) {
-            game->field[i+1][j] = current_X_Y->figure[i][j];
+    int startY =
+        ((current_X_Y->Y + dimision) > Y_GAME_BOARD) ? 21 : current_X_Y->Y;
+    int startX =
+        ((current_X_Y->X + dimision) > X_GAME_BOARD) ? 11 : current_X_Y->X;
+    for (int i = 0; i < dimision; ++i) {
+        for (int j = 0; j < dimision; ++j) {
+            game->field[startY + i][startX + j] = current_X_Y->figure[i][j];
         }
     }
-    getCoordinatsFigure(current_X_Y->Y + 1, current_X_Y->X);   
+    getCoordinatsFigure(current_X_Y->Y + 1, current_X_Y->X);
 }
 
 void getCoordinatsFigure(int y, int x) {
