@@ -1,6 +1,7 @@
 
 #include "map_for_board.h"
 
+#include "../gamelogic/start_game.h"
 #include "../menu/menu_for_game.h"
 
 int arr[Y_SIZE_ARRAY][X_SIZE_ARRAY];
@@ -30,6 +31,7 @@ void saveOldMap(GameInfo_t *game) {
             game->next[i][j] = game->field[i][j];
         }
     }
+    clearBoard(game);
     for (int i = 1; i < Y_GAME_BOARD; ++i) {
         for (int j = 1; j < X_GAME_BOARD; ++j) {
             game->field[i][j] = game->next[i][j];

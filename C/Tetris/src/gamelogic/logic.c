@@ -3,13 +3,21 @@
 int checkCollision(GameInfo_t *game) {
     Coordinat_Current_Figure *current_X_Y = getCoordinate_GameFigure();
     int flag = 0;
-    int startY = ((current_X_Y->Y + current_X_Y->dimension) > Y_GAME_BOARD)
-                     ? 21
+    int startY = ((current_X_Y->Y + current_X_Y->dimension) > 21)
+                     ? 17
                      : current_X_Y->Y;
     int startX = (current_X_Y->X - (current_X_Y->dimension / 2));
+
+    /*  v1 |   v2  | v3
+        v4 | centr | v6
+        v7 |   v8  | v9
+    */
+    // int v1 = current_X_Y->figure[startY - 1][startX - 1];
+
+
     for (int i = 0; i < current_X_Y->dimension; ++i) {
         for (int j = 0; j < current_X_Y->dimension; ++j) {
-            int valuue = current_X_Y->figure[startY + i][startX + j];
+            int valuue = current_X_Y->figure[startY + i][startX];
             if (valuue == 1 && (game->field[startY + i][startX + j] == 1)) {
                 flag = 1;  // столкновение обранурежно
                 break;
@@ -62,7 +70,7 @@ void swapFigureRight(GameInfo_t *game) {
 void swapFigureDown(GameInfo_t *game) {
     Coordinat_Current_Figure *current_X_Y = getCoordinate_GameFigure();
     // clearBoard(game);
-    StatusGame_t *statusGame = getStatus_Game();
+    // StatusGame_t *statusGame = getStatus_Game();
     int startY = ((current_X_Y->Y + current_X_Y->dimension) > Y_GAME_BOARD)
                      ? 17
                      : current_X_Y->Y;
@@ -77,10 +85,10 @@ void swapFigureDown(GameInfo_t *game) {
     }
     getCoordinatsFigure((current_X_Y->Y + 1) == 21 ? 20 : (current_X_Y->Y + 1),
                         current_X_Y->X);
-    if (checkCollision(game)) {
-        saveOldMap(game);
-        *statusGame = SPAWN;
-    }
+    // if (checkCollision(game)) {
+    //     saveOldMap(game);
+    //     *statusGame = SPAWN;
+    // }
 }
 
 void getCoordinatsFigure(int y, int x) {

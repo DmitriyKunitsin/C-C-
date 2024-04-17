@@ -16,6 +16,7 @@ void startGame() {
     GameInfo_t *game = getInstance_GameInfo();
     UserAction_t action = Start;
     StatusGame_t *statusGame = getStatus_Game();
+    *statusGame = START;
     initGame(game);
 
     nodelay(stdscr, TRUE);  // Включаю режим немедленного ввода
@@ -279,11 +280,12 @@ void nextFigureGeneretion(GameInfo_t *game, WINDOW *gameWindow) {
     int dimesion = (figureNumber == 0) ? 4 : 3;
 
     // Определяем начальные координаты старта новой фигуры
+    coordFigure->dimension = dimesion;
+
     coordFigure->X = (X_GAME_BOARD / 2);  // Начальная позиция по горизонтали
 
-    coordFigure->Y = 1;  // Начальная позиция по вертикали
+    coordFigure->Y = (coordFigure->dimension / 2);  // Начальная позиция по вертикали
 
-    coordFigure->dimension = dimesion;
     for (int i = 0; i < coordFigure->dimension; ++i) {
         for (int j = 0; j < coordFigure->dimension; ++j) {
             int value = *(figurePointer + i * dimesion + j);
