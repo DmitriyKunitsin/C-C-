@@ -133,6 +133,27 @@ int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
     error = FAILED_MATRIX;
   }
 }
+
+int s21_transpose(matrix_t *A, matrix_t *result) {
+  int error = OK;
+  if ((A->columns < 1) || (A->rows < 1)) {
+    error = FAILED_MATRIX;
+  } else if (A->matrix == NULL) {
+    error = INCORRECT_MATRIX;
+  } else {
+    error = s21_create_matrix(A->columns, A->rows, result);
+    if (error == OK) {
+      // TODO transpone
+      for (int i = 0; i < A->rows; ++i) {
+        for (int k = 0; k < A->columns; ++k) {
+          result->matrix[k][i] = A->matrix[i][k];
+        }
+      }
+    }
+  }
+  return error;
+}
+
 /*
 Все операции (кроме сравнения матриц) должны возвращать результирующий код:
 

@@ -32,5 +32,7 @@ int s21_mult_number(matrix_t *A, double number, matrix_t *result);
 int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result);
 /*Функция для проверки матрицы 0 - ОК 1 - некоректная матрица 2 - несовпадающие размеры матриц;*/
 int check_matrix_sub_and_sum(matrix_t *A, matrix_t *B);
+/*Транспонирование матрицы*/
+int s21_transpose(matrix_t *A, matrix_t *result);
 
 #endif
