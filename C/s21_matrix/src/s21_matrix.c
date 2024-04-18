@@ -110,6 +110,29 @@ int s21_mult_number(matrix_t *A, double number, matrix_t *result) {
 
   return error;
 }
+
+/*для умножения матриц A и B, необходимо,
+чтобы количество столбцов матрицы A (A->columns) равнялось количеству строк
+матрицы B (B->rows).*/
+int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
+  int error = OK;
+  if (A->matrix == NULL || B->matrix == NULL) {
+    error = INCORRECT_MATRIX;
+  } else if (A->columns == B->rows) {
+    error = s21_create_matrix(B->rows, A->columns, result);
+    if (error == OK) {
+      for (int i = 0; i < B->rows; ++i) {
+        for (int k = 0; k < A->columns; ++k) {
+          for (int j = 0; j < A->columns; ++j) {
+            result->matrix[i][k] += A->matrix[i][j] * B->matrix[j][k];
+          }
+        }
+      }
+    }
+  } else {
+    error = FAILED_MATRIX;
+  }
+}
 /*
 Все операции (кроме сравнения матриц) должны возвращать результирующий код:
 
