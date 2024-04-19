@@ -62,7 +62,7 @@ START_TEST(s21_calc_compl_test_3) {
 END_TEST
 
 Suite *test_calc_compl() {
-  Suite *s = suite_create("\033[42m-=S21_MATRIX_CALC_COMPL=-\033[0m");
+  Suite *s = suite_create("\033[36m-=S21_MATRIX_CALC_COMPL=-\033[0m");
   TCase *tc = tcase_create("case_calc_compl");
   tcase_add_test(tc, s21_calc_compl_test_1);
   tcase_add_test(tc, s21_calc_compl_test_2);
