@@ -57,7 +57,6 @@ int s21_eq_matrix(matrix_t *A, matrix_t *B) {
   } else {
     error = FAILURE;
   }
-
   return error;
 }
 
@@ -107,13 +106,8 @@ int s21_mult_number(matrix_t *A, double number, matrix_t *result) {
       }
     }
   }
-
   return error;
 }
-
-/*для умножения матриц A и B, необходимо,
-чтобы количество столбцов матрицы A (A->columns) равнялось количеству строк
-матрицы B (B->rows).*/
 int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
   int error = OK;
   if (A->matrix == NULL || B->matrix == NULL) {
@@ -172,7 +166,6 @@ int s21_calc_complements(matrix_t *A, matrix_t *result) {
           if (error != OK) {
             break;
           }
-
           int subi = 0, subj = 0;
           for (int k = 0; k < A->rows; ++k) {
             if (k == i)
@@ -186,22 +179,18 @@ int s21_calc_complements(matrix_t *A, matrix_t *result) {
             subi++;
             subj = 0;
           }
-
           double minor_det;
           error = s21_determinant(&minor, &minor_det);
           if (error != OK) {
             s21_remove_matrix(&minor);
             break;
           }
-
           result->matrix[i][j] = minor_det * pow((-1), i + j);
-
           s21_remove_matrix(&minor);
         }
       }
     }
   }
-
   return error;
 }
 
@@ -243,24 +232,40 @@ int s21_determinant(matrix_t *A, double *result) {
       }
     }
   }
-
   return error;
 }
 
 int s21_inverse_matrix(matrix_t *A, matrix_t *result) {
   int error = OK;
-
+  if (A->columns != A->rows) {
+    error = FAILED_MATRIX;
+  } else if (A->matrix == NULL) {
+    error = INCORRECT_MATRIX;
+  } else {
+    error = s21_create_matrix(A->rows, A->columns, result);
+    if (error == OK) {
+      double determent;
+      error = s21_determinant(A, &determent);
+      if (error == OK && determent != 0) {
+        matrix_t minor = {0};
+        error = s21_create_matrix(A->rows, A->columns, &minor);
+        if (error == OK) {
+          error = s21_calc_complements(A, &minor);
+          if (error == OK) {
+            error = s21_transpose(&minor, A);
+            if (error == OK) {
+              s21_mult_number(A, 1 / determent, result);
+            }
+          }
+        }
+        s21_remove_matrix(&minor);
+      } else {
+        error = FAILED_MATRIX;
+      }
+    }
+  }
   return error;
 }
-
-/*
-Все операции (кроме сравнения матриц) должны возвращать результирующий код:
-
-0 - OK
-1 - Ошибка, некорректная матрица
-2 - Ошибка вычисления (несовпадающие размеры матриц; матрица, для которой нельзя
-провести вычисления и т.д.)
-*/
 int check_matrix_sub_and_sum(matrix_t *A, matrix_t *B) {
   int error = OK;
   if ((A->rows != B->rows) || (A->columns != B->columns)) {

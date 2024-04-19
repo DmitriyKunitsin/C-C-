@@ -16,6 +16,7 @@ typedef struct matrix_struct {
     int rows;
     int columns;
 } matrix_t;
+
 /*Создание матрицы*/
 int s21_create_matrix(int rows, int columns, matrix_t *result);
 /*Очищение матрицы*/
