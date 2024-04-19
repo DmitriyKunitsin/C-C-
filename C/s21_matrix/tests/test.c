@@ -11,12 +11,12 @@ int main() {
                                test_eq(),
                                test_sum(),
                                test_sub(),
-                               test_mul_num()/*,
+                               test_mul_num(),
                                test_mul_matrix(),
                                test_transpose(),
                                test_dtr(),
                                test_calc_compl(),
-                               test_invert_matrix()*/,
+                               test_invert_matrix(),
                                NULL};
 
   for (int i = 0; s21_decimal_test[i] != NULL; i++) {

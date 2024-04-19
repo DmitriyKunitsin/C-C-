@@ -109,7 +109,7 @@ START_TEST(s21_inverse_matrix_test_5) {
 END_TEST
 
 Suite *test_invert_matrix() {
-  Suite *s = suite_create("\033[42m-=S21_MATRIX_INVERSE=-\033[0m");
+  Suite *s = suite_create("\033[36m-=S21_MATRIX_INVERSE=-\033[0m");
   TCase *tc = tcase_create("case_inverse_matrix");
   tcase_add_test(tc, s21_inverse_matrix_test_1);
   tcase_add_test(tc, s21_inverse_matrix_test_2);

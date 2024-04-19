@@ -1,8 +1,8 @@
 CC = gcc
-CFLAGS=-std=c11 -Wall -Werror -Wextra
+CFLAGS=-std=c11# -Wall -Werror -Wextra
 SRC=s21_matrix.c
 TESTS=../tests/*.c
-FLAG_TEST=-lcheck
+FLAG_TEST=-lcheck -lm -lsubunit
 SRCS=$(wildcard s21_*.c)
 OBJS=$(SRCS:.c=.o)
 

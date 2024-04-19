@@ -115,7 +115,7 @@ START_TEST(s21_mul_matrix_test_4) {
 END_TEST
 
 Suite *test_mul_matrix() {
-  Suite *s = suite_create("\033[42m-=S21_MATRIX_MUL_MATRIX=-\033[0m");
+  Suite *s = suite_create("\033[36m-=S21_MATRIX_MUL_MATRIX=-\033[0m");
   TCase *tc = tcase_create("case_mul_matrix");
   tcase_add_test(tc, s21_mul_matrix_test_1);
   tcase_add_test(tc, s21_mul_matrix_test_2);

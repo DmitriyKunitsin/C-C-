@@ -80,7 +80,7 @@ START_TEST(s21_sum_test_3) {
 END_TEST
 
 Suite *test_sum() {
-  Suite *s = suite_create("\033[42m-=S21_MATRIX_SUM=-\033[0m");
+  Suite *s = suite_create("\033[36m-=S21_MATRIX_SUM=-\033[0m");
   TCase *tc = tcase_create("case_sum_matrix");
   tcase_add_test(tc, s21_sum_test_1);
   tcase_add_test(tc, s21_sum_test_2);

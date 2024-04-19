@@ -89,7 +89,7 @@ START_TEST(s21_sub_test_4) {
 END_TEST
 
 Suite* test_sub() {
-  Suite* s = suite_create("\033[42m-=S21_MATRIX_SUB=-\033[0m");
+  Suite* s = suite_create("\033[36m-=S21_MATRIX_SUB=-\033[0m");
   TCase* tc1_1 = tcase_create("case_sub_matrix");
   tcase_add_test(tc1_1, s21_sub_test_1);
   tcase_add_test(tc1_1, s21_sub_test_2);
