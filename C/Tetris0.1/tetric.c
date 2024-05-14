@@ -255,9 +255,6 @@ void ApperanceFigure() {
 /*замена новой на старую фигуру*/
 void SwapFigureOldToNew() {
   CurrentFigure_my *GameFigure = getCoordinate_GameFigure();
-    GameFigure->X = ((SIZE_MAP_X - GameFigure->dimension) /
-                          2); // стартовые позиции фигуры
-  GameFigure->Y = (GameFigure->dimension / 2);
   for(int i = 0; i < GameFigure->dimension; ++i) {
     for(int j = 0; j < GameFigure->dimension; ++j) {
       GameFigure->figure[i][j] = GameFigure->nextFigure[i][j];
