@@ -54,7 +54,8 @@ typedef struct {
 
 // void userInput(UserAction_t action, bool hold);
 
-void ApperanceFigure();
+void ApperanceFigureToNextField();
+void saveMapAndNextFigure();
 void MyDelay(int millisecond);
 int getRandNumberFigures();
 int* getFigure(FigureType type);
@@ -66,6 +67,9 @@ int check_X_EdgeBoard_Left_Right();
 void GenereatedNextFigure();
 void SwapFigureOldToNew();
 void figureMoveDown();
+void checkColissionFigure();
+int check_X_Edge();
+int check_Y_Edge();
 void startGame();
 void printMap();
 void clearMap();

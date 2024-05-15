@@ -20,26 +20,31 @@ void startGame() {
   char key;
   static int counter = 0;
   // printf("start game\n");
-  ApperanceFigure();
+  ApperanceFigureToNextField();
   // printMap();
   CurrentFigure_my *figur = getCoordinate_GameFigure();
   while ((key = getch()) != 'q') {
 
     clearMap();
     // MyDelay(10);
-    // ApperanceFigure();
+    // ApperanceFigureToNextField();
     figureMoveDown();
     // controllerGame(key);
     printMap();
-    refresh();
-    mvprintw(9, 24, "_______next_figure________\n");
+    mvprintw(14, 24, "_next___current___\n");
     for (int i = 0; i < figur->dimension; ++i) {
       for (int j = 0; j < figur->dimension; ++j) {
-        mvprintw(10 + i, 25 + j, "%d", figur->nextFigure[i][j]);
+        mvprintw(15 + i, 25 + j, "%d", figur->nextFigure[i][j]);
       }
     }
-    mvprintw(15, 24, "__________________________\n");
+    for (int i = 0; i < figur->dimension; ++i) {
+      for (int j = 0; j < figur->dimension; ++j) {
+        mvprintw(15 + i, 35 + j, "%d", figur->figure[i][j]);
+      }
+    }
+    mvprintw(19, 24, "___________________\n");
     mvprintw(20, 30, "step : %d", counter++);
+    refresh();
   }
 }
 /*Выделение памяти для структуры данных игровой  карты*/
@@ -83,11 +88,11 @@ void printMap() {
   GameInfo_t *game = getInstance_GameInfo();
   for (int i = 0; i < SIZE_MAP_Y; ++i) {
     for (int j = 0; j < SIZE_MAP_X; ++j) {
-      if (game->field[i][j] == 1) {
-        mvprintw(i, j, "#  ");
-      } else if (game->field[i][j] == 2) {
+      if (game->field[i][j] == 1 || game->next[i][j] == 1) {
+        mvprintw(i, j, "*  ");
+      } else if (game->field[i][j] == 2 || game->next[i][j] == 2) {
         mvprintw(i, j, "1  ");
-      } else if (game->field[i][j] == 3) {
+      } else if (game->field[i][j] == 3 || game->next[i][j] == 3) {
         mvprintw(i, j, "*  ");
       } else {
         mvprintw(i, j, "0  ");
@@ -105,7 +110,10 @@ void clearMap() {
       } else if (j == 0 || j == 9) {
         gameBoard->field[i][j] = 1;
       } else {
-        gameBoard->field[i][j] = 0;
+        // gameBoard->field[i][j] = 0;
+        // if (gameBoard->next[i][j] != 0) {
+          gameBoard->next[i][j] = 0;
+        // }
       }
     }
   }
@@ -127,23 +135,22 @@ UserAction_t *getUserAction() {
 void figureMoveDown() {
   GameInfo_t *game = getInstance_GameInfo();
   CurrentFigure_my *currentFigure = getCoordinate_GameFigure();
-  currentFigure->Y += 1;
   mvprintw(1, 25, "y = %d", currentFigure->Y);
+  currentFigure->Y += 1;
   mvprintw(2, 25, "x = %d", currentFigure->X);
-  mvprintw(3, 25, "center y = %d", currentFigure->Y + 2);
   mvprintw(4, 25, "center X = %d", currentFigure->X + 2);
   currentFigure->Y = check_Y_EdgeBoard_Down_Up();
   currentFigure->X = check_X_EdgeBoard_Left_Right();
   int countI = 0;
   int countJ = 0;
+  checkColissionFigure();
   // mvprintw(2,25,"countI = %d,countJ = %d",countI,countJ);
-  for (int i = currentFigure->Y; i < (currentFigure->Y+currentFigure->dimension); ++i) {
-    for (int j = currentFigure->X; j < (currentFigure->X+currentFigure->dimension); ++j) {
-      if (currentFigure->figure[countI][countJ] == 2) {
-        game->field[i][j] = currentFigure->figure[countI][countJ];
-      }
-      if (currentFigure->Y == i && currentFigure->X == j) {
-        game->field[i][j] = 3;
+  for (int i = currentFigure->Y;
+       i < (currentFigure->Y + currentFigure->dimension); ++i) {
+    for (int j = currentFigure->X;
+         j < (currentFigure->X + currentFigure->dimension); ++j) {
+      if (currentFigure->figure[countI][countJ] == 1) {
+        game->next[i][j] = currentFigure->figure[countI][countJ];
       }
       countJ++;
     }
@@ -153,11 +160,13 @@ void figureMoveDown() {
   countI = 0;
   countJ = 0;
 }
+/*изменение координаты Y снизу, в случае выхода из границы*/
 int check_Y_EdgeBoard_Down_Up() {
   CurrentFigure_my *figure = getCoordinate_GameFigure();
   figure->Y = (figure->Y + figure->dimension) > SIZE_MAP_Y ? 16 : figure->Y;
   return figure->Y;
 }
+/*изменение координаты X слева и справа, в случае выхода из границы*/
 int check_X_EdgeBoard_Left_Right() {
   CurrentFigure_my *figure = getCoordinate_GameFigure();
   figure->X =
@@ -165,15 +174,78 @@ int check_X_EdgeBoard_Left_Right() {
   figure->X = ((figure->X - (figure->dimension / 2)) <= 0) ? 1 : figure->X;
   return figure->X;
 }
-// void checkColissionFigure() {
+/*Чек окружения вокруг фигуры*/
+void checkColissionFigure() {
+  CurrentFigure_my *figure = getCoordinate_GameFigure();
+  // UserAction_t *status = getUserAction();
+  // *status = Action;
+  GameInfo_t *game = getInstance_GameInfo();
+  // int it =
+  // figure->Y = check_Y_Edge();
+  // int jt = check_X_Edge();
+  int t = 0;
+  int g = 0;
+  for (int i = figure->Y; i < (figure->dimension + figure->Y); ++i) {
+    for (int j = figure->X; j < (figure->dimension + figure->X); ++j) {
+      // game->field[i][j] = 3;
+      if (figure->figure[t][g] == 1) {
+        mvprintw(3, 25, "check i = %d", i);
+        if (game->field[i + 1][j] == 1) {
+          mvprintw(6, 25, "check saveMap");
+          saveMapAndNextFigure();
+        }
+      }
+      g++;
+    }
+    t++;
+  }
+  t = 0;
+  g = 0;
+  // refresh();
+  int jec = 7;
+  for (int i = figure->Y; i < (figure->Y + 5); ++i) {
+    for (int j = figure->X; j < figure->X + 5; ++j) {
+      mvprintw(jec++, 55, "i :%d j: %d", i, j);
+    }
+  }
+}
+void saveMapAndNextFigure() {
+  GameInfo_t *game = getInstance_GameInfo();
+  for (int i = 1; i < SIZE_MAP_Y - 1; ++i) {
+    for (int j = 1; j < SIZE_MAP_X - 1; ++j) {
+      game->field[i][j] = game->next[i][j];
+    }
+  }
+  mvprintw(15, 25, "check saveMap");
+  ApperanceFigureToNextField();
+}
+/*чек края карты по X для проверки окружения, чтобы не выйти за границы игрового
+ * массива в случае, если уходит за края, то будет отнимать колизию, чтобы
+ * обработать окружение*/
+// int check_X_Edge() {
 //   CurrentFigure_my *figure = getCoordinate_GameFigure();
-//   UserAction_t *game = getUserAction();
-//   for(int i = 0; i < 5 ; ++i) {
-//     for(int j = 0; j < 5 ; ++j) {
-
-//     }
+//   int returnPosition = 0;
+//   if ((figure->X + figure->dimension) > 10) {
+//     returnPosition = 15;
+//   } else if (figure->X < 0) {
+//     returnPosition = 0;
+//   } else {
+//     returnPosition = figure->X;
 //   }
-
+//   return returnPosition;
+// }
+// /*чек края карты по Y для проверки окружения, чтобы не выйти за границы
+// игрового
+//  * массива*/
+// int check_Y_Edge() {
+//   CurrentFigure_my *figure = getCoordinate_GameFigure();
+//   int returnPosition = 0;
+//   if ((figure->Y + figure->dimension) >= 20) {
+//     returnPosition = 16;
+//   } else {
+//     returnPosition = figure->Y;
+//   }
+//   return returnPosition;
 // }
 void controllerGame(char key) {
   UserAction_t *selectUser = getUserAction();
@@ -200,25 +272,26 @@ void controllerGame(char key) {
 /*получение фигуры*/
 int *getFigure(FigureType type) {
   static int figure_line[4][4] = {
-      {0, 2, 0, 0}, {0, 2, 0, 0}, {0, 2, 0, 0}, {0, 2, 0, 0}};
+      {0, 1, 0, 0}, {0, 1, 0, 0}, {0, 1, 0, 0}, {0, 1, 0, 0}};
 
   static int figure_G_left[4][4] = {
-      {0, 0, 0, 0}, {2, 0, 0, 0}, {2, 2, 2, 0}, {0, 0, 0, 0}};
+      {0, 0, 0, 0}, {1, 0, 0, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}};
 
   static int figure_G_right[4][4] = {
-      {0, 0, 0, 0}, {0, 0, 2, 0}, {2, 2, 2, 0}, {0, 0, 0, 0}};
+      {0, 0, 0, 0}, {0, 0, 1, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}};
 
   static int figure_Cube[4][4] = {
-      {0, 0, 0, 0}, {0, 2, 2, 0}, {0, 2, 2, 0}, {0, 0, 0, 0}};
+      {0, 0, 0, 0}, {0, 1, 1, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}};
 
   static int figure_Z_right_up[4][4] = {
-      {0, 0, 0, 0}, {0, 2, 2, 0}, {2, 2, 0, 0}, {0, 0, 0, 0}};
+      {0, 0, 0, 0}, {0, 1, 1, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}};
 
   static int figure_cross[4][4] = {
-      {0, 0, 0, 0}, {0, 2, 0, 0}, {2, 2, 2, 0}, {0, 0, 0, 0}};
+      {0, 0, 0, 0}, {0, 1, 0, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}};
 
   static int figure_Z_left_up[4][4] = {
-      {0, 0, 0, 0}, {2, 2, 0, 0}, {0, 2, 2, 0}, {0, 0, 0, 0}};
+      {0, 0, 0, 0}, {1, 1, 0, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}};
+
   switch (type) {
   case LINE:
     return (int *)figure_line;
@@ -259,13 +332,13 @@ int getRandNumberFigures() {
   return random_value;
 }
 /*появление новой фигуры*/
-void ApperanceFigure() {
+void ApperanceFigureToNextField() {
   GameInfo_t *game = getInstance_GameInfo();
   CurrentFigure_my *currentGameFigure = getCoordinate_GameFigure();
   for (int i = 0; i < currentGameFigure->dimension; ++i) {
     for (int j = 0; j < currentGameFigure->dimension; ++j) {
       int value = currentGameFigure->figure[i][j];
-      game->field[currentGameFigure->Y + i][currentGameFigure->X + j] = value;
+      game->next[currentGameFigure->Y + i][currentGameFigure->X + j] = value;
     }
   }
   SwapFigureOldToNew();
