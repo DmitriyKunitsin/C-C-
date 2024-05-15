@@ -87,8 +87,8 @@ void printMap() {
         mvprintw(i, j, "#  ");
       } else if (game->field[i][j] == 2) {
         mvprintw(i, j, "1  ");
-      } else if(game->field[i][j] == 3) {
-        mvprintw(i,j, "*  ");
+      } else if (game->field[i][j] == 3) {
+        mvprintw(i, j, "*  ");
       } else {
         mvprintw(i, j, "0  ");
       }
@@ -137,13 +137,15 @@ void figureMoveDown() {
   int countI = 0;
   int countJ = 0;
   // mvprintw(2,25,"countI = %d,countJ = %d",countI,countJ);
-  for (int i = currentFigure->Y; i < SIZE_MAP_Y; ++i) {
-    for (int j = currentFigure->X; j < SIZE_MAP_X; ++j) {
+  for (int i = currentFigure->Y; i < (currentFigure->Y+currentFigure->dimension); ++i) {
+    for (int j = currentFigure->X; j < (currentFigure->X+currentFigure->dimension); ++j) {
       if (currentFigure->figure[countI][countJ] == 2) {
-        game->field[i][j] = currentFigure->figure[countI][countJ++];
-      } if( currentFigure->Y == i && currentFigure->X == j) {
+        game->field[i][j] = currentFigure->figure[countI][countJ];
+      }
+      if (currentFigure->Y == i && currentFigure->X == j) {
         game->field[i][j] = 3;
-      } 
+      }
+      countJ++;
     }
     countI++;
     countJ = 0;
@@ -153,15 +155,15 @@ void figureMoveDown() {
 }
 int check_Y_EdgeBoard_Down_Up() {
   CurrentFigure_my *figure = getCoordinate_GameFigure();
-  int startY = (figure->Y + figure->dimension) > SIZE_MAP_Y ? 18 : figure->Y;
-  return startY;
+  figure->Y = (figure->Y + figure->dimension) > SIZE_MAP_Y ? 16 : figure->Y;
+  return figure->Y;
 }
 int check_X_EdgeBoard_Left_Right() {
   CurrentFigure_my *figure = getCoordinate_GameFigure();
-  int startX =
+  figure->X =
       (figure->X + (figure->dimension / 2)) > SIZE_MAP_X ? 9 : figure->X;
-  startX = ((startX - (figure->dimension / 2)) <= 0) ? 1 : startX;
-  return startX;
+  figure->X = ((figure->X - (figure->dimension / 2)) <= 0) ? 1 : figure->X;
+  return figure->X;
 }
 // void checkColissionFigure() {
 //   CurrentFigure_my *figure = getCoordinate_GameFigure();
@@ -201,10 +203,7 @@ int *getFigure(FigureType type) {
       {0, 2, 0, 0}, {0, 2, 0, 0}, {0, 2, 0, 0}, {0, 2, 0, 0}};
 
   static int figure_G_left[4][4] = {
-      {0, 0, 0, 0}, 
-      {2, 0, 0, 0}, 
-      {2, 2, 2, 0}, 
-      {0, 0, 0, 0}};
+      {0, 0, 0, 0}, {2, 0, 0, 0}, {2, 2, 2, 0}, {0, 0, 0, 0}};
 
   static int figure_G_right[4][4] = {
       {0, 0, 0, 0}, {0, 0, 2, 0}, {2, 2, 2, 0}, {0, 0, 0, 0}};
@@ -275,8 +274,8 @@ void ApperanceFigure() {
 /*замена новой на старую фигуру*/
 void SwapFigureOldToNew() {
   CurrentFigure_my *GameFigure = getCoordinate_GameFigure();
-  for(int i = 0; i < GameFigure->dimension; ++i) {
-    for(int j = 0; j < GameFigure->dimension; ++j) {
+  for (int i = 0; i < GameFigure->dimension; ++i) {
+    for (int j = 0; j < GameFigure->dimension; ++j) {
       GameFigure->figure[i][j] = GameFigure->nextFigure[i][j];
     }
   }
@@ -290,7 +289,7 @@ void GenereatedNextFigure() {
   currentGameFigure->dimension = 4;
   currentGameFigure->X = ((SIZE_MAP_X - currentGameFigure->dimension) /
                           2); // стартовые позиции фигуры
-  currentGameFigure->Y = (currentGameFigure->dimension / 2);
+  currentGameFigure->Y = 0;
   for (int i = 0; i < currentGameFigure->dimension; ++i) {
     for (int j = 0; j < currentGameFigure->dimension; ++j) {
       int value = *(figurePointer + i * currentGameFigure->dimension + j);
