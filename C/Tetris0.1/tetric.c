@@ -27,18 +27,18 @@ void startGame() {
 
     clearMap();
     // MyDelay(10);
-    ApperanceFigure();
-    // figureMoveDown();
+    // ApperanceFigure();
+    figureMoveDown();
     // controllerGame(key);
     printMap();
     refresh();
-    mvprintw(9, 24, "_______________\n");
+    mvprintw(9, 24, "_______next_figure________\n");
     for (int i = 0; i < figur->dimension; ++i) {
       for (int j = 0; j < figur->dimension; ++j) {
-        mvprintw(10 + i, 25 + j, "%d", figur->figure[i][j]);
+        mvprintw(10 + i, 25 + j, "%d", figur->nextFigure[i][j]);
       }
     }
-    mvprintw(15, 24, "_______________\n");
+    mvprintw(15, 24, "__________________________\n");
     mvprintw(20, 30, "step : %d", counter++);
   }
 }
@@ -87,6 +87,8 @@ void printMap() {
         mvprintw(i, j, "#  ");
       } else if (game->field[i][j] == 2) {
         mvprintw(i, j, "1  ");
+      } else if(game->field[i][j] == 3) {
+        mvprintw(i,j, "*  ");
       } else {
         mvprintw(i, j, "0  ");
       }
@@ -127,6 +129,9 @@ void figureMoveDown() {
   CurrentFigure_my *currentFigure = getCoordinate_GameFigure();
   currentFigure->Y += 1;
   mvprintw(1, 25, "y = %d", currentFigure->Y);
+  mvprintw(2, 25, "x = %d", currentFigure->X);
+  mvprintw(3, 25, "center y = %d", currentFigure->Y + 2);
+  mvprintw(4, 25, "center X = %d", currentFigure->X + 2);
   currentFigure->Y = check_Y_EdgeBoard_Down_Up();
   currentFigure->X = check_X_EdgeBoard_Left_Right();
   int countI = 0;
@@ -136,7 +141,9 @@ void figureMoveDown() {
     for (int j = currentFigure->X; j < SIZE_MAP_X; ++j) {
       if (currentFigure->figure[countI][countJ] == 2) {
         game->field[i][j] = currentFigure->figure[countI][countJ++];
-      }
+      } if( currentFigure->Y == i && currentFigure->X == j) {
+        game->field[i][j] = 3;
+      } 
     }
     countI++;
     countJ = 0;
@@ -146,7 +153,7 @@ void figureMoveDown() {
 }
 int check_Y_EdgeBoard_Down_Up() {
   CurrentFigure_my *figure = getCoordinate_GameFigure();
-  int startY = (figure->Y + figure->dimension) > SIZE_MAP_Y ? 16 : figure->Y;
+  int startY = (figure->Y + figure->dimension) > SIZE_MAP_Y ? 18 : figure->Y;
   return startY;
 }
 int check_X_EdgeBoard_Left_Right() {
@@ -156,6 +163,16 @@ int check_X_EdgeBoard_Left_Right() {
   startX = ((startX - (figure->dimension / 2)) <= 0) ? 1 : startX;
   return startX;
 }
+// void checkColissionFigure() {
+//   CurrentFigure_my *figure = getCoordinate_GameFigure();
+//   UserAction_t *game = getUserAction();
+//   for(int i = 0; i < 5 ; ++i) {
+//     for(int j = 0; j < 5 ; ++j) {
+
+//     }
+//   }
+
+// }
 void controllerGame(char key) {
   UserAction_t *selectUser = getUserAction();
   switch (key) {
@@ -184,7 +201,10 @@ int *getFigure(FigureType type) {
       {0, 2, 0, 0}, {0, 2, 0, 0}, {0, 2, 0, 0}, {0, 2, 0, 0}};
 
   static int figure_G_left[4][4] = {
-      {0, 0, 0, 0}, {2, 0, 0, 0}, {2, 2, 2, 0}, {0, 0, 0, 0}};
+      {0, 0, 0, 0}, 
+      {2, 0, 0, 0}, 
+      {2, 2, 2, 0}, 
+      {0, 0, 0, 0}};
 
   static int figure_G_right[4][4] = {
       {0, 0, 0, 0}, {0, 0, 2, 0}, {2, 2, 2, 0}, {0, 0, 0, 0}};
@@ -267,7 +287,7 @@ void GenereatedNextFigure() {
   int figureNumber = getRandNumberFigures();
   int *figurePointer = getFigure(figureNumber);
 
-  currentGameFigure->dimension = (figureNumber == 0) ? 4 : 3;
+  currentGameFigure->dimension = 4;
   currentGameFigure->X = ((SIZE_MAP_X - currentGameFigure->dimension) /
                           2); // стартовые позиции фигуры
   currentGameFigure->Y = (currentGameFigure->dimension / 2);
