@@ -7,6 +7,5 @@ int main() {
 
 void gameLoop() {
     WIN_INIT(1000);
-    ReaderForMenuSelectedItem();
-    EXIT_GAME;
+    GAME();
 }

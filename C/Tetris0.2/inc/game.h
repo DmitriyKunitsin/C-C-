@@ -1,6 +1,10 @@
 #ifndef GAME_H
 #define GAME_H
 
+#define GAME() {\
+                ReaderForMenuSelectedItem();\
+                }
+
 #include "../inc/defines.h"
 #include "../inc/fsm.h"
 #include "../inc/game_frontend.h"

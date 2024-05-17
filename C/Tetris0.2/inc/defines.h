@@ -17,9 +17,10 @@
                             initBoard();\
                             }
 
-#define EXIT_GAME {\
+#define EXIT_GAME() {\
                     attroff(COLOR_PAIR(1));\
                     endwin();\
+                    exit(0);\
                     }
 
 #define GET_USER_INPUT getch()
