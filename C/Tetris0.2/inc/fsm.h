@@ -48,6 +48,6 @@ void userInput(UserAction_t action, bool hold);
 GameInfo_t *getGameInfo();
 UserAction_t *getUserStatus();
 
-GameInfo_t updateCurrentState();
+const GameInfo_t *updateCurrentState();
 
 #endif 

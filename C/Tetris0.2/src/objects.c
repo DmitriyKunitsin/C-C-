@@ -28,7 +28,7 @@ void initBoard() {
     game->speed = 1;
 }
 void FreeMemory() {
-    GameInfo_t *game = getInstance_GameInfo();
+    GameInfo_t *game = getGameInfo();
     for (int i = 0; i < SIZE_MAX_MAP_Y; ++i) {
         free(game->field[i]);
         free(game->next[i]);
@@ -49,7 +49,7 @@ void GenereatedNextFigure() {
     }
 }
 void SwapFigureOldToNew() {
-    Current_Figure *GameFigure = getCoordinate_GameFigure();
+    Current_Figure *GameFigure = getCurrentFigure();
     for (int i = 0; i < GameFigure->dimension; ++i) {
         for (int j = 0; j < GameFigure->dimension; ++j) {
             GameFigure->curFigure[i][j] = GameFigure->nextFigure[i][j];
