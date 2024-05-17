@@ -2,6 +2,7 @@
 #define BACKEND_H
 
 #include "./fsm.h"
+#include "objects.h"
 
 #define NUMBER_OF_KEYS 6
 

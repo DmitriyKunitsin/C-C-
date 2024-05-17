@@ -65,8 +65,6 @@ void executeMenuItem(int item) {
             clear();
             break;
         case 1:
-            // endwin();
-            // exit(0);
             EXIT_GAME();
             break;
         default:

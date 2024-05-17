@@ -10,10 +10,7 @@ UserAction_t *getUserStatus() {
     return &userAction;
 }
 
-GameInfo_t updateCurrentState() {
-    GameInfo_t *game = getGameInfo();
-    return *game;
-}
+const GameInfo_t *updateCurrentState() { return getGameInfo(); }
 
 void userInput(UserAction_t action, bool hold) {
     GameInfo_t *game = getGameInfo();

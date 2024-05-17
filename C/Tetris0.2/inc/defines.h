@@ -19,6 +19,7 @@
 
 #define EXIT_GAME() {\
                     attroff(COLOR_PAIR(1));\
+                    FreeMemory();\
                     endwin();\
                     exit(0);\
                     }

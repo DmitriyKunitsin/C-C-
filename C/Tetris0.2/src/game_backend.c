@@ -34,9 +34,7 @@ void startGame() {
     clear();
     printFieldMap();
     if (myDelay(10, KEY_UP)) {
-
         do {
-
         } while ((key = GET_USER_INPUT) != 'q');
 
     } else {
