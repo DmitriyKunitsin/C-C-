@@ -1,0 +1,12 @@
+#ifndef GAME_H
+#define GAME_H
+
+#include "../inc/defines.h"
+#include "../inc/fsm.h"
+#include "../inc/game_frontend.h"
+#include "../inc/game_backend.h"
+#include "../inc/objects.h"
+
+void gameLoop();
+
+#endif
