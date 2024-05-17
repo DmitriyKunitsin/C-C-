@@ -62,6 +62,7 @@ void executeMenuItem(int item) {
     switch (item) {
         case 0:
             startGame();
+            clear();
             break;
         case 1:
             endwin();

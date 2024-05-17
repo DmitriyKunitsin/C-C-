@@ -31,10 +31,12 @@ bool myDelay(int milliseconds, int ch) {
 
 void startGame() {
     char key;
+    clear();
     printFieldMap();
-    refresh();
     if (myDelay(10, KEY_UP)) {
+
         do {
+
         } while ((key = GET_USER_INPUT) != 'q');
 
     } else {
