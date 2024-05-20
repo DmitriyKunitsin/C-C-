@@ -48,6 +48,7 @@ void MoveFigureDown() {
     Current_Figure *figure = getCurrentFigure();
     if (checkCollissionDown()) {
         saveNextMapInFieldMap();
+        firstStartGame();
     } else {
         figure->Y++;
     }
