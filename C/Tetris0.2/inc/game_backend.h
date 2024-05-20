@@ -40,6 +40,7 @@ void startGame();
 
 /*Y++*/
 void MoveFigureDown();
+bool checkCollissionDown();
 /*X--*/
 void MoveFigureLeft();
 bool checkCollisionLeft();

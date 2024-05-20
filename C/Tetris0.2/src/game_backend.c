@@ -44,9 +44,15 @@ void startGame() {
     } while (input != Terminate);
 }
 
-void MoveFigureDown() {
+void MoveFigureDown() {  // TODO  добавить конструкцию if else,
+    // в случае нахождения снизу объекта, оставлять на месте,
+    // иначе опускать вниз
     Current_Figure *figure = getCurrentFigure();
-    figure->Y = (figure->Y + 1) > 19 ? figure->Y : (figure->Y + 1);
+    if (checkCollissionDown()) {
+        // TODO Сохранение
+    } else {
+        figure->Y++;
+    }
 }
 void MoveFigureLeft() {
     Current_Figure *figure = getCurrentFigure();
@@ -157,6 +163,7 @@ bool checkCollisionRight() {
             if ((game->next[y][x] == 1)) {
                 if (game->field[y][x + 1] == 1) {
                     checkCollission = true;
+                    mvprintw(1, 55, "RIGHT COLLISION");
                 }
             }
         }
@@ -172,7 +179,25 @@ bool checkCollisionLeft() {
             if ((game->next[y][x] == 1)) {
                 if (game->field[y][x - 1] == 1) {
                     checkCollission = true;
-                    mvprintw(1, 55, "TRUE COLLISION");
+                    mvprintw(1, 55, "LEFT COLLISION");
+                }
+            }
+        }
+    }
+
+    return checkCollission;
+}
+
+bool checkCollissionDown() {
+    const GameInfo_t *game = getGameInfo();
+    const Current_Figure *figure = getCurrentFigure();
+    bool checkCollission = false;
+    for (int y = figure->Y; y < (figure->Y + figure->dimension); ++y) {
+        for (int x = figure->X; x < (figure->X + figure->dimension); ++x) {
+            if ((game->next[y][x] == 1)) {
+                if (game->field[y + 1][x] == 1) {
+                    checkCollission = true;
+                    mvprintw(1, 55, "DOWN COLLISION");
                 }
             }
         }
