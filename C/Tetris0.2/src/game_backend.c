@@ -44,12 +44,10 @@ void startGame() {
     } while (input != Terminate);
 }
 
-void MoveFigureDown() {  // TODO  добавить конструкцию if else,
-    // в случае нахождения снизу объекта, оставлять на месте,
-    // иначе опускать вниз
+void MoveFigureDown() { 
     Current_Figure *figure = getCurrentFigure();
     if (checkCollissionDown()) {
-        // TODO Сохранение
+        saveNextMapInFieldMap();
     } else {
         figure->Y++;
     }
@@ -204,4 +202,15 @@ bool checkCollissionDown() {
     }
 
     return checkCollission;
+}
+
+void saveNextMapInFieldMap() {
+    GameInfo_t *game = getGameInfo();
+    for(int y = 0; y < SIZE_MAX_MAP_Y; ++y) {
+        for(int x = 0; x < SIZE_MAX_MAP_X; ++x) {
+            if(game->next[y][x] == 1) {
+                game->field[y][x] = game->next[y][x];
+            }
+        }
+    }
 }

@@ -58,6 +58,9 @@ void firstStartGame();
 /*Функция для получения рандомного числа с номером фигуры*/
 int getRandNumberFigures();
 //  работа с полем на заполнение и кализию
+/*Функция для сохранения фигуры на основную карту*/
+void saveNextMapInFieldMap();
+
 
 bool isLineFull(int row);
 void removeLine(int row);
