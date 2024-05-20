@@ -1,17 +1,18 @@
 #include "../inc/game_frontend.h"
-#include "../inc/objects.h"
+
 #include "../inc/fsm.h"
 #include "../inc/game_backend.h"
+#include "../inc/objects.h"
 
 #pragma region -GAME
 
 void printFieldMap() {
     GameInfo_t *game = getGameInfo();
-    mvprintw(0,25, "field");
+    mvprintw(0, 25, "field");
     for (int i = 0; i < SIZE_MAX_MAP_Y; ++i) {
         for (int j = 0; j < SIZE_MAX_MAP_X; ++j) {
-            (game->field[i][j] == 1) ? mvprintw(i+1, 25+j, "%d", 1)
-                                     : mvprintw(i+1, 25+j, "%d", 0);
+            (game->field[i][j] == 1) ? mvprintw(i + 1, 25 + j, "%d", 1)
+                                     : mvprintw(i + 1, 25 + j, "%d", 0);
         }
     }
 }
@@ -29,7 +30,7 @@ void printGameMap() {
 #pragma endregion
 
 #pragma region -MENU-code
-
+/*Блок с меню*/
 void executeMenuItem(int item) {
     switch (item) {
         case 0:

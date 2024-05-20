@@ -6,7 +6,14 @@
 
 #define NUMBER_OF_KEYS 6
 
-
+#define UP_ARROW KEY_UP
+#define DOWN_ARROW KEY_DOWN
+#define LEFT_ARROW KEY_LEFT
+#define RIGHT_ARROW KEY_RIGHT
+#define IS_Q(c) ((c == 'q') || (c == 'Q') || (c == 'й') || (c == 'Й'))
+#define IS_W(c) ((c == 'w') || (c == 'W') || (c == 'ц') || (c == 'Ц'))
+#define IS_E(c) ((c == 'e') || (c == 'E') || (c == 'у') || (c == 'У'))
+#define IS_R(c) ((c == 'r') || (c == 'R') || (c == 'к') || (c == 'К'))
 
 /*if(game->pause == 0) 
     false
@@ -22,5 +29,26 @@ bool isValidKey(int ch);
 bool myDelay(int milliseconds, int ch);
 /*Начало логики игры и самой игры*/
 void startGame();
+
+// передвижение фигуры и генерация новой фигуры
+
+/*Y++*/
+void MoveFigureDown();
+/*X--*/
+void MoveFigureLeft();
+/*X++*/
+void MoveFigureRight();
+
+//  работа с полем на заполнение и кализию
+
+bool isLineFull(int row);
+void removeLine(int row);
+void checkLines();
+
+//  Проверка ввода пользователя
+/*функция для выполнения логики, после нажатия определенной клавиши*/
+int checkTheKeyPressed(int key);
+/*Конверт ввода, с учетом регистра и языка ввода*/
+int convertInput(int key);
 
 #endif
