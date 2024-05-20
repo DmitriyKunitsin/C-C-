@@ -12,10 +12,6 @@ bool isValidKey(int ch) {
     }
     return bl;
 }
-bool checkedPause() {
-    const GameInfo_t *game = updateCurrentState();
-    return game->pause;
-}
 bool myDelay(int milliseconds, int ch) {
     milliseconds *= 100;
     bool checkValid = false;
@@ -41,23 +37,24 @@ void startGame() {
     }
 }
 
-int checkTheKeyPressed(int key) {
+UserAction_t checkTheKeyPressed(int key) {
     key = convertInput(key);
+    UserAction_t input;
     switch (key) {
         case DOWN_ARROW:
-            MoveFigureDown();
+            input = Down;
             break;
         case UP_ARROW:
 
             break;
         case LEFT_ARROW:
-            MoveFigureLeft();
+            input = Left;
             break;
         case RIGHT_ARROW:
-            MoveFigureRight();
+            input = Right;
             break;
         case 'Q':
-
+            input = Terminate;
             break;
         case 'W':
 
@@ -71,6 +68,7 @@ int checkTheKeyPressed(int key) {
         default:
             break;
     }
+    return input;
 }
 
 int convertInput(int key) {
@@ -99,6 +97,18 @@ void MoveFigureRight() {
     figure->X++;
 }
 
+void OnPauseGame() {
+    GameInfo_t *game = getGameInfo();
+    game->pause = 1;
+}
+void OffPauseGame() {
+    GameInfo_t *game = getGameInfo();
+    game->pause = 0;
+}
+bool checkedPause() {
+    const GameInfo_t *game = updateCurrentState();
+    return game->pause;
+}
 bool isLineFull(int row) {
     GameInfo_t *game = getGameInfo();
     bool checkLine = true;

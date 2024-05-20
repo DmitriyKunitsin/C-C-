@@ -10,10 +10,10 @@
 #define DOWN_ARROW KEY_DOWN
 #define LEFT_ARROW KEY_LEFT
 #define RIGHT_ARROW KEY_RIGHT
-#define IS_Q(c) ((c == 'q') || (c == 'Q') || (c == 'й') || (c == 'Й'))
-#define IS_W(c) ((c == 'w') || (c == 'W') || (c == 'ц') || (c == 'Ц'))
-#define IS_E(c) ((c == 'e') || (c == 'E') || (c == 'у') || (c == 'У'))
-#define IS_R(c) ((c == 'r') || (c == 'R') || (c == 'к') || (c == 'К'))
+#define IS_Q(c) ((c == 'q') || (c == 'Q'))
+#define IS_W(c) ((c == 'w') || (c == 'W'))
+#define IS_E(c) ((c == 'e') || (c == 'E'))
+#define IS_R(c) ((c == 'r') || (c == 'R'))
 
 /*if(game->pause == 0) 
     false
@@ -47,8 +47,11 @@ void checkLines();
 
 //  Проверка ввода пользователя
 /*функция для выполнения логики, после нажатия определенной клавиши*/
-int checkTheKeyPressed(int key);
+UserAction_t checkTheKeyPressed(int key);
 /*Конверт ввода, с учетом регистра и языка ввода*/
 int convertInput(int key);
+
+void OnPauseGame();
+void OffPauseGame();
 
 #endif

@@ -3,6 +3,7 @@
 
 #include "defines.h"
 #include "game_frontend.h"
+#include "game_backend.h"
 
 /*typedef enum {
     Start = 0, - играем

@@ -13,7 +13,6 @@ UserAction_t *getUserStatus() {
 const GameInfo_t *updateCurrentState() { return getGameInfo(); }
 
 void userInput(UserAction_t action, bool hold) {
-    GameInfo_t *game = getGameInfo();
     switch (action) {
         case Start:
             // TODO реализация страрта игры, загрузки с бд данных о прошлом
@@ -21,22 +20,29 @@ void userInput(UserAction_t action, bool hold) {
             printFieldMap();
             break;
         case Pause:
-            game->pause = 1;
+            OnPauseGame();
+            do {
+                // TODO отрисовка ожидания
+                int keyPause = GET_USER_INPUT;
+                if(IS_Q(keyPause)) {
+                    OffPauseGame();
+                }
+            } while (!checkedPause());
             break;
         case Terminate:
-            // TODO реализация меню
+            // TODO реализация выхода в меню
             break;
         case Left:
-
+            MoveFigureLeft();
             break;
         case Right:
-
+            MoveFigureRight();
             break;
         case Up:
 
             break;
         case Down:
-
+            MoveFigureDown();
             if (hold == true) {
                 // TODO реализация зажатой клавиши вниз
             }
