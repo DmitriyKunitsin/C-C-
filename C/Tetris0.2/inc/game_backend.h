@@ -1,8 +1,9 @@
 #ifndef BACKEND_H
 #define BACKEND_H
 
-#include "./fsm.h"
-#include "objects.h"
+// #include "fsm.h"
+// #include "objects.h"
+#include "game.h"
 
 #define NUMBER_OF_KEYS 6
 
@@ -14,6 +15,9 @@
 #define IS_W(c) ((c == 'w') || (c == 'W'))
 #define IS_E(c) ((c == 'e') || (c == 'E'))
 #define IS_R(c) ((c == 'r') || (c == 'R'))
+#define IS_ENTER(c) (c == '\n')
+#define IF_INPUT(c) ((IS_Q(c) == true) || (IS_W(c) == true) || (IS_E(c) == true) || (IS_R(c) == true))
+
 
 /*if(game->pause == 0) 
     false
@@ -21,6 +25,8 @@ if(game->pause ==  1)
 true
 */
 bool checkedPause();
+void OnPauseGame();
+void OffPauseGame();
 /*Если нажатая клавиша не совпадает с валидными, то возвращает false*/
 bool isValidKey(int ch);
 /*myDelay(1, getch())
@@ -36,22 +42,27 @@ void startGame();
 void MoveFigureDown();
 /*X--*/
 void MoveFigureLeft();
+bool checkCollisionLeft();
 /*X++*/
 void MoveFigureRight();
-
+bool checkCollisionRight();
+/*Генерирует новую рандомную фигуру и записывает ее в next  фигуру*/
+void GenereatedNextFigure();
+/*Обнуляет координаты фигуры, которой управляет игрок и записывает(cur) ее в next игровое поле*/
+void ApperanceFigureToNextField();
+/*записывает фигуру next(следующую) в cur(текущую), функция для того, чтобы знать, что за след фигура*/
+void SwapFigureOldToNew();
+/*Функция для первого запуска*/
+void firstStartGame();
+/*Функция для получения рандомного числа с номером фигуры*/
+int getRandNumberFigures();
 //  работа с полем на заполнение и кализию
 
 bool isLineFull(int row);
 void removeLine(int row);
 void checkLines();
 
-//  Проверка ввода пользователя
-/*функция для выполнения логики, после нажатия определенной клавиши*/
-UserAction_t checkTheKeyPressed(int key);
-/*Конверт ввода, с учетом регистра и языка ввода*/
-int convertInput(int key);
 
-void OnPauseGame();
-void OffPauseGame();
+
 
 #endif

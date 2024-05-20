@@ -1,10 +1,10 @@
 #ifndef FSM_H
 #define FSM_H
 
-#include "defines.h"
-#include "game_frontend.h"
-#include "game_backend.h"
-
+// #include "defines.h"
+// #include "game_frontend.h"
+// #include "game_backend.h"
+#include "game.h"
 /*typedef enum {
     Start = 0, - играем
     Pause, - пауза
@@ -44,11 +44,17 @@ typedef struct {
     int speed;
     int pause;
 } GameInfo_t;
-
+/*Реализация логики в зависимости от нажатой клавиши*/
 void userInput(UserAction_t action, bool hold);
 GameInfo_t *getGameInfo();
 UserAction_t *getUserStatus();
 
+//  Проверка ввода пользователя
+/*функция для обработки ввода, после нажатия определенной клавиши*/
+UserAction_t checkTheKeyPressed(int key);
+/*Конверт ввода, с учетом регистра */
+int convertInput(int key);
+/*Функция для получения информации о статусе игры, не изменяя значения*/
 const GameInfo_t *updateCurrentState();
 
 #endif 

@@ -1,6 +1,8 @@
 #ifndef OBJECTS_H
 #define OBJECTS_H
 
+#include "game.h"
+
 #define MAX_DEMISION 4
 
 typedef struct

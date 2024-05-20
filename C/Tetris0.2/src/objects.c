@@ -36,32 +36,9 @@ void FreeMemory() {
     free(game->field);
     free(game->next);
 }
-void GenereatedNextFigure() {
-    Current_Figure *currentGameFigure = getCurrentFigure();
-    int figureNumber = getRandNumberFigures();
-    int *figurePointer = getFigure(figureNumber);
-    currentGameFigure->dimension = 4;
-    for (int i = 0; i < currentGameFigure->dimension; ++i) {
-        for (int j = 0; j < currentGameFigure->dimension; ++j) {
-            int value = *(figurePointer + i * currentGameFigure->dimension + j);
-            currentGameFigure->nextFigure[i][j] = value;
-        }
-    }
-}
-void SwapFigureOldToNew() {
-    Current_Figure *GameFigure = getCurrentFigure();
-    for (int i = 0; i < GameFigure->dimension; ++i) {
-        for (int j = 0; j < GameFigure->dimension; ++j) {
-            GameFigure->curFigure[i][j] = GameFigure->nextFigure[i][j];
-        }
-    }
-}
-int getRandNumberFigures() {
-    int min = 0;
-    int max = 6;
-    int random_value = rand() % (max - min + 1) + min;
-    random_value %= 10;
-    return random_value;
+Current_Figure *getCurrentFigure() {
+    static Current_Figure figure;
+    return &figure;
 }
 /*получение фигуры*/
 int *getFigure(FigureType type) {
