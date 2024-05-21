@@ -56,7 +56,7 @@ void initGameSetting() {
 void MoveFigureDown() {
     Current_Figure *figure = getCurrentFigure();
     if (checkCollissionDown()) {
-        checkLines();
+        // checkLines();
         saveNextMapInFieldMap();
         createRandomTetromino();
     } else {
