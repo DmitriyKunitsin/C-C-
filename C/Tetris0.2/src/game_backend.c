@@ -245,15 +245,17 @@ bool checkCollissionRotate() {
             temp[i][j] = figure->curFigure[j][i];
         }
     }
+    int i =0;
+    int j = 0;
     for (int y = figure->Y; y < (figure->Y + figure->dimension); ++y) {
         for (int x = figure->X; x < (figure->X + figure->dimension); ++x) {
             if (game->field[y][x] == 1) {
-                if (temp[y - figure->Y][x - figure->X] == 1) {
+                if (temp[i][j++] == 1) {
                     checkRotate = true;
-                    break;
                 }
             }
         }
+        i++;
     }
     return checkRotate;
 }
