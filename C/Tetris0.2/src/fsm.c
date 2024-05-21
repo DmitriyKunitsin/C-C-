@@ -52,7 +52,6 @@ void userInput(UserAction_t action, bool hold) {
             RotateFigure();
             updateGameScreen();
             printALLmap();
-             mvprintw(3, 55, "ROTATE");
             break;
         case Down:
             MoveFigureDown();

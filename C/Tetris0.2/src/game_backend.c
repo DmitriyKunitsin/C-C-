@@ -64,28 +64,31 @@ void MoveFigureRight() {
 }
 
 void RotateFigure() {
-    Current_Figure *figure = getCurrentFigure();
-    GameInfo_t *game = getGameInfo();
-    int temp[4][4];
-    for (int y = 0; y < figure->dimension; ++y) {
-        for (int x = 0; x < figure->dimension; ++x) {
-            temp[y][x] = figure->curFigure[y][x];
+    if (!checkCollissionRotate()) {
+        Current_Figure *figure = getCurrentFigure();
+        GameInfo_t *game = getGameInfo();
+        int temp[4][4];
+        for (int y = 0; y < figure->dimension; ++y) {
+            for (int x = 0; x < figure->dimension; ++x) {
+                temp[y][x] = figure->curFigure[y][x];
+            }
         }
-    }
-    for(int y = 0; y < figure->dimension; ++y) {
-        for(int x = 0 ; x < figure->dimension; ++x) {
-            figure->curFigure[y][x] = 0;
+        for (int y = 0; y < figure->dimension; ++y) {
+            for (int x = 0; x < figure->dimension; ++x) {
+                figure->curFigure[y][x] = 0;
+            }
         }
-    }
-    for(int y = 0; y < figure->dimension; ++y) {
-        for(int x = 0 ; x < figure->dimension; ++x) {
-            figure->curFigure[y][x] = temp[figure->dimension - 1 - x][y];
+        for (int y = 0; y < figure->dimension; ++y) {
+            for (int x = 0; x < figure->dimension; ++x) {
+                figure->curFigure[y][x] = temp[figure->dimension - 1 - x][y];
+            }
         }
-    }
-    clearOldNextMap();
-    for(int y = figure->Y; y < (figure->Y + figure->dimension); ++y) {
-        for(int x = figure->X; x < (figure->X + figure->dimension); ++x) {
-            game->next[y][x] = figure->curFigure[y - figure->Y][x - figure->X];
+        clearOldNextMap();
+        for (int y = figure->Y; y < (figure->Y + figure->dimension); ++y) {
+            for (int x = figure->X; x < (figure->X + figure->dimension); ++x) {
+                game->next[y][x] =
+                    figure->curFigure[y - figure->Y][x - figure->X];
+            }
         }
     }
 }
@@ -232,23 +235,28 @@ bool checkCollissionDown() {
     return checkCollission;
 }
 
-// bool checkCollissionRotate() {
-//     // const GameInfo_t *game = getGameInfo();
-//     const Current_Figure *figure = getCurrentFigure();
-//     bool checkRotate = false;
-//     int temp[4][4];
-//     for(int i = 0; i < figure->dimension; ++i) {
-//         for (int j = 0; j < figure->dimension; ++j) {
-//             temp[i][j] = figure->curFigure[j][i];
-//         }
-//     }
-//     for(int y = figure->Y; y < (figure->Y + figure->dimension); ++y) {
-//         for(int x = figure->X; x < (figure->X + figure->dimension); ++x) {
-
-//         }
-//     }
-//     return checkRotate;
-// }
+bool checkCollissionRotate() {
+    const GameInfo_t *game = getGameInfo();
+    const Current_Figure *figure = getCurrentFigure();
+    bool checkRotate = false;
+    int temp[4][4];
+    for (int i = 0; i < figure->dimension; ++i) {
+        for (int j = 0; j < figure->dimension; ++j) {
+            temp[i][j] = figure->curFigure[j][i];
+        }
+    }
+    for (int y = figure->Y; y < (figure->Y + figure->dimension); ++y) {
+        for (int x = figure->X; x < (figure->X + figure->dimension); ++x) {
+            if (game->field[y][x] == 1) {
+                if (temp[y - figure->Y][x - figure->X] == 1) {
+                    checkRotate = true;
+                    break;
+                }
+            }
+        }
+    }
+    return checkRotate;
+}
 
 void saveNextMapInFieldMap() {
     GameInfo_t *game = getGameInfo();
