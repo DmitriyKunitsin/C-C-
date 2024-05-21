@@ -71,7 +71,6 @@ void checkColissionFigure();
 int check_X_Edge();
 int check_Y_Edge();
 void startGame();
-void printMap();
 void clearMap();
 void AllocateMemory();
 void FreeMemory();
