@@ -10,16 +10,14 @@ UserAction_t *getUserStatus() {
     return &userAction;
 }
 
-const GameInfo_t *updateCurrentState() { return getGameInfo(); }
+GameInfo_t *updateCurrentState() { return getGameInfo(); }
 
 void userInput(UserAction_t action, bool hold) {
     switch (action) {
         case Start:
             clear();
-            firstStartGame();
-            printGameMap();
-            printFieldMap();
-            printNEXTmap();
+            createRandomTetromino();
+            printALLmap();
             // TODO реализация страрта игры, загрузки с бд данных о прошлом
             // рекорде
             break;
@@ -51,6 +49,10 @@ void userInput(UserAction_t action, bool hold) {
             break;
         case Up:
             // TODO переворот фигуры
+            RotateFigure();
+            updateGameScreen();
+            printALLmap();
+             mvprintw(3, 55, "ROTATE");
             break;
         case Down:
             MoveFigureDown();

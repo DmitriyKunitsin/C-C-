@@ -44,11 +44,11 @@ void startGame() {
     } while (input != Terminate);
 }
 
-void MoveFigureDown() { 
+void MoveFigureDown() {
     Current_Figure *figure = getCurrentFigure();
     if (checkCollissionDown()) {
         saveNextMapInFieldMap();
-        firstStartGame();
+        createRandomTetromino();
     } else {
         figure->Y++;
     }
@@ -61,6 +61,33 @@ void MoveFigureLeft() {
 void MoveFigureRight() {
     Current_Figure *figure = getCurrentFigure();
     figure->X = (checkCollisionRight() == false) ? (figure->X + 1) : figure->X;
+}
+
+void RotateFigure() {
+    Current_Figure *figure = getCurrentFigure();
+    GameInfo_t *game = getGameInfo();
+    int temp[4][4];
+    for (int y = 0; y < figure->dimension; ++y) {
+        for (int x = 0; x < figure->dimension; ++x) {
+            temp[y][x] = figure->curFigure[y][x];
+        }
+    }
+    for(int y = 0; y < figure->dimension; ++y) {
+        for(int x = 0 ; x < figure->dimension; ++x) {
+            figure->curFigure[y][x] = 0;
+        }
+    }
+    for(int y = 0; y < figure->dimension; ++y) {
+        for(int x = 0 ; x < figure->dimension; ++x) {
+            figure->curFigure[y][x] = temp[figure->dimension - 1 - x][y];
+        }
+    }
+    clearOldNextMap();
+    for(int y = figure->Y; y < (figure->Y + figure->dimension); ++y) {
+        for(int x = figure->X; x < (figure->X + figure->dimension); ++x) {
+            game->next[y][x] = figure->curFigure[y - figure->Y][x - figure->X];
+        }
+    }
 }
 
 void OnPauseGame() {
@@ -147,7 +174,7 @@ int getRandNumberFigures() {
     return random_value;
 }
 
-void firstStartGame() {
+void createRandomTetromino() {
     GenereatedNextFigure();
     SwapFigureOldToNew();
     ApperanceFigureToNextField();
@@ -205,11 +232,29 @@ bool checkCollissionDown() {
     return checkCollission;
 }
 
+// bool checkCollissionRotate() {
+//     // const GameInfo_t *game = getGameInfo();
+//     const Current_Figure *figure = getCurrentFigure();
+//     bool checkRotate = false;
+//     int temp[4][4];
+//     for(int i = 0; i < figure->dimension; ++i) {
+//         for (int j = 0; j < figure->dimension; ++j) {
+//             temp[i][j] = figure->curFigure[j][i];
+//         }
+//     }
+//     for(int y = figure->Y; y < (figure->Y + figure->dimension); ++y) {
+//         for(int x = figure->X; x < (figure->X + figure->dimension); ++x) {
+
+//         }
+//     }
+//     return checkRotate;
+// }
+
 void saveNextMapInFieldMap() {
     GameInfo_t *game = getGameInfo();
-    for(int y = 0; y < SIZE_MAX_MAP_Y; ++y) {
-        for(int x = 0; x < SIZE_MAX_MAP_X; ++x) {
-            if(game->next[y][x] == 1) {
+    for (int y = 0; y < SIZE_MAX_MAP_Y; ++y) {
+        for (int x = 0; x < SIZE_MAX_MAP_X; ++x) {
+            if (game->next[y][x] == 1) {
                 game->field[y][x] = game->next[y][x];
             }
         }

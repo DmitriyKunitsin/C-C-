@@ -55,6 +55,6 @@ UserAction_t checkTheKeyPressed(int key);
 /*Конверт ввода, с учетом регистра */
 int convertInput(int key);
 /*Функция для получения информации о статусе игры, не изменяя значения*/
-const GameInfo_t *updateCurrentState();
+GameInfo_t *updateCurrentState();
 
 #endif 

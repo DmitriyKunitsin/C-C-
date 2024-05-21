@@ -37,7 +37,9 @@ bool myDelay(int milliseconds, int ch);
 void startGame();
 
 // передвижение фигуры и генерация новой фигуры
-
+/*Переворот фигуры*/
+void RotateFigure();
+bool checkCollissionRotate();
 /*Y++*/
 void MoveFigureDown();
 bool checkCollissionDown();
@@ -54,7 +56,7 @@ void ApperanceFigureToNextField();
 /*записывает фигуру next(следующую) в cur(текущую), функция для того, чтобы знать, что за след фигура*/
 void SwapFigureOldToNew();
 /*Функция для первого запуска*/
-void firstStartGame();
+void createRandomTetromino();
 /*Функция для получения рандомного числа с номером фигуры*/
 int getRandNumberFigures();
 //  работа с полем на заполнение и кализию
