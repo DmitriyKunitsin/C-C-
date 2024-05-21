@@ -35,7 +35,7 @@ bool isValidKey(int ch);
 bool myDelay(int milliseconds, int ch);
 /*Начало логики игры и самой игры*/
 void startGame();
-
+void initGameSetting();
 // передвижение фигуры и генерация новой фигуры
 /*Переворот фигуры*/
 void RotateFigure();
@@ -67,6 +67,7 @@ void saveNextMapInFieldMap();
 bool isLineFull(int row);
 void removeLine(int row);
 void checkLines();
+void addScore(int countLine);
 
 
 

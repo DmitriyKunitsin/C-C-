@@ -29,12 +29,13 @@ void startGame() {
     int key;
     clear();
     UserAction_t input;
-    userInput(Start, false);
+    initGameSetting();
+    userInput(Action, false);
     do {
         printCurrentFigure();
         printNextFigure();
         key = GET_USER_INPUT;
-        if (myDelay(1, key)) {  // нажата валидная клавиша
+        if (myDelay(10, key)) {  // нажата валидная клавиша
             input = checkTheKeyPressed(key);
             userInput(input, true);
         } else {  // прошел таймер и валидная клавиша не нажата
@@ -44,9 +45,18 @@ void startGame() {
     } while (input != Terminate);
 }
 
+void initGameSetting() {
+    GameInfo_t *game = getGameInfo();
+    game->level = 1;
+    game->score = 0;
+    game->speed = 10;
+    game->high_score = 0;  // TODO получение с бд рекорда
+}
+
 void MoveFigureDown() {
     Current_Figure *figure = getCurrentFigure();
     if (checkCollissionDown()) {
+        checkLines();
         saveNextMapInFieldMap();
         createRandomTetromino();
     } else {
@@ -107,10 +117,14 @@ bool checkedPause() {
 }
 bool isLineFull(int row) {
     GameInfo_t *game = getGameInfo();
-    bool checkLine = true;
-    for (int i = 0; i < SIZE_MAX_MAP_X; ++i) {
-        if (game->field[row][i] == 0) {
-            checkLine = false;
+    bool checkLine = false;
+    int count = 0;
+    for (int i = 1; i < SIZE_MAX_MAP_X - 1; ++i) {
+        if (game->field[row][i] == 1) {
+            count++;
+            if (count == 8) {
+                checkLine = true;
+            }
         }
     }
     return checkLine;
@@ -126,10 +140,30 @@ void removeLine(int row) {
 }
 
 void checkLines() {
-    for (int i = SIZE_MAX_MAP_Y - 1; i >= 0; i--) {
+    int countLineContract = 0;  // количество линий подряд
+    for (int i = SIZE_MAX_MAP_Y - 1; i >= 1; i--) {
         if (isLineFull(i)) {
             removeLine(i);
-        }
+            countLineContract++;
+        }  // больше 3 подряд не насчитываем
+        countLineContract = (countLineContract > 3) ? 3 : countLineContract;
+    }
+    addScore(countLineContract);
+}
+void addScore(int countLine) {
+    GameInfo_t *game = getGameInfo();
+    switch (countLine) {
+        case 3:
+            game->score += 300;
+            break;
+        case 2:
+            game->score += 200;
+            break;
+        case 1:
+            game->score += 100;
+            break;
+        default:
+            break;
     }
 }
 
@@ -245,7 +279,7 @@ bool checkCollissionRotate() {
             temp[i][j] = figure->curFigure[j][i];
         }
     }
-    int i =0;
+    int i = 0;
     int j = 0;
     for (int y = figure->Y; y < (figure->Y + figure->dimension); ++y) {
         for (int x = figure->X; x < (figure->X + figure->dimension); ++x) {

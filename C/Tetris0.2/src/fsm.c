@@ -15,9 +15,6 @@ GameInfo_t *updateCurrentState() { return getGameInfo(); }
 void userInput(UserAction_t action, bool hold) {
     switch (action) {
         case Start:
-            clear();
-            createRandomTetromino();
-            printALLmap();
             // TODO реализация страрта игры, загрузки с бд данных о прошлом
             // рекорде
             break;
@@ -39,11 +36,13 @@ void userInput(UserAction_t action, bool hold) {
             break;
         case Left:
             MoveFigureLeft();
+            MoveFigureDown();
             updateGameScreen();
             printALLmap();
             break;
         case Right:
             MoveFigureRight();
+            MoveFigureDown();
             updateGameScreen();
             printALLmap();
             break;
@@ -62,8 +61,10 @@ void userInput(UserAction_t action, bool hold) {
             }
             break;
         case Action:
+            clear();
+            createRandomTetromino();
+            printALLmap();
             // TODO игра онлайн, не в режиме паузе, не только началась
-            printFieldMap();
             break;
     }
 }
