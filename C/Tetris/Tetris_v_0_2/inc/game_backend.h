@@ -63,11 +63,13 @@ int getRandNumberFigures();
 /*Функция для сохранения фигуры на основную карту*/
 void saveNextMapInFieldMap();
 
-
-bool isLineFull(int row);
-void removeLine(int row);
-void checkLines();
-void addScore(int countLine);
+int checkLines();
+void removeLines(int removeLinesY);
+bool isFullLines(int Y);
+// bool isLineFull(int row);
+// void removeLine(int row);
+// void checkLines();
+void addScore(int countTrue);
 
 
 

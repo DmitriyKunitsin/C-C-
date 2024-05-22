@@ -13,21 +13,21 @@ void printALLmap() {
 }
 void printFieldMap() {
     GameInfo_t *game = getGameInfo();
-    mvprintw(0, 13, "field");
+    mvprintw(0, 15, "field");
     for (int i = 0; i < SIZE_MAX_MAP_Y; ++i) {
         for (int j = 0; j < SIZE_MAX_MAP_X; ++j) {
-            (game->field[i][j] == 1) ? mvprintw(i + 1, 13 + j, "%d", 1)
-                                     : mvprintw(i + 1, 13 + j, "%d", 0);
+            (game->field[i][j] == 1) ? mvprintw(i + 1, 15 + j, "%d", 1)
+                                     : mvprintw(i + 1, 15 + j, "%d", 0);
         }
     }
 }
 void printNEXTmap() {
     GameInfo_t *game = getGameInfo();
-    mvprintw(0, 25, "next");
+    mvprintw(0, 27, "next");
     for (int i = 0; i < SIZE_MAX_MAP_Y; ++i) {
         for (int j = 0; j < SIZE_MAX_MAP_X; ++j) {
-            (game->next[i][j] == 1) ? mvprintw(i + 1, 25 + j, "%d", 1)
-                                    : mvprintw(i + 1, 25 + j, "%d", 0);
+            (game->next[i][j] == 1) ? mvprintw(i + 1, 27 + j, "%d", 1)
+                                    : mvprintw(i + 1, 27 + j, "%d", 0);
         }
     }
 }
@@ -36,9 +36,10 @@ void printGameMap() {
     for (int i = 0; i < SIZE_MAX_MAP_Y; ++i) {
         for (int j = 0; j < SIZE_MAX_MAP_X; ++j) {
             ((game->field[i][j] == 1) || (game->next[i][j] == 1))
-                ? mvprintw(i, j, "%d", 1)
-                : mvprintw(i, j, "%d", 0);
+                ? mvprintw(i + 1, j + 4, "%d", 1)
+                : mvprintw(i + 1, j + 4, "%d", 0);
         }
+        mvprintw(i + 1, 0, "%d ", i);
     }
 }
 

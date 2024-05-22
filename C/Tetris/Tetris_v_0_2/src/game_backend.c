@@ -56,8 +56,10 @@ void initGameSetting() {
 void MoveFigureDown() {
     Current_Figure *figure = getCurrentFigure();
     if (checkCollissionDown()) {
-        // checkLines();
         saveNextMapInFieldMap();
+        int countTrue = 0;
+        countTrue = checkLines(countTrue);
+        addScore(countTrue);
         createRandomTetromino();
     } else {
         figure->Y++;
@@ -115,43 +117,9 @@ bool checkedPause() {
     const GameInfo_t *game = updateCurrentState();
     return game->pause;
 }
-bool isLineFull(int row) {
+void addScore(int countTrue) {
     GameInfo_t *game = getGameInfo();
-    bool checkLine = false;
-    int count = 0;
-    for (int i = 1; i < SIZE_MAX_MAP_X - 1; ++i) {
-        if (game->field[row][i] == 1) {
-            count++;
-            if (count == 8) {
-                checkLine = true;
-            }
-        }
-    }
-    return checkLine;
-}
-
-void removeLine(int row) {
-    GameInfo_t *game = getGameInfo();
-    for (int i = row; i > 0; i--) {
-        for (int j = 0; j < SIZE_MAX_MAP_X; ++j) {
-            game->field[i][j] = game->field[i - 1][j];
-        }
-    }
-}
-
-void checkLines() {
-    int countLineContract = 0;  // количество линий подряд
-    for (int i = SIZE_MAX_MAP_Y - 1; i >= 1; i--) {
-        if (isLineFull(i)) {
-            removeLine(i);
-            countLineContract++;
-        }  // больше 3 подряд не насчитываем
-        countLineContract = (countLineContract > 3) ? 3 : countLineContract;
-    }
-    addScore(countLineContract);
-}
-void addScore(int countLine) {
-    GameInfo_t *game = getGameInfo();
+    countTrue = (countTrue > 3) ? 3 : countTrue;
     switch (countLine) {
         case 3:
             game->score += 300;
@@ -166,11 +134,45 @@ void addScore(int countLine) {
             break;
     }
 }
+int checkLines(int countTrue) {
+    for (int y = SIZE_MAX_MAP_Y - 2; y >= 2; y--) {
+        if (isFullLines(y)) {  // return true
+            removeLines(y);
+            countTrue++;
+            countTrue = checkLines(countTrue);
+        }
+    }
+    printALLmap();
+    return countTrue;
+}
+void removeLines(int removeLinesY) {
+    GameInfo_t *game = getGameInfo();
+    for (int y = removeLinesY; y > 1; --y) {
+        for (int x = 1; x < 10; ++x) {
+            game->field[y][x] = game->field[y - 1][x];
+        }
+    }
+}
 
+bool isFullLines(int Y) {
+    GameInfo_t *game = getGameInfo();
+    bool isFull = false;
+    int countTrue = 0;
+    for (int x = 1; x < SIZE_MAX_MAP_X - 1; ++x) {
+        if (game->field[Y][x] == 1) {
+            countTrue++;
+            if (countTrue == 8) {
+                isFull = true;
+            }
+        }
+    }
+    countTrue = 0;
+    return isFull;
+}
 void GenereatedNextFigure() {
     Current_Figure *figure = getCurrentFigure();
-    int figureNumber = getRandNumberFigures();
-    int *figurePointer = getFigure(figureNumber);
+    // int figureNumber = getRandNumberFigures();
+    int *figurePointer = getFigure(3);
     figure->dimension = 4;
     for (int i = 0; i < figure->dimension; ++i) {
         for (int j = 0; j < figure->dimension; ++j) {
