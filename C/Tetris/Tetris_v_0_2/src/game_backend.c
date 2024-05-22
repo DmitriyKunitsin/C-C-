@@ -30,10 +30,9 @@ void startGame() {
     clear();
     UserAction_t input;
     initGameSetting();
+    GenereatedNextFigure();
     userInput(Action, false);
     do {
-        printCurrentFigure();
-        printNextFigure();
         key = GET_USER_INPUT;
         if (myDelay(10, key)) {  // нажата валидная клавиша
             input = checkTheKeyPressed(key);
@@ -120,7 +119,7 @@ bool checkedPause() {
 void addScore(int countTrue) {
     GameInfo_t *game = getGameInfo();
     countTrue = (countTrue > 3) ? 3 : countTrue;
-    switch (countLine) {
+    switch (countTrue) {
         case 3:
             game->score += 300;
             break;
@@ -142,7 +141,7 @@ int checkLines(int countTrue) {
             countTrue = checkLines(countTrue);
         }
     }
-    printALLmap();
+    printGameMap();
     return countTrue;
 }
 void removeLines(int removeLinesY) {
@@ -169,10 +168,15 @@ bool isFullLines(int Y) {
     countTrue = 0;
     return isFull;
 }
+void createRandomTetromino() {
+    SwapFigureOldToNew();
+    printCurrentFigure();
+    ApperanceFigureToNextField();
+}
 void GenereatedNextFigure() {
     Current_Figure *figure = getCurrentFigure();
-    // int figureNumber = getRandNumberFigures();
-    int *figurePointer = getFigure(3);
+    int figureNumber = getRandNumberFigures();
+    int *figurePointer = getFigure(figureNumber);
     figure->dimension = 4;
     for (int i = 0; i < figure->dimension; ++i) {
         for (int j = 0; j < figure->dimension; ++j) {
@@ -194,8 +198,8 @@ void ApperanceFigureToNextField() {
                 value;
         }
     }
-    SwapFigureOldToNew();
     GenereatedNextFigure();
+    printNextFigure();
 }
 void SwapFigureOldToNew() {
     Current_Figure *GameFigure = getCurrentFigure();
@@ -211,12 +215,6 @@ int getRandNumberFigures() {
     int random_value = rand() % (max - min + 1) + min;
     random_value %= 10;
     return random_value;
-}
-
-void createRandomTetromino() {
-    GenereatedNextFigure();
-    SwapFigureOldToNew();
-    ApperanceFigureToNextField();
 }
 
 bool checkCollisionRight() {

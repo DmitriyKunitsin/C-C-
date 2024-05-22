@@ -29,7 +29,7 @@ void userInput(UserAction_t action, bool hold) {
                 }
             } while (checkedPause());
             clear();
-            printALLmap();
+            printGameMap();
             break;
         case Terminate:
             // TODO реализация выхода в меню
@@ -38,24 +38,24 @@ void userInput(UserAction_t action, bool hold) {
             MoveFigureLeft();
             MoveFigureDown();
             updateGameScreen();
-            printALLmap();
+            printGameMap();
             break;
         case Right:
             MoveFigureRight();
             MoveFigureDown();
             updateGameScreen();
-            printALLmap();
+            printGameMap();
             break;
         case Up:
             // TODO переворот фигуры
             RotateFigure();
             updateGameScreen();
-            printALLmap();
+            printGameMap();
             break;
         case Down:
             MoveFigureDown();
             updateGameScreen();
-            printALLmap();
+            printGameMap();
             if (hold == true) {
                 // TODO реализация зажатой клавиши вниз
             }
@@ -63,7 +63,7 @@ void userInput(UserAction_t action, bool hold) {
         case Action:
             clear();
             createRandomTetromino();
-            printALLmap();
+            printGameMap();
             // TODO игра онлайн, не в режиме паузе, не только началась
             break;
     }

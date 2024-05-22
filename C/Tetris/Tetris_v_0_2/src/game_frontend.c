@@ -6,11 +6,6 @@
 
 #pragma region -GAME
 
-void printALLmap() {
-    printGameMap();
-    printFieldMap();
-    printNEXTmap();
-}
 void printFieldMap() {
     GameInfo_t *game = getGameInfo();
     mvprintw(0, 15, "field");
@@ -33,6 +28,7 @@ void printNEXTmap() {
 }
 void printGameMap() {
     const GameInfo_t *game = updateCurrentState();
+    // игровое поле
     for (int i = 0; i < SIZE_MAX_MAP_Y; ++i) {
         for (int j = 0; j < SIZE_MAX_MAP_X; ++j) {
             ((game->field[i][j] == 1) || (game->next[i][j] == 1))
@@ -52,8 +48,6 @@ void updateGameScreen() {
     const GameInfo_t *game = getGameInfo();
     Current_Figure *currentGameFigure = getCurrentFigure();
     clearOldNextMap();
-    mvprintw(5, 45, "f->Y :%d , f->X :%d", currentGameFigure->Y,
-             currentGameFigure->X);
     for (int i = 0; i < currentGameFigure->dimension; ++i) {
         for (int j = 0; j < currentGameFigure->dimension; ++j) {
             int value = currentGameFigure->curFigure[i][j];
@@ -72,12 +66,10 @@ void clearOldNextMap() {
 }
 void printCurrentFigure() {
     const Current_Figure *figre = getCurrentFigure();
-    mvprintw(9, 40, "Field");
+    mvprintw(8, 40, "Field");
     for (int i = 0; i < figre->dimension; ++i) {
         for (int j = 0; j < figre->dimension; ++j) {
-            figre->curFigure[i][j] == 1
-                ? mvprintw(10 + i, 40 + j, "%d", figre->curFigure[i][j])
-                : mvprintw(10 + i, 40 + j, "0 ");
+            mvprintw(9 + i, 40 + j, "%d", figre->curFigure[i][j]);
         }
     }
 }
@@ -86,9 +78,7 @@ void printNextFigure() {
     mvprintw(14, 40, "Next");
     for (int i = 0; i < figre->dimension; ++i) {
         for (int j = 0; j < figre->dimension; ++j) {
-            figre->nextFigure[i][j] == 1
-                ? mvprintw(15 + i, 40 + j, "%d", figre->nextFigure[i][j])
-                : mvprintw(15 + i, 40 + j, "0");
+            mvprintw(15 + i, 40 + j, "%d", figre->nextFigure[i][j]);
         }
     }
 }

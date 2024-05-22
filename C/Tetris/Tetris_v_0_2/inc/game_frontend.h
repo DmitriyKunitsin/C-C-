@@ -4,9 +4,6 @@
 #include "game.h"
 
 void ReaderForMenuSelectedItem();
-void printFieldMap();
-void printNEXTmap();
-void printALLmap();
 void printCurrentFigure();
 void printNextFigure();
 void updateGameScreen();
