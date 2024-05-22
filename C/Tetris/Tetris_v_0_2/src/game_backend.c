@@ -36,8 +36,13 @@ void initGameSetting() {
 
 int lvlUp(int score) {
     int lvll = 0;
+    GameInfo_t *game = getGameInfo();
+    game->speed = 10;
     for (int i = 0; i < (score / 600) + 2 && i <= 10; ++i) {
         lvll = i;
+    }
+    for(int i = lvll; i > 0; --i) {
+        game->speed -= 1;
     }
     return lvll;
 }
