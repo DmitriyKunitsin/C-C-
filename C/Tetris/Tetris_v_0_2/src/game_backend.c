@@ -2,29 +2,6 @@
 
 int validKeys[NUMBER_OF_KEYS] = {LEFT_ARROW, RIGHT_ARROW, UP_ARROW,
                                  DOWN_ARROW, '\n',        KEY_BACKSPACE};
-/*Проверка нажатой клавиши на валидность*/
-bool isValidKey(int ch) {
-    bool bl = false;
-    for (int i = 0; i < NUMBER_OF_KEYS; ++i) {
-        if (ch == validKeys[i]) {
-            bl = true;
-        }
-    }
-    if (IF_INPUT(ch)) {
-        bl = true;
-    }
-    return bl;
-}
-bool myDelay(int milliseconds, int ch) {
-    milliseconds *= 100;
-    bool checkValid = false;
-    clock_t start_time = clock();
-    do {
-        checkValid = isValidKey(ch);
-    } while (((clock() - start_time) * 1000 / CLOCKS_PER_SEC) < milliseconds &&
-             !checkValid);
-    return checkValid;
-}
 void startGame() {
     int key;
     clear();
@@ -51,6 +28,34 @@ void initGameSetting() {
     game->speed = 10;
     game->high_score = 0;  // TODO получение с бд рекорда
 }
+
+#pragma region Delay
+/*Проверка нажатой клавиши на валидность*/
+bool isValidKey(int ch) {
+    bool bl = false;
+    for (int i = 0; i < NUMBER_OF_KEYS; ++i) {
+        if (ch == validKeys[i]) {
+            bl = true;
+        }
+    }
+    if (IF_INPUT(ch)) {
+        bl = true;
+    }
+    return bl;
+}
+bool myDelay(int milliseconds, int ch) {
+    milliseconds *= 100;
+    bool checkValid = false;
+    clock_t start_time = clock();
+    do {
+        checkValid = isValidKey(ch);
+    } while (((clock() - start_time) * 1000 / CLOCKS_PER_SEC) < milliseconds &&
+             !checkValid);
+    return checkValid;
+}
+#pragma endregion
+
+#pragma region MoveFigure
 
 void MoveFigureDown() {
     Current_Figure *figure = getCurrentFigure();
@@ -103,6 +108,9 @@ void RotateFigure() {
         }
     }
 }
+#pragma endregion 
+
+#pragma region PAUSE
 
 void OnPauseGame() {
     GameInfo_t *game = getGameInfo();
@@ -116,6 +124,9 @@ bool checkedPause() {
     const GameInfo_t *game = updateCurrentState();
     return game->pause;
 }
+#pragma endregion 
+
+#pragma region CheckFullLine
 void addScore(int countTrue) {
     GameInfo_t *game = getGameInfo();
     countTrue = (countTrue > 3) ? 3 : countTrue;
@@ -168,6 +179,9 @@ bool isFullLines(int Y) {
     countTrue = 0;
     return isFull;
 }
+#pragma endregion
+
+#pragma region CreatFigure
 void createRandomTetromino() {
     SwapFigureOldToNew();
     printCurrentFigure();
@@ -217,6 +231,9 @@ int getRandNumberFigures() {
     return random_value;
 }
 
+#pragma endregion
+
+#pragma region Collission
 bool checkCollisionRight() {
     const GameInfo_t *game = getGameInfo();
     const Current_Figure *figure = getCurrentFigure();
@@ -293,7 +310,7 @@ bool checkCollissionRotate() {
     }
     return checkRotate;
 }
-
+#pragma endregion
 void saveNextMapInFieldMap() {
     GameInfo_t *game = getGameInfo();
     for (int y = 0; y < SIZE_MAX_MAP_Y; ++y) {
