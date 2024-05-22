@@ -19,6 +19,8 @@
 #define IF_INPUT(c) ((IS_Q(c) == true) || (IS_W(c) == true) || (IS_E(c) == true) || (IS_R(c) == true))
 
 
+void calculateScore(int score);
+int lvlUp(int score);
 /*if(game->pause == 0) 
     false
 if(game->pause ==  1)

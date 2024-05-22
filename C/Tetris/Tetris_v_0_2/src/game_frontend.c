@@ -11,8 +11,8 @@ void printFieldMap() {
     mvprintw(0, 15, "field");
     for (int i = 0; i < SIZE_MAX_MAP_Y; ++i) {
         for (int j = 0; j < SIZE_MAX_MAP_X; ++j) {
-            (game->field[i][j] == 1) ? mvprintw(i + 1, 15 + j, "%d", 1)
-                                     : mvprintw(i + 1, 15 + j, "%d", 0);
+            (game->field[i][j] == 1) ? mvprintw(i + 1, 15 + j, "@")
+                                     : mvprintw(i + 1, 15 + j, " ");
         }
     }
 }
@@ -21,8 +21,8 @@ void printNEXTmap() {
     mvprintw(0, 27, "next");
     for (int i = 0; i < SIZE_MAX_MAP_Y; ++i) {
         for (int j = 0; j < SIZE_MAX_MAP_X; ++j) {
-            (game->next[i][j] == 1) ? mvprintw(i + 1, 27 + j, "%d", 1)
-                                    : mvprintw(i + 1, 27 + j, "%d", 0);
+            (game->next[i][j] == 1) ? mvprintw(i + 1, 27 + j, "@")
+                                    : mvprintw(i + 1, 27 + j, " ");
         }
     }
 }
@@ -32,11 +32,14 @@ void printGameMap() {
     for (int i = 0; i < SIZE_MAX_MAP_Y; ++i) {
         for (int j = 0; j < SIZE_MAX_MAP_X; ++j) {
             ((game->field[i][j] == 1) || (game->next[i][j] == 1))
-                ? mvprintw(i + 1, j + 4, "%d", 1)
-                : mvprintw(i + 1, j + 4, "%d", 0);
+                ? mvprintw(i + 1, j + 2, "@")
+                : mvprintw(i + 1, j + 2, " ");
         }
-        mvprintw(i + 1, 0, "%d ", i);
     }
+    //  игровое меню
+    SCORE_PRINT(game->score);
+    LEVEL_PRINT(game->level);
+    RECORD_PRINT(game->high_score);
 }
 
 void printPauseMenu() {
@@ -66,19 +69,23 @@ void clearOldNextMap() {
 }
 void printCurrentFigure() {
     const Current_Figure *figre = getCurrentFigure();
-    mvprintw(8, 40, "Field");
+    mvprintw(7, 20, "Field");
     for (int i = 0; i < figre->dimension; ++i) {
         for (int j = 0; j < figre->dimension; ++j) {
-            mvprintw(9 + i, 40 + j, "%d", figre->curFigure[i][j]);
+            (figre->curFigure[i][j] == 1)
+                ? mvprintw(i + CURENT_FIGURE_START_PRINT, 20 + j, "@")
+                : mvprintw(i + 9, 20 + j, " ");
         }
     }
 }
 void printNextFigure() {
     const Current_Figure *figre = getCurrentFigure();
-    mvprintw(14, 40, "Next");
+    mvprintw(13, 20, "Next");
     for (int i = 0; i < figre->dimension; ++i) {
         for (int j = 0; j < figre->dimension; ++j) {
-            mvprintw(15 + i, 40 + j, "%d", figre->nextFigure[i][j]);
+            (figre->nextFigure[i][j] == 1)
+                ? mvprintw(i + NEXT_FIGURE_START_PRINT, 20 + j, "@")
+                : mvprintw(i + 14, 20 + j, " ");
         }
     }
 }

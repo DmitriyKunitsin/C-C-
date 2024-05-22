@@ -7,11 +7,16 @@ void startGame() {
     clear();
     UserAction_t input;
     initGameSetting();
+
     GenereatedNextFigure();
     userInput(Action, false);
     do {
+        GameInfo_t *game = updateCurrentState();
+        // calculateScore(game->score);
+        int buf_lvl = lvlUp(game->score);
+        game->level = (buf_lvl == 0) ? 1 : buf_lvl;
         key = GET_USER_INPUT;
-        if (myDelay(10, key)) {  // нажата валидная клавиша
+        if (myDelay(game->speed, key)) {  // нажата валидная клавиша
             input = checkTheKeyPressed(key);
             userInput(input, true);
         } else {  // прошел таймер и валидная клавиша не нажата
@@ -27,6 +32,27 @@ void initGameSetting() {
     game->score = 0;
     game->speed = 10;
     game->high_score = 0;  // TODO получение с бд рекорда
+}
+
+int lvlUp(int score) {
+    int lvll = 0;
+    for (int i = 0; i < (score / 600) + 2 && i <= 10; ++i) {
+        lvll = i;
+    }
+    return lvll;
+}
+
+void calculateScore(int score) {
+    GameInfo_t *game = getGameInfo();
+    if ((score - (game->level * 600)) > 600) {
+        if ((score / 600) != 0) {
+        } else {
+            game->level = score / 600;
+            if ((score % 600) > 0) {
+                game->level += 1;
+            }
+        }
+    }
 }
 
 #pragma region Delay
@@ -108,7 +134,7 @@ void RotateFigure() {
         }
     }
 }
-#pragma endregion 
+#pragma endregion
 
 #pragma region PAUSE
 
@@ -124,18 +150,21 @@ bool checkedPause() {
     const GameInfo_t *game = updateCurrentState();
     return game->pause;
 }
-#pragma endregion 
+#pragma endregion
 
 #pragma region CheckFullLine
 void addScore(int countTrue) {
     GameInfo_t *game = getGameInfo();
-    countTrue = (countTrue > 3) ? 3 : countTrue;
+    countTrue = (countTrue > 4) ? 4 : countTrue;
     switch (countTrue) {
+        case 4:
+            game->score += 1500;
+            break;
         case 3:
-            game->score += 300;
+            game->score += 700;
             break;
         case 2:
-            game->score += 200;
+            game->score += 300;  // 300
             break;
         case 1:
             game->score += 100;
@@ -189,8 +218,8 @@ void createRandomTetromino() {
 }
 void GenereatedNextFigure() {
     Current_Figure *figure = getCurrentFigure();
-    int figureNumber = getRandNumberFigures();
-    int *figurePointer = getFigure(figureNumber);
+    // int figureNumber = getRandNumberFigures();
+    int *figurePointer = getFigure(3);
     figure->dimension = 4;
     for (int i = 0; i < figure->dimension; ++i) {
         for (int j = 0; j < figure->dimension; ++j) {
