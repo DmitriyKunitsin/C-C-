@@ -1,5 +1,5 @@
 GCC = g++
-CFLAGS = -std=c++17 -Wall -Werror -Wextra -pedantic
+CFLAGS = -std=c++17	 -Wall -Werror -Wextra -pedantic
 PROGRAMM = programm
 
 hello : clean
@@ -18,10 +18,20 @@ string : clean
 	@./$(PROGRAMM)
 	@echo "\033[36mПроект успешно собран\n\033[0m"
 
-ptr :
+ptr : clean
 	@$(GCC) $(CFLAGS) prt.cpp -o $(PROGRAMM)
 	@./$(PROGRAMM)
 	@echo "\033[36mПроект успешно собран\n\033[0m"
+
+func : clean
+	@$(GCC) $(CFLAGS) functions.cpp -o $(PROGRAMM)
+	@./$(PROGRAMM)
+	@echo "\033[36mПроект успешно собран\n\033[0m"
+
+clang :
+	clang-format -style=Google -n *.cpp
+	clang-format -style=Google -i *.cpp
+
 
 clean :
 	@rm -rf *.o
