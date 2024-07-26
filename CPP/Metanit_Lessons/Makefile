@@ -28,6 +28,21 @@ func : clean
 	@./$(PROGRAMM)
 	@echo "\033[36mПроект успешно собран\n\033[0m"
 
+dyn : clean
+	@$(GCC) $(CFLAGS) dynamicObj.cpp -o $(PROGRAMM)
+	@./$(PROGRAMM)
+	@echo "\033[36mПроект успешно собран\n\033[0m"
+
+oop : clean
+	@$(GCC) $(CFLAGS) oop.cpp -o $(PROGRAMM)
+	@./$(PROGRAMM)
+	@echo "\033[36mПроект успешно собран\n\033[0m"
+
+str : clean
+	@$(GCC) $(CFLAGS) struct.cpp -o $(PROGRAMM)
+	@./$(PROGRAMM)
+	@echo "\033[36mПроект успешно собран\n\033[0m"
+
 clang :
 	clang-format -style=Google -n *.cpp
 	clang-format -style=Google -i *.cpp
