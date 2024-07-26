@@ -12,7 +12,6 @@ void startGame() {
     userInput(Action, false);
     do {
         GameInfo_t *game = updateCurrentState();
-        // calculateScore(game->score);
         int buf_lvl = lvlUp(game->score);
         game->level = (buf_lvl == 0) ? 1 : buf_lvl;
         key = GET_USER_INPUT;
@@ -45,19 +44,6 @@ int lvlUp(int score) {
         game->speed -= 1;
     }
     return lvll;
-}
-
-void calculateScore(int score) {
-    GameInfo_t *game = getGameInfo();
-    if ((score - (game->level * 600)) > 600) {
-        if ((score / 600) != 0) {
-        } else {
-            game->level = score / 600;
-            if ((score % 600) > 0) {
-                game->level += 1;
-            }
-        }
-    }
 }
 
 #pragma region Delay
@@ -218,13 +204,13 @@ bool isFullLines(int Y) {
 #pragma region CreatFigure
 void createRandomTetromino() {
     SwapFigureOldToNew();
-    printCurrentFigure();
+    // printCurrentFigure();
     ApperanceFigureToNextField();
 }
 void GenereatedNextFigure() {
     Current_Figure *figure = getCurrentFigure();
-    // int figureNumber = getRandNumberFigures();
-    int *figurePointer = getFigure(3);
+    int figureNumber = getRandNumberFigures();
+    int *figurePointer = getFigure(figureNumber);
     figure->dimension = 4;
     for (int i = 0; i < figure->dimension; ++i) {
         for (int j = 0; j < figure->dimension; ++j) {
@@ -277,7 +263,6 @@ bool checkCollisionRight() {
             if ((game->next[y][x] == 1)) {
                 if (game->field[y][x + 1] == 1) {
                     checkCollission = true;
-                    mvprintw(1, 55, "RIGHT COLLISION");
                 }
             }
         }
@@ -293,7 +278,6 @@ bool checkCollisionLeft() {
             if ((game->next[y][x] == 1)) {
                 if (game->field[y][x - 1] == 1) {
                     checkCollission = true;
-                    mvprintw(1, 55, "LEFT COLLISION");
                 }
             }
         }
@@ -311,7 +295,6 @@ bool checkCollissionDown() {
             if ((game->next[y][x] == 1)) {
                 if (game->field[y + 1][x] == 1) {
                     checkCollission = true;
-                    mvprintw(1, 55, "DOWN COLLISION");
                 }
             }
         }
